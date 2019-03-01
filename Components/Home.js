@@ -35,10 +35,14 @@ class Home extends Component {
     componentDidMount() {
         this.timeId = setInterval(this.getAllCar.bind(this), 3000);
     }
-    async getAllCar() {
+    componentUnmount (){
+        this.clearInterval();
+    }
+     getAllCar() {
         fetch('http://vwms.gourl.pro/api/vehicle/get-vehicles?userId=' + this.state.dataUser.user_id)
             .then((response) => response.json())
             .then((dataOfCars) => {
+                console.log('aaa', dataOfCars);
                 this.setState({ dataOfCars });
             })
             .catch((error) => {
@@ -47,11 +51,11 @@ class Home extends Component {
     }
     clearInterval = () => {
         const { timeId } = this;
-        clearImmediate(timeId);
+        clearInterval(timeId);
     }
 
     componentWillUnmount() {
-        this.clearInterval();
+      clearInterval(this.timeId);
     }
 
     // async getHistory() {
@@ -77,13 +81,13 @@ class Home extends Component {
     _onPress = (item) => {
         this.props.navigation.navigate('HistoryList', { item });
         console.log('item',item);
-        this.clearInterval();
+        // this.clearInterval();
     }
 
     _onPress1 = () => {
         const { dataUser } = this.state;
         this.props.navigation.navigate('InforUser', { dataUser });
-        this.clearInterval();
+        // this.clearInterval();
     }
 
     _headerComponet = () => (<View style={styles.search_contain} >

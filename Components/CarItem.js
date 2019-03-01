@@ -20,7 +20,7 @@ class CarItem extends Component {
                 <View style={styles.container}>
                     <View style={styles.circle}>
                         <Image
-                            source={require('../2.png')}
+                            source={{uri: item.img_url}}
                             style={{ width: 70, height: 70, borderRadius: 70 / 2, borderWidth: 0.5 }}>
                         </Image>
                     </View>
@@ -32,7 +32,7 @@ class CarItem extends Component {
                             </View> :
                             <View style={{ flex: 90 }} >
                                 <Text style={{ fontSize: 18, fontWeight: 'normal' }} >{item.name} </Text>
-                                <Text style={{ fontSize: 13, color: 'gray', fontWeight: 'normal' }} >Lịch sử: 10T 15:19</Text>
+                                <Text style={{ fontSize: 13, color: 'gray', fontWeight: 'normal' }} >{item.create_at}</Text>
                             </View>}
 
                         <View style={{ flex: 10 }}>

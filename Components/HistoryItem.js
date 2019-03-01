@@ -11,12 +11,12 @@ import { Divider } from 'react-native-elements';
 class HistoryItem extends Component {
     render() {
         var { id, item } = this.props;
-        const finalStyle = item.error ? styles.text2: styles.text1;
+        const finalStyle = item.status < 1 ? styles.text1: styles.text2;
         return (
             <View style={styles.container}>
                 
-                <Text style={finalStyle}>Thời gian: {item.time}</Text>
-                <Text style={finalStyle}>Trạm : {item.station}- Tải trọng : {item.weight}kg</Text>
+                <Text style={finalStyle}>Time: {item.time}</Text>
+                <Text style={finalStyle}>Station : {item.station_id}- Weight: {item.vehicle_weight}KG</Text>
                 <Divider style={{ backgroundColor: 'gray' }} />
             </View>
         );

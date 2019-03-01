@@ -50,21 +50,21 @@ class CarDetail extends Component {
                         <Text style={{ ...styles.flex_50, textAlign: 'right' }}>{detail.license_plates}</Text>
                     </View>
                     <View style={{ ...styles.flex_row, paddingVertical: 15, borderColor: '#d6d7da' }}>
-                        <Text style={styles.flex_50}>name</Text>
+                        <Text style={styles.flex_50}>Name</Text>
                         <Text style={{ ...styles.flex_50, textAlign: 'right' }}>{detail.name}</Text>
                     </View>
                     <View style={{ ...styles.flex_row, paddingVertical: 15, borderColor: '#d6d7da' }}>
-                        <Text style={styles.flex_50}>expiration date</Text>
+                        <Text style={styles.flex_50}>Expiration date</Text>
                         <Text style={{ ...styles.flex_50, textAlign: 'right' }}>{detail.expiration_date}</Text>
                     </View>
                     <View style={{ ...styles.flex_row, paddingVertical: 15, borderColor: '#d6d7da' }}>
                         <Text style={styles.flex_50}>Max load</Text>
                         <Text style={{ ...styles.flex_50, textAlign: 'right' }}>{detail.vehicle_weight_id}</Text>
                     </View>
-                    {/* <View style={{ ...styles.flex_row, paddingVertical: 15, borderBottomWidth: 0 }}>
-                        <Text style={styles.flex_50}>Số lần vi phạm</Text>
-                        <Text style={{ ...styles.flex_50, textAlign: 'right' }}>{detail.timeOfViolations}</Text>
-                    </View> */}
+                    <View style={{ ...styles.flex_row, paddingVertical: 15, borderBottomWidth: 0 }}>
+                        <Text style={styles.flex_50}>Breaking Law's number  </Text>
+                        <Text style={{ ...styles.flex_50, textAlign: 'right' }}>{detail.number_of_violations}</Text>
+                    </View>
                 </View>
 
                 <View style={{ alignItems: 'stretch', paddingTop: 10 }}>

@@ -12,7 +12,7 @@ import {
     Button
 } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
-// import data from './HistoryDB';
+import FormData from 'FormData';
 import { AntDesign } from '@expo/vector-icons';
 import styles from './Styles';
 import HistoryItem from './HistoryItem';
@@ -27,90 +27,9 @@ class HistoryList extends Component {
         super();
         this.state = {
             selectedIndex: 0,
-            data: [{
-                data: [
-                    {
-                        time: '10: AM',
-                        station: '1',
-                        weight: 100,
-                        error: false
-                    },
-                    {
-                        time: '10:01 PM',
-                        station: '1',
-                        weight: 100,
-                        error: true
-                    }
-                ],
-                title: '20-1-2012'
-            },
-            {
-                data: [
-                    {
-                        time: '10:01 AM',
-                        station: '1',
-                        weight: 100,
-                        error: true
-                    },
-                    {
-                        time: '10:01 AM',
-                        station: '1',
-                        weight: 100,
-                        error: false
-                    },
-                    {
-                        time: '10:01 AM',
-                        station: '1',
-                        weight: 100,
-                        error: false
-                    },
-                    {
-                        time: '10:01 AM',
-                        station: '1',
-                        weight: 100,
-                        error: false
-                    },
-                    {
-                        time: '10:01 AM',
-                        station: '1',
-                        weight: 100,
-                        error: false
-                    },
-                    {
-                        time: '10:01 AM',
-                        station: '1',
-                        weight: 100,
-                        error: false
-                    },
-                    {
-                        time: '10:01 AM',
-                        station: '1',
-                        weight: 100,
-                        error: false
-                    },
-                    {
-                        time: '10:01 AM',
-                        station: '1',
-                        weight: 100,
-                        error: false
-                    },
-                    {
-                        time: '10:01 AM',
-                        station: '1',
-                        weight: 100,
-                        error: false
-                    },
-                    {
-                        time: '10:01 AM',
-                        station: '1',
-                        weight: 100,
-                        error: true
-                    }
-                ],
-                title: '19-1-2012'
-            }],
+            data: [],
             componentCrashed: false,
-            rawData: null,
+            rawData: [],
 
         }
         this.getData = null;
@@ -185,11 +104,12 @@ class HistoryList extends Component {
     };
 
     _handleChangeIndex = (selectedIndex) => {
+        let { data } = this.state;
         let subData = [];
         if (selectedIndex === 1) {
             for (let i = 0; i < data.length; i++) {
                 let title = data[i].title;
-                let filterData = data[i].data.filter((item) => item.error === true);
+                let filterData = data[i].data.filter((item) => item.status === 1);
                 subData.push({
                     title,
                     data: filterData
@@ -230,27 +150,50 @@ class HistoryList extends Component {
     //     }
     // }
     componentDidMount() {
-        fetch('http://vwms.gourl.pro/api/transaction/get-transactions?vehicleId=' + this.props.navigation.state.params.item.id)
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                this.setState({ rawData: responseJSON })
-            })
+        let { data, selectedIndex, rawData } = this.state;
+        this.getData = setInterval(() => {
+            fetch('http://vwms.gourl.pro/api/transaction/get-transactions?vehicleId=' + this.props.navigation.state.params.item.id)
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    let name = this.test(responseJSON);
+                    // if (data.length < 1) {
+                    //     this.setState({ data: name });
+                    // }else if( name[0].data.length > data[0].data.length){
+                    this.setState({ data: name });
+                    // }
+
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        }, 3000);
+        let formData = new FormData();
+        formData.append('vehicleId',this.props.navigation.state.params.item.id);
+        fetch('http://vwms.gourl.pro/api/transaction/update-is-read-transaction?vehicleId=' + this.props.navigation.state.params.item.id,{
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: formData
+        })          
             .catch((error) => {
                 console.log(error);
             })
-
-
-
-        let { selectedIndex, rawData } = this.state;
+        // if (this.state.data.lenght > this.state.rawData.lenght) {
+        //     this.setState({ rawData: this.state.data });
+        // }
         this.props.navigation.setParams({
             handleChangeIndex: (index) => this._handleChangeIndex(index),
             showInfor: () => this._showInfor(),
             selectedIndex
         });
     }
-
+    
+    componentWillUnmount() {
+        clearInterval(this.getData);
+    }
     render() {
-        console.log('aaa', this.state.rawData);
         return (
             <ScrollView contentContainerStyle={styles.container1} >
                 <SectionList

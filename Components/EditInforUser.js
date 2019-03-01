@@ -23,7 +23,10 @@ class EditInforUser extends Component {
             dataUser: props.navigation.state.params.dataUser,
             checked: true,
             isDateTimePickerVisible: false,
-
+            first_name: '',
+            last_name: '',
+            date_of_birth: '',
+            email: '',
         }
     }
 
@@ -32,7 +35,7 @@ class EditInforUser extends Component {
     hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
     handleDatePicked = (date) => {
-        handleChange('date_of_birth', date);
+        this.handleChange('date_of_birth', date);
         this.hideDateTimePicker();
     };
 
@@ -51,6 +54,9 @@ class EditInforUser extends Component {
             }
         }
     }
+    handleChange(props, value) {
+        this.setState({ [props]: value });
+    }
     handleChange = (props, params) => {
         this.setState(prevState => ({
             dataUser: {
@@ -60,8 +66,8 @@ class EditInforUser extends Component {
         }));
     }
 
-    eventSave = () => {
-        const { dataUser } = this.state
+    onSave = () => {
+        const { dataUser, email, first_name, last_name, date_of_birth } = this.state
         let formData = new FormData();
         formData.append('first_name', dataUser.first_name);
         formData.append('last_name', dataUser.last_name);
@@ -69,21 +75,21 @@ class EditInforUser extends Component {
         formData.append('date_of_birth', userData.date_of_birth);
         formData.append('email', userData.email);
         formData.append('img', userData.img_url);
-        // fetch('http://vwms.gourl.pro/api/user-profile/update-user-profile?userId=' + this.state.dataUser.user_id, {
-        //     method: 'POST',
-        //     headers: {
-        //         Accept: 'application/json',
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: formData
-        // })
-        //     .then(response => response.json)
-        //     .then((responseJson) => {
-
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-        //     })
+        fetch('http://vwms.gourl.pro/api/user-profile/update-user-profile?userId=' + this.state.dataUser.user_id, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: formData
+        })
+            .then((response)=> response.json())
+            .then((responseJSON)=> {
+                this.props.navigation.navigate('Home');
+            })
+            .catch((error) => {
+                console.error(error);
+            })
     }
 
     render() {
@@ -220,10 +226,10 @@ class EditInforUser extends Component {
                         marginTop: 20
                     }}>
 
-                        <Button onPress={() => alert('aaa')}
+                        {/* <Button onPress={() => alert('aaa')}
+                            title='Save' color='white'></Button> */}
+                        <Button onPress={this.onSave}
                             title='Save' color='white'></Button>
-                        {/* <Button onPress={() => this.props.navigation.navigate('Home')}
-                            title='Login' color='white'></Button> */}
                     </View>
 
 
