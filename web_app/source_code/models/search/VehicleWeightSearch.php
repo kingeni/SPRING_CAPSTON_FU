@@ -17,8 +17,8 @@ class VehicleWeightSearch extends VehicleWeight
     public function rules()
     {
         return [
-            [['id'], 'safe'],
-            [['vehicle_weight', 'unit_id'], 'number'],
+            [['id', 'unit'], 'safe'],
+            [['vehicle_weight'], 'number'],
             [['status'], 'integer'],
         ];
     }
@@ -64,7 +64,7 @@ class VehicleWeightSearch extends VehicleWeight
         ]);
 
         $query->andFilterWhere(['like', 'id', $this->id])
-            ->andFilterWhere(['like', 'unit_id', $this->unit_id]);
+            ->andFilterWhere(['like', 'unit', $this->unit]);
 
         return $dataProvider;
     }

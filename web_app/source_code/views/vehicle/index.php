@@ -29,7 +29,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'license_plates',
             'name',
             'expiration_date',
-            'vehicle_weight_id',
+            [
+                'attribute' => 'vehicle_weight_id',
+                'label' => 'Vehicle Weight',
+            ],
             //'user_id',
 
             ['class' => 'yii\grid\ActionColumn'],

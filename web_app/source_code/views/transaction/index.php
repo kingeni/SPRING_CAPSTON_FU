@@ -1,5 +1,7 @@
 <?php
 
+use app\models\Station;
+use app\models\Transaction;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -27,12 +29,27 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'vehicle_weight',
-            'unit_id',
+            'unit',
             'created_at',
             'img_url:url',
             //'vehicle_id',
             //'station_id',
-            //'status',
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    if ($model->status == Transaction::STATUS_DONE) {
+                        return '<span class="badge badge-success">Done</span>';
+                    } else if ($model->status == Transaction::STATUS_OVERLOAD) {
+                        return '<span class="badge badge-danger">Overload</span>';
+                    } else if ($model->status == Transaction::STATUS_UNDONE) {
+                        return '<span class="badge badge-secondary">Undone</span>';
+                    } else {
+                        return '(not set)';
+                    }
+                },
+                'filter' => array('1' => 'Not Active', '2' => 'Active', '3' => 'Deleted')
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

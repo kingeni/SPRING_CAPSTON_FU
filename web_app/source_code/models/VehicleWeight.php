@@ -10,7 +10,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property string $id
  * @property double $vehicle_weight
- * @property int $unit_id
+ * @property string $unit
  * @property int $status
  */
 class VehicleWeight extends \yii\db\ActiveRecord
@@ -18,6 +18,9 @@ class VehicleWeight extends \yii\db\ActiveRecord
     const STATUS_NOT_ACTIVE = 1;
     const STATUS_ACTIVE = 2;
     const STATUS_DELETED = 3;
+
+    const UNIT_TON = 'ton';
+    const UNIT_KILOGRAM = 'kilogram';
 
     /**
      * {@inheritdoc}
@@ -33,10 +36,11 @@ class VehicleWeight extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'vehicle_weight', 'unit_id', 'status'], 'required'],
+            [['id', 'vehicle_weight', 'unit', 'status'], 'required'],
             [['vehicle_weight'], 'number', 'integerOnly' => true, 'min' => 0],
-            [['status', 'unit_id'], 'integer'],
+            [['status'], 'integer'],
             [['id'], 'string', 'max' => 300],
+            [['unit'], 'string', 'max' => 50],
             [['id'], 'unique'],
         ];
     }
@@ -49,7 +53,7 @@ class VehicleWeight extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'vehicle_weight' => 'Vehicle Weight',
-            'unit_id' => 'Unit ID',
+            'unit_id' => 'Unit',
             'status' => 'Status',
         ];
     }
@@ -63,13 +67,16 @@ class VehicleWeight extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function units()
+    {
+        return [
+            self::UNIT_TON => 'Tấn',
+            self::UNIT_KILOGRAM => 'Kilogram',
+        ];
+    }
+
     public static function getListVehicleWeight()
     {
         return ArrayHelper::map(VehicleWeight::find()->where(['status' => VehicleWeight::STATUS_ACTIVE])->all(), 'id', 'id');
-    }
-
-    public function getUnit()
-    {
-        return $this->hasOne(Unit::className(), ['id' => 'unit_id']);
     }
 }

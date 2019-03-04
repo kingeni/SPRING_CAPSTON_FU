@@ -76,7 +76,7 @@ class TransactionController extends Controller
     public function actionCreate()
     {
         $model = new Transaction();
-        $model->unit_id = 1;
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }

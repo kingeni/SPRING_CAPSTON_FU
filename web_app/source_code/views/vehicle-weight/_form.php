@@ -19,13 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'vehicle_weight')->textInput() ?>
 
-    <?= $form->field($model, 'unit_id')->widget(Select2::classname(), [
-        'data' => Unit::getListUnit(),
-        'options' => ['placeholder' => 'Select an Unit ...'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ])->label('Unit') ?>
+    <?= $form->field($model, 'unit')->dropDownList(VehicleWeight::units()) ?>
 
     <?= $form->field($model, 'status')->dropDownList(VehicleWeight::statuses()) ?>
 

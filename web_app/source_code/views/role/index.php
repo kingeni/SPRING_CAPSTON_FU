@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Role;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -29,19 +30,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             [
                 'attribute' => 'status',
+                'format' => 'raw',
                 'value' => function ($model) {
-                    if ($model->status == 1) {
-                        return 'Not Active';
-                    } else if ($model->status == 2) {
-                        return 'Active';
-                    } else if ($model->status == 3) {
-                        return 'Deleted';
+                    if ($model->status == Role::STATUS_NOT_ACTIVE) {
+                        return '<span class="badge badge-secondary">Not Active</span>';
+                    } else if ($model->status == Role::STATUS_ACTIVE) {
+                        return '<span class="badge badge-success">Active</span>';
+                    } else if ($model->status == Role::STATUS_DELETED) {
+                        return '<span class="badge badge-dark">Deleted</span>';
                     } else {
                         return '(not set)';
                     }
                 },
-                'filter' => array('1' => 'Not Active', '2' => 'Active', '3' => 'Deleted'),
-                'enableSorting' => false
+                'filter' => array('1' => 'Not Active', '2' => 'Active', '3' => 'Deleted')
             ],
 
             ['class' => 'yii\grid\ActionColumn'],

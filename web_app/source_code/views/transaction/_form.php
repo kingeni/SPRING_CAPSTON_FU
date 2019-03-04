@@ -1,5 +1,6 @@
 <?php
 
+use app\models\VehicleWeight;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -16,9 +17,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'vehicle_weight')->textInput() ?>
 
+    <?= $form->field($model, 'unit')->dropDownList(VehicleWeight::units()) ?>
+
     <?= $form->field($model, 'created_at')->widget(\kartik\datetime\DateTimePicker::className(), [
         'pluginOptions' => [
-            'autoclose'=>true,
+            'autoclose' => true,
             'format' => 'yyyy-mm-dd hh:ii'
         ]
     ]) ?>

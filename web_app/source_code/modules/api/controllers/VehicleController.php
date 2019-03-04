@@ -26,6 +26,13 @@ class VehicleController extends Controller
         $arr = [];
         if (count($listVehicle) > 0) {
             foreach ($listVehicle as $item) {
+                $vehicleWeight = VehicleWeight::findOne(['id' => $item['vehicle_weight_id']]);
+                if ($vehicleWeight != null) {
+                    $item['vehicle_maxload'] = $vehicleWeight->vehicle_weight;
+                    $item['vehicle_unit'] = $vehicleWeight->unit;
+                }
+
+                unset ($item['vehicle_weight_id']);
                 $item['number_of_violations'] = count(Transaction::find()->where(['vehicle_id' => $item['id']])->andWhere(['status' => 2])->all());
                 $item['number_of_unread'] = count(Transaction::find()->where(['vehicle_id' => $item['id']])->andWhere(['is_read' => 0])->all());
                 $item['newest_transaction'] = Transaction::find()->where(['vehicle_id' => $item['id']])->orderBy(['created_at' => SORT_DESC])->one();
@@ -55,8 +62,10 @@ class VehicleController extends Controller
     public function actionGetPlateByTagId($tagId)
     {
         $vehicle = Vehicle::find()->asArray()->where(['id' => $tagId])->one();
-        if ($vehicle != null) {
-            $vehicle['vehicle_maxload'] = VehicleWeight::findOne(['id' => $vehicle['vehicle_weight_id']])->vehicle_weight;
+        $vehicleWeight = VehicleWeight::findOne(['id' => $vehicle['vehicle_weight_id']]);
+        if ($vehicle != null || $vehicleWeight != null) {
+            $vehicle['vehicle_maxload'] = $vehicleWeight->vehicle_weight;
+            $vehicle['vehicle_unit'] = $vehicleWeight->unit;
             unset ($vehicle['vehicle_weight_id']);
             return Json::encode($vehicle);
         } else {

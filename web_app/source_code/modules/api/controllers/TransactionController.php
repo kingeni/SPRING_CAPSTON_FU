@@ -33,7 +33,7 @@ class TransactionController extends Controller
         $model = new Transaction();
         $model->id = Yii::$app->request->post('id');
         $model->vehicle_weight = Yii::$app->request->post('vehicle_weight');
-        $model->unit_id = 1;
+        $model->unit = Yii::$app->request->post('unit');;
         $model->created_at = date('Y-m-d H:i:s');
 
         //convert image

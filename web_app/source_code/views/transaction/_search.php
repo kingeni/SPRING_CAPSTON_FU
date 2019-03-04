@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'vehicle_weight') ?>
 
-    <?= $form->field($model, 'unit_id') ?>
+    <?= $form->field($model, 'unit') ?>
 
     <?= $form->field($model, 'created_at') ?>
 

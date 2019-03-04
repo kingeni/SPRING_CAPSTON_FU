@@ -25,31 +25,25 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'vehicle_weight',
-            [
-                'attribute' => 'unit_id',
-                'label' => 'Unit',
-                'value' => 'unit.name'
-            ],
+            'unit',
             [
                 'attribute' => 'status',
+                'format' => 'raw',
                 'value' => function ($model) {
                     if ($model->status == VehicleWeight::STATUS_NOT_ACTIVE) {
-                        return 'Not Active';
+                        return '<span class="badge badge-secondary">Not Active</span>';
                     } else if ($model->status == VehicleWeight::STATUS_ACTIVE) {
-                        return 'Active';
+                        return '<span class="badge badge-success">Active</span>';
                     } else if ($model->status == VehicleWeight::STATUS_DELETED) {
-                        return 'Deleted';
+                        return '<span class="badge badge-dark">Deleted</span>';
                     } else {
                         return '(not set)';
                     }
                 },
-                'filter' => array('1' => 'Not Active', '2' => 'Active', '3' => 'Deleted'),
-                'enableSorting' => false
+                'filter' => array('1' => 'Not Active', '2' => 'Active', '3' => 'Deleted')
             ],
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

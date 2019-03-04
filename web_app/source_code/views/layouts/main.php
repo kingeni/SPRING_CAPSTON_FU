@@ -47,14 +47,10 @@ AppAsset::register($this);
             ],
             [
                 'label' => 'Manage Vehicle',
-                'url' => '/vehicle/index'
-            ],
-            [
-                'label' => 'Manage Weight Measuring',
                 'items' => [
-                    ['label' => 'Manage Vehicle Weight', 'url' => '/vehicle-weight/index'],
+                    ['label' => 'Manage Vehicle', 'url' => '/vehicle/index'],
                     '<li class="divider"></li>',
-                    ['label' => 'Manage Unit', 'url' => '/unit/index'],
+                    ['label' => 'Manage Vehicle Weight', 'url' => '/vehicle-weight/index'],
                 ],
             ],
             [

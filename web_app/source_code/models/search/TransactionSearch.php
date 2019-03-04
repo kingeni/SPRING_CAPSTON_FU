@@ -17,8 +17,8 @@ class TransactionSearch extends Transaction
     public function rules()
     {
         return [
-            [['id', 'created_at', 'img_url', 'vehicle_id', 'station_id'], 'safe'],
-            [['vehicle_weight', 'unit_id', 'status'], 'integer'],
+            [['id', 'created_at', 'img_url', 'vehicle_id', 'station_id', 'unit'], 'safe'],
+            [['vehicle_weight', 'status'], 'integer'],
         ];
     }
 
@@ -59,7 +59,6 @@ class TransactionSearch extends Transaction
         // grid filtering conditions
         $query->andFilterWhere([
             'vehicle_weight' => $this->vehicle_weight,
-            'unit_id' => $this->unit_id,
             'created_at' => $this->created_at,
             'status' => $this->status,
         ]);
@@ -67,7 +66,8 @@ class TransactionSearch extends Transaction
         $query->andFilterWhere(['like', 'id', $this->id])
             ->andFilterWhere(['like', 'img_url', $this->img_url])
             ->andFilterWhere(['like', 'vehicle_id', $this->vehicle_id])
-            ->andFilterWhere(['like', 'station_id', $this->station_id]);
+            ->andFilterWhere(['like', 'station_id', $this->station_id])
+            ->andFilterWhere(['like', 'unit', $this->unit]);
 
         return $dataProvider;
     }
