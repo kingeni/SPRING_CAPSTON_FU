@@ -36,7 +36,7 @@ $this->title = '';
                 'labelOptions' => ['class' => 'col-lg-1 control-label'],
             ],
         ]); ?>
-
+        <p style="color: red"><?= Yii::$app->session->get('alert') ?></p>
         <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
         <?= $form->field($model, 'password')->passwordInput() ?>

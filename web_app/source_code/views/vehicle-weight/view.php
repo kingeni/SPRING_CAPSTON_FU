@@ -33,13 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'vehicle_weight',
-            [
-                'attribute' => 'unit_id',
-                'label' => 'Unit',
-                'value' => function ($model) {
-                    return Unit::getUnitNameById($model->unit_id);
-                }
-            ],
+            'unit',
             [
                 'attribute' => 'status',
                 'value' => function ($model) {

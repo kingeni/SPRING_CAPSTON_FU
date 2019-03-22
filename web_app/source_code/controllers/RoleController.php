@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\User;
 use Yii;
 use app\models\Role;
 use app\models\search\RoleSearch;
@@ -32,7 +33,7 @@ class RoleController extends Controller
                 'rules' => [
                     [
                         'allow' => !Yii::$app->user->isGuest,
-                    ],
+                    ]
                 ],
             ],
         ];

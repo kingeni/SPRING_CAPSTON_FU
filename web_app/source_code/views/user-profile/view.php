@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'date_of_birth',
                 'value' => function ($model) {
-                    return date('m-d-Y', strtotime($model->date_of_birth));
+                    return date('d-m-Y', strtotime($model->date_of_birth));
                 }
             ],
             'phone_number',

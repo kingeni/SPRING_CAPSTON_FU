@@ -28,7 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'license_plates',
             'name',
-            'expiration_date',
+            [
+                'attribute' => 'expiration_date',
+                'value' => function ($model) {
+                    return date('d-m-Y', strtotime($model->expiration_date));
+                },
+            ],
             [
                 'attribute' => 'vehicle_weight_id',
                 'label' => 'Vehicle Weight',

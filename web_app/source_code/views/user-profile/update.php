@@ -38,9 +38,10 @@ $nameSize[] = ['caption' => end($urlExploded), 'size' => filesize($model->img_ur
             ]
         ]) ?>
 
-        <?= $form->field($model, 'phone_number')->widget(MaskedInput::widget([
-            'mask' => ['9999999999', '99999999999']
-        ])) ?>
+        <?= $form->field($model, 'phone_number')->widget(MaskedInput::className(),
+            [
+                'mask' => ['9999999999', '99999999999']
+            ]) ?>
 
         <?= $form->field($model, 'gender')->dropDownList(UserProfile::genders()) ?>
 

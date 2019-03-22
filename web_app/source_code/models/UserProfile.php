@@ -99,4 +99,9 @@ class UserProfile extends \yii\db\ActiveRecord
             self::UNDIFINED => 'Undifined'
         ];
     }
+
+    public static function getUserProfileByUserID($id)
+    {
+        return UserProfile::findOne(['user_id' => $id]);
+    }
 }

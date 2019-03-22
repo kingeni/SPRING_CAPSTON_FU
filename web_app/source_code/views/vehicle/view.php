@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
     $listVehicleImg = VehicleImg::getVehicleImgByVehicleId($model->id);
     foreach ($listVehicleImg as $item) {
-        echo Html::img(Yii::getAlias('@web') . '/' . $item->img_url, ['height' => '200px', 'width' => '200px']) . ' ';
+        echo Html::img(Yii::getAlias('@web') . '/' . $item->img_url, ['height' => '240px', 'width' => '300px']) . ' ';
     }
     ?>
 

@@ -2,10 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\User;
+use app\models\Vehicle;
+use kartik\mpdf\Pdf;
 use Yii;
 use app\models\Transaction;
 use app\models\search\TransactionSearch;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -98,6 +100,39 @@ class TransactionController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $content = $this->renderPartial('report', ['model' => $model]);
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_UTF8,
+                'format' => Pdf::FORMAT_A4,
+                'orientation' => Pdf::ORIENT_PORTRAIT,
+                'destination' => Pdf::DEST_BROWSER,
+                'filename' => 'report' . ".pdf",
+                'content' => $content,
+                'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+                'cssInline' => '.kv-heading-1{font-size:18px}',
+                'options' => ['title' => 'VWMS', 'keywords' => 'krajee, grid, export, yii2-grid, pdf, detail-view'],
+                'methods' => [
+                    'SetHeader' => ['VWMS'],
+                ]
+            ]);
+            $mpdf = $pdf->api;
+            $mpdf->WriteHTML($content);
+            $mpdf->Output(Yii::getAlias('data/report/' . $model->id . '.pdf'));
+
+            $vehicle = Vehicle::findOne($model->vehicle_id);
+            $user = User::findOne($vehicle->user_id);
+            $mail = Yii::$app->mailer->compose();
+            $mail->setFrom('huyta.gaming@gmail.com');
+            if ($user->email != null) {
+                try {
+                    $mail->setTo($user->email);
+                    $mail->setSubject('PHIẾU CÂN KIỂM TRA TẢI TRỌNG XE - ' . $model->created_at);
+                    $mail->setTextBody('Đính kèm trong mail này là Phiếu cân kiểm tra tải trọng xe.');
+                    $mail->attach(Yii::getAlias('data/report/' . $model->id . '.pdf'));
+                    $mail->send();
+                } catch (\Swift_TransportException $e) {
+                }
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -115,6 +150,8 @@ class TransactionController extends Controller
      */
     public function actionDelete($id)
     {
+        if (file_exists($this->findModel($id)->img_url))
+            unlink($this->findModel($id)->img_url);
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -148,5 +185,47 @@ class TransactionController extends Controller
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel
         ]);
+    }
+
+    public function actionGeneratePdf($id)
+    {
+        // get your HTML raw content without any layouts or scripts
+        $content = $this->renderPartial('report', ['model' => $this->findModel($id)]);
+        // setup kartik\mpdf\Pdf component
+        $pdf = new Pdf([
+            // set to use core fonts only
+            'mode' => Pdf::MODE_UTF8,
+            // A4 paper format
+            'format' => Pdf::FORMAT_A4,
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER,
+            'filename' => 'report' . ".pdf",
+            // your html content input
+            'content' => $content,
+            // format content from your own css file if needed or use the
+            // enhanced bootstrap css built by Krajee for mPDF formatting
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            'cssInline' => '.kv-heading-1{font-size:18px}
+                            .tbl {
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                            }',
+            // set mPDF properties on the fly
+            'options' => ['title' => 'Krajee Report Title', 'keywords' => 'krajee, grid, export, yii2-grid, pdf, detail-view'],
+            // call mPDF methods on the fly
+            'methods' => [
+                'SetHeader' => ['VWMS'],
+//                'SetFooter' => ['{PAGENO}'],
+            ]
+        ]);
+//        $mpdf = $pdf->api;
+//        $mpdf->WriteHTML($content);
+//        $mpdf->Output(Yii::getAlias('data/report/' . $id . '.pdf'));
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        Yii::$app->response->headers->add('Content-Type', 'application/pdf');
+        return $pdf->render();
     }
 }

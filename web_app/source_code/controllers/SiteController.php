@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -79,8 +80,13 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        if ($model->load(Yii::$app->request->post())) {
+            if (User::findOne($model->getUser()->id)->role_id == 1) {
+                if ($model->login())
+                    return $this->goBack();
+            } else {
+                Yii::$app->session->set('alert', 'User Role can not login to system.');
+            }
         }
 
         $this->layout = 'login';

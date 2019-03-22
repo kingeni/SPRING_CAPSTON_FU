@@ -19,7 +19,7 @@ class VehicleWeight extends \yii\db\ActiveRecord
     const STATUS_ACTIVE = 2;
     const STATUS_DELETED = 3;
 
-    const UNIT_TON = 'ton';
+    const UNIT_TON = 'tấn';
     const UNIT_KILOGRAM = 'kilogram';
 
     /**

@@ -4,6 +4,7 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
+    'timeZone' => 'Asia/Ho_Chi_Minh',
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -43,20 +44,32 @@ $config = [
             ],
         ],
         'db' => $db,
-
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
-        ]
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.gmail.com',  // e.g. smtp.mandrillapp.com or smtp.gmail.com
+                'username' => 'huyta.gaming@gmail.com',
+                'password' => 'Ahihi1234',
+                'port' => '465', // Port 25 is a very common port too
+                'encryption' => 'ssl', // It is often used, check your provider or mail server specs
+            ],
+        ],
     ],
     'modules' => [
         'api' => [
             'class' => 'app\modules\api\Module',
         ],
     ],
-    'params' => $params,
+    'timeZone' => 'Asia/Ho_Chi_Minh',
+    'params' => $params
 ];
 
 if (YII_ENV_DEV) {

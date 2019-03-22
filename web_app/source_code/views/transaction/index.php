@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return '(not set)';
                     }
                 },
-                'filter' => array('1' => 'Not Active', '2' => 'Active', '3' => 'Deleted')
+                'filter' => array('1' => 'Done', '2' => 'Overload', '3' => 'Undone')
             ],
 
             ['class' => 'yii\grid\ActionColumn'],
@@ -68,12 +68,11 @@ $this->params['breadcrumbs'][] = $this->title;
         })
     }
 
-    var socket = io.connect('//127.0.0.1:3001');
+    var socket = io.connect('//127.0.0.1:1337');
     var url = window.location.origin;
 
     socket.on('connect', function () {
-        console.log('connected');
-        socket.on('new_transaction', function (message) {
+        socket.on('update_transaction', function (message) {
             console.log(message);
             updateTransactionIndex();
         });
