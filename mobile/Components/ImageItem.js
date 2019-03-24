@@ -31,7 +31,7 @@ export default class ImageItem extends Component {
                 marginBottom: 1,
                 marginRight: 1
             }} >
-                <Image source={require('../1.jpg')}
+                <Image source={require('../assets/images/robot-dev.png')}
                     style={{
                         flex: 1,
                         width: null,

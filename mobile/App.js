@@ -1,8 +1,13 @@
 import React from 'react';
-import Router from './navigation/Router'
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import NavigationService from './common/NavigationService';
+import AppNavigator from './navigation/Router'
+import configureStore from './store';
+
+const { store, persistor } = configureStore();
 
 export default class App extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -12,15 +17,19 @@ export default class App extends React.Component {
   }
 
   handleCheck = (check) => {
-    this.setState({check : !check})
+    this.setState({ check: !check })
   }
   render() {
     return (
-
-    
-        <Router/>
-        // <ChangePassword/>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <AppNavigator
+            ref={(navigatorRef) => {
+              NavigationService.setTopLevelNavigator(navigatorRef);
+            }}
+          />
+        </PersistGate>
+      </Provider>
     )
-
   }
 }

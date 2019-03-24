@@ -20,7 +20,7 @@ class ImageModal extends React.Component {
                 onPress={()=>this.closeVisible(false)}/>
                 </TouchableHighlight>
                     <Image
-                    source={require('../1.jpg')}
+                    source={require('../assets/images/robot-dev.png')}
                     style={{
                         flex: 1,
                         width: null,
