@@ -12,6 +12,7 @@ class ChangePassword extends Component {
         title: 'Change Password',
         headerBackTitle: null
     }
+
     constructor(props) {
         super();
         this.state = {
@@ -19,9 +20,11 @@ class ChangePassword extends Component {
             newPassword: ''
         }
     }
+    
     handleChange = (props, params) => {
         this.setState({ [props]: params });
     }
+
     // checkValidation = (props, paramsCheck) => {
     //     if (props === 'password') {
 
@@ -30,6 +33,7 @@ class ChangePassword extends Component {
 
     //     }
     // }
+
     handleSave = () => {
         const { password, newPassword } = this.state;
         const { user_id } = this.props.navigation.state.params;
@@ -37,6 +41,7 @@ class ChangePassword extends Component {
         formData.append('old_password', password);
         formData.append('new_password', newPassword);
         console.log(formData);
+
         fetch('http://vwms.gourl.pro/api/user/update-password?userId=' + user_id, {
             method: 'POST',
             headers: {

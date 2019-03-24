@@ -6,13 +6,11 @@ import {
     TextInput,
     Text,
     Button,
-    Linking,
-    Image
+    Linking
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { CheckBox, FormValidationMessage } from 'react-native-elements';
-import Home from './Home';
-import PopupDiaLog from './PopupDialog';
+import PopupDiaLog from '../Components/PopupDialog';
 import FormData from 'FormData';
 class Login extends Component {
     constructor(props) {
@@ -35,13 +33,12 @@ class Login extends Component {
         const { username, password } = this.state;
         let formData = new FormData();
         let data;
-        formData.append('username', 'huyta');
-        formData.append('password', '123');
-        // http://vwms.gourl.pro/api/site/login
+        formData.append('username', 'huytd');
+        formData.append('password', '123456');
         fetch('http://vwms.gourl.pro/api/site/login', {
             method: 'POST',
             headers: {
-                Accept: 'application/json',
+                Accept: 'application/json,',
                 'Content-Type': 'application/json',
             },
             body: formData
@@ -52,7 +49,9 @@ class Login extends Component {
                 if (responseJson.status === false) {
                     return alert('Login fail');
                 } else {
+                    // console.log(responseJson);
                     data = responseJson.pop();
+                    // console.log('data', data);
                     this.props.navigation.navigate('Home', { data });
                 }
             })

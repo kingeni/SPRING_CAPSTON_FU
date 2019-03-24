@@ -51,6 +51,7 @@ class EditInforUser extends Component {
             title: 'Change Information',
             headerStyle: {
                 borderBottomWidth: 0,
+                backgroundColor: '#d6d7da'
             }
         }
     }
@@ -95,12 +96,12 @@ class EditInforUser extends Component {
     render() {
         const { dataUser } = this.state;
         return (
-            <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: 'white' }}>
+            <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: '#d6d7da' }}>
                 <View style={{
-                    flex: 1, justifyContent: 'flex-start', paddingRight: 20, paddingLeft: 20
+                    flex: 1, justifyContent: 'flex-start'
                 }}>
 
-                    <View style={{ height: 150, flexDirection: 'row' }}>
+                    <View style={{ height: 150, flexDirection: 'row',backgroundColor: 'white', paddingRight: 20, paddingLeft: 20 }}>
                         <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={{ uri: `data:image/png;base64,${dataUser.img_url}` }}
                                 style={{ width: 80, height: 80, borderRadius: 80 / 2, borderWidth: 0.5 }}>
@@ -158,7 +159,7 @@ class EditInforUser extends Component {
                         </View>
                     </View>
 
-                    <View style={{ height: 50, borderBottomWidth: 0.5, flexDirection: 'row', borderColor: '#d6d7da', paddingVertical: 15 }}>
+                    <View style={{ height: 50, flexDirection: 'row',backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
                         <View style={{ flex: 30, justifyContent: 'flex-end' }}>
                             <Text>Date of birth</Text>
                         </View>
@@ -177,7 +178,7 @@ class EditInforUser extends Component {
                         </View>
                     </View>
 
-                    <View style={{ height: 50, borderBottomWidth: 0.5, flexDirection: 'row', borderColor: '#d6d7da', paddingVertical: 15 }}>
+                    <View style={{  height: 50, flexDirection: 'row',backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
                         <View style={{ flex: 30, justifyContent: 'flex-end' }}>
                             <Text>Phone Number</Text>
                         </View>
@@ -191,7 +192,7 @@ class EditInforUser extends Component {
                         </View>
                     </View>
 
-                    <View style={{ height: 50, borderBottomWidth: 0.5, flexDirection: 'row', borderColor: '#d6d7da', paddingVertical: 15 }}>
+                    <View style={{  height: 50, flexDirection: 'row',backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
                         <View style={{ flex: 30, justifyContent: 'flex-end' }}>
                             <Text>Email</Text>
                         </View>
@@ -204,7 +205,7 @@ class EditInforUser extends Component {
                         </View>
                     </View>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangePassword', { password: dataUser.password_hash, user_id: dataUser.user_id })}>
-                        <View style={{ height: 50, flexDirection: 'row', paddingVertical: 15, borderBottomWidth: 0.5, borderColor: '#d6d7da' }}>
+                        <View style={{  height: 50, flexDirection: 'row',backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15  }}>
                             <View style={{ flex: 30, justifyContent: 'flex-end' }}>
                                 <Text>Password</Text>
                             </View>
@@ -226,8 +227,6 @@ class EditInforUser extends Component {
                         marginTop: 20
                     }}>
 
-                        {/* <Button onPress={() => alert('aaa')}
-                            title='Save' color='white'></Button> */}
                         <Button onPress={this.onSave}
                             title='Save' color='white'></Button>
                     </View>

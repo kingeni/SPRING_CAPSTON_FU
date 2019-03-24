@@ -14,8 +14,8 @@ import {
 import { ButtonGroup } from 'react-native-elements';
 import FormData from 'FormData';
 import { AntDesign } from '@expo/vector-icons';
-import styles from './Styles';
-import HistoryItem from './HistoryItem';
+import styles from '../Components/Styles';
+import HistoryItem from '../Components/HistoryItem';
 
 let _headerComponet = ({ section }) =>
     (<View style={{ alignItems: 'flex-start', backgroundColor: '#d6d7da' }}>
@@ -34,12 +34,7 @@ class HistoryList extends Component {
         }
         this.getData = null;
     }
-    componentDidCatch(error, info) {
-        console.log(error);
-        console.log(info);
-        console.log('_______DID CATCH____________');
-        this.setState({ componentCrashed: true });
-    }
+
     test = (data) => {
         var handle = [];
         for (var i = 0; i < data.length; i++) {
@@ -168,15 +163,15 @@ class HistoryList extends Component {
                 })
         }, 3000);
         let formData = new FormData();
-        formData.append('vehicleId',this.props.navigation.state.params.item.id);
-        fetch('http://vwms.gourl.pro/api/transaction/update-is-read-transaction?vehicleId=' + this.props.navigation.state.params.item.id,{
+        formData.append('vehicleId', this.props.navigation.state.params.item.id);
+        fetch('http://vwms.gourl.pro/api/transaction/update-is-read-transaction?vehicleId=' + this.props.navigation.state.params.item.id, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
             body: formData
-        })          
+        })
             .catch((error) => {
                 console.log(error);
             })
@@ -189,9 +184,12 @@ class HistoryList extends Component {
             selectedIndex
         });
     }
-    
+
     componentWillUnmount() {
         clearInterval(this.getData);
+    }
+    sortListByTime = () => {
+        
     }
     render() {
         return (

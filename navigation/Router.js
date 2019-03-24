@@ -1,65 +1,54 @@
 import { createStackNavigator, createAppContainer, createSwitchNavigator } from 'react-navigation';
-import CarDetail from '../Components/CarDetail';
-import HistoryList from '../Components/HistoryList';
-import Home from '../Components/Home';
-import Login from '../Components/Login';
-import InforUser from '../Components/InforUser';
+import CarDetail from '../screens/CarDetail';
+import HistoryList from '../screens/HistoryList';
+import Home from '../screens/Home';
+import Login from '../screens/Login';
+import InforUser from '../screens/InforUser';
 import EditInforUser from '../Components/EditInforUser';
-import ChangePassword from '../Components/ChangePassword';
-const loginStack = createStackNavigator(
-    {
-        Home,
+import ChangePassword from '../screens/ChangePassword';
+const IndexStack = createStackNavigator(
+    { Home,
         HistoryList,
         CarDetail
-    }, {
-        initialRouteName: 'Home',
     });
 
 const Infro = createStackNavigator(
-    {
+    {   
+     
         InforUser,
         EditInforUser,
-        ChangePassword
-    },
-    {
-        initialRouteName: 'InforUser'
+        ChangePassword,
     }
-)
+);
 
 const LogOut = createSwitchNavigator({
     InforUser,
     Login
 },
-    {
-        mode: 'card',
-        initialRouteName: 'InforUser'
-    });
+    // {
+    //     initialRouteName: 'InforUser'
+    // }
+);
 
 const homeScreen = createStackNavigator(
     {
-        loginStack,
+        IndexStack,
         Infro,
-        LogOut
     },
     {
-        mode: 'modal',
+         mode: 'modal',
         headerMode: 'none'
     }
 );
 const mainScreen = createSwitchNavigator(
     {
         Login,
-        homeScreen
+        homeScreen,
+        LogOut
     },
     {
         initialRouteName: 'Login',
     });
-const edit = createStackNavigator(
-    {
-        EditInforUser
-    },
-    {
-        initialRouteName: 'EditInforUser'
-    });
+
 const Router = createAppContainer(mainScreen);
 export default Router;

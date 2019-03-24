@@ -8,14 +8,11 @@ import {
     FlatList,
     Alert,
     ScrollView,
-
-
 } from 'react-native';
-import data from './dataDB';
 import { AntDesign } from '@expo/vector-icons';
-import styles from './Styles';
-import ImageModal from './ImageModal';
-import ImageItem from './ImageItem';
+import styles from '../Components/Styles';
+// import ImageModal from './ImageModal';
+import ImageItem from '../Components/ImageItem';
 let check = false;
 class CarDetail extends Component {
 

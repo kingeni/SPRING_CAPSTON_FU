@@ -12,7 +12,7 @@ class CarItem extends Component {
     onPressItem = (item) => {
         this.props.onPress(item);
     }
-
+    
     render() {
         var { id, item } = this.props;
         return (
@@ -20,7 +20,7 @@ class CarItem extends Component {
                 <View style={styles.container}>
                     <View style={styles.circle}>
                         <Image
-                            source={{uri: item.img_url}}
+                            source={{uri:  `data:image/png;base64,${item.img_url}`}}
                             style={{ width: 70, height: 70, borderRadius: 70 / 2, borderWidth: 0.5 }}>
                         </Image>
                     </View>
@@ -52,6 +52,8 @@ const styles = StyleSheet.create({
         marginTop: 5,
         justifyContent: 'flex-start',
         flexDirection: 'row',
+        backgroundColor: 'white',
+        padding : 5
     },
     circle: {
         flex: 20

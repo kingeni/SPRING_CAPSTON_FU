@@ -1,8 +1,8 @@
 import { createStackNavigator, createSwitchNavigator, createAppContainer } from 'react-navigation';
-import Login from '../Components/Login';
-import Home from '../Components/Home';
-import HistoryList from '../Components/HistoryList';
-import CarDetail from '../Components/CarDetail';
+import Login from '../screens/Login';
+import Home from '../screens/Home';
+import HistoryList from '../screens/HistoryList';
+import CarDetail from '../screens/CarDetail';
 const iTemStack = createStackNavigator(
     {
         Home,

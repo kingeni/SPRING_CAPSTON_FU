@@ -15,21 +15,24 @@ class InforUser extends Component {
             dataUser: props.navigation.state.params.dataUser
         }
     }
-
     static navigationOptions = ({ navigation }) => {
         return {
             headerRight: (
-                <Button title='Done' onPress={() => navigation.navigate('Home')}></Button>
+                <Button title='Done' onPress={() => navigation.navigate('Home',{ isLoading : true})}></Button>
             ),
             headerLeft: <Button title='Edit' onPress={() => navigation.navigate('EditInforUser', { dataUser: navigation.state.params.dataUser })}></Button>,
             headerStyle: {
                 borderBottomWidth: 0,
-            }
+                backgroundColor: '#d6d7da',
+            },
+            swipeEnabled: false
         }
     }
 
     render() {
         const { dataUser } = this.state;
+        // console.log('data', dataUser);
+        
         return (
             < ScrollView style={styles.main}>
                 <View style={{ flex: 1 }}>
@@ -42,8 +45,8 @@ class InforUser extends Component {
 
                         <Text style={{ flex: 20, fontWeight: 'bold', fontSize: 35 }}>{dataUser.first_name} {dataUser.last_name}</Text>
                     </View>
-                    <View style={{ flex: 70, alignItems: 'stretch', paddingTop: 25 }}>
-                        <View style={{ flex: 14, borderBottomWidth: 0.5, flexDirection: 'row', borderColor: '#d6d7da', paddingVertical: 15 }}>
+                    <View style={{ flex: 70, alignItems: 'stretch', marginTop: 15, backgroundColor: 'white' }}>
+                        <View style={{ flex: 14, borderBottomWidth: 0.5, flexDirection: 'row', borderColor: '#d6d7da', padding: 15}}>
                             <View style={{ flex: 30, justifyContent: 'flex-start' }}>
                                 <Text>Username</Text>
                             </View>
@@ -52,7 +55,7 @@ class InforUser extends Component {
                             </View>
                         </View>
 
-                        <View style={{ flex: 14, borderBottomWidth: 0.5, borderColor: '#d6d7da', flexDirection: 'row', paddingVertical: 15 }}>
+                        <View style={{ flex: 14, borderBottomWidth: 0.5, borderColor: '#d6d7da', flexDirection: 'row', padding: 15 }}>
                             <View style={{ flex: 30 }}>
                                 <Text>Gender</Text>
                             </View>
@@ -61,7 +64,7 @@ class InforUser extends Component {
                             </View>
                         </View>
 
-                        <View style={{ flex: 14, borderBottomWidth: 0.5, borderColor: '#d6d7da', flexDirection: 'row', paddingVertical: 15 }}>
+                        <View style={{ flex: 14, borderBottomWidth: 0.5, borderColor: '#d6d7da', flexDirection: 'row', padding: 15 }}>
                             <View style={{ flex: 30 }}>
                                 <Text>Phone Number</Text>
                             </View>
@@ -70,7 +73,7 @@ class InforUser extends Component {
                             </View>
                         </View>
 
-                        <View style={{ flex: 14, borderBottomWidth: 0.5, borderColor: '#d6d7da', flexDirection: 'row', paddingVertical: 15 }}>
+                        <View style={{ flex: 14, borderBottomWidth: 0.5, borderColor: '#d6d7da', flexDirection: 'row', padding: 15 }}>
                             <View style={{ flex: 30 }}>
                                 <Text>CMND</Text>
                             </View>
@@ -79,7 +82,7 @@ class InforUser extends Component {
                             </View>
                         </View>
 
-                        <View style={{ flex: 14, borderBottomWidth: 0.5, flexDirection: 'row', borderColor: '#d6d7da', paddingVertical: 15 }}>
+                        <View style={{ flex: 14, borderBottomWidth: 0.5, flexDirection: 'row', borderColor: '#d6d7da', padding: 15 }}>
                             <View style={{ flex: 30 }}>
                                 <Text>Email</Text>
                             </View>
@@ -88,7 +91,7 @@ class InforUser extends Component {
                             </View>
                         </View>
 
-                        <View style={{ flex: 14, borderBottomWidth: 0.5, flexDirection: 'row', borderColor: '#d6d7da', paddingVertical: 15 }}>
+                        <View style={{ flex: 14, borderBottomWidth: 0.5, flexDirection: 'row', borderColor: '#d6d7da', padding: 15 }}>
                             <View style={{ flex: 30 }}>
                                 <Text>Day of Birth</Text>
                             </View>
@@ -97,7 +100,7 @@ class InforUser extends Component {
                             </View>
                         </View>
 
-                        <View style={{ flexDirection: 'row', paddingVertical: 15, }}>
+                        <View style={{ flexDirection: 'row', padding: 15, }}>
                             <View style={{ flex: 30 }}>
                                 <Text>Password</Text>
                             </View>
@@ -106,25 +109,27 @@ class InforUser extends Component {
                                 <View style={{ flex: 0.89 }}>
                                     <Text style={{ textAlign: 'right' }}>*********</Text>
                                 </View>
-                                <View style={{ flex: 0.11, alignItems:'flex-end',justifyContent: 'center' }}>
+                                <View style={{ flex: 0.11, alignItems: 'flex-end', justifyContent: 'center' }}>
                                     <AntDesign name='caretright' size={20} color='gray' />
                                 </View>
                             </View>
                         </View>
-                        <View style={{
-                            height: 120,
-                            justifyContent: 'space-between'
-                        }}>
-                            {/* <View style={{ borderRadius: 12, height: '45%', borderWidth: 0.5, padding: 5, backgroundColor: 'blue' }}>
+
+                    </View>
+                </View>
+                <View style={{
+                    height: 120,
+                    justifyContent: 'space-between',
+                    marginTop: 5
+                }}>
+                    {/* <View style={{ borderRadius: 12, height: '45%', borderWidth: 0.5, padding: 5, backgroundColor: 'blue' }}>
                                 <Button title='Change Password' color='white' onPress={() => this.props.navigation.navigate('ChangePassword')}></Button>
                             </View> */}
 
-                            <View style={{ borderRadius: 12, height: '45%', borderWidth: 0.5, padding: 5, backgroundColor: '#0068ff' }}>
-                                <Button title='Log out' color='white' onPress={() => this.props.navigation.navigate('Login')}></Button>
-                            </View>
-
-                        </View>
+                    <View style={{  height: '45%', padding: 5, backgroundColor:'white'}}>
+                        <Button title='Log out'  onPress={() => this.props.navigation.navigate('Login')}></Button>
                     </View>
+
                 </View>
             </ScrollView>
         );
@@ -136,8 +141,9 @@ const styles = StyleSheet.create(
             // marginLeft: 10,
             // marginRight: 10,
             flex: 1,
-            paddingRight: 20,
-            paddingLeft: 20
+            // paddingRight: 20,
+            // paddingLeft: 20,
+            backgroundColor: '#d6d7da'
         }
     }
 );

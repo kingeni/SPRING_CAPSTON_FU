@@ -11,7 +11,7 @@ import { Divider } from 'react-native-elements';
 class HistoryItem extends Component {
     render() {
         var { id, item } = this.props;
-        const finalStyle = item.status < 1 ? styles.text1: styles.text2;
+        const finalStyle = item.status == 1 ? styles.text1: styles.text2;
         return (
             <View style={styles.container}>
                 
