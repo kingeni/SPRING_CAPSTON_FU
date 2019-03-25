@@ -61,7 +61,6 @@ const toggleDrawer = () => {
   navigator.dispatch(DrawerActions.toggleDrawer());
 };
 
-
 const closeDrawer = () => {
   navigator.dispatch(DrawerActions.closeDrawer());
 };

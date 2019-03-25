@@ -1,14 +1,9 @@
 
 import axios from 'axios';
 
-
-const apiUrl = 'http://vwms.gourl.pro';
-const LOGIN_PATH = '/api/site/login';
-const REGISTER_PATH = '/api/auth/register';
-const STAGE_PATH = '/api/stage';
-const LEVEL_PATH = '/api/level';
-const USER_PATH = '/api/user';
-const SUBMISSION_PATH = '/api/submit';
+const apiUrl = 'http://vwms.gourl.pro/api';
+const LOGIN_PATH = '/site/login';
+const LIST_VEHICLE = '/vehicle/get-vehicles';
 
 const setDefaults = (defaults) => {
   Object.keys(defaults).forEach((key) => {
@@ -44,6 +39,7 @@ const getNiceErrorMsg = (response) => {
   if (status >= 500) {
     return 'Server is unreachable';
   }
+  
   if (status === 401) return 'Unauthorized';
   if (status >= 400) {
     if (data.message) return data.message;
@@ -53,45 +49,51 @@ const getNiceErrorMsg = (response) => {
 };
 
 const login = async (formData, optionalConfig = {}) => {
-  console.log('2');
   try {
     // const request = await axios.post(`${apiUrl}${LOGIN_PATH}`, formData);
-    const response = await axios({
-      ...optionalConfig,
+    // const response = await axios({
+    //   ...optionalConfig,
+    //   method: 'POST',
+    //   baseURL: apiUrl,
+    //   url: LOGIN_PATH,
+    //   headers: {
+    //     ...(axios.defaults.headers || {}),
+    //     'Content-Type': 'application/json',
+    //   },
+    //   data: formData,
+    // });
+    const res = await fetch(apiUrl + LOGIN_PATH, {
       method: 'POST',
-      baseURL: apiUrl,
-      url: LOGIN_PATH,
       headers: {
-        ...(axios.defaults.headers || {}),
+        Accept: 'application/json,',
         'Content-Type': 'application/json',
       },
-      data: formData,
+      body: formData
     });
-    console.log('3', response);
-    return { response };
+    let response = await res.json();
+      
+    return  response.pop() ;
   } catch (error) {
-    return { error };
+      return {error};
   }
 };
 
-const register = async (formData, optionalConfig = {}) => {
-  try {
-    const response = await axios({
-      ...optionalConfig,
-      method: 'POST',
-      baseURL: apiUrl,
-      url: REGISTER_PATH,
+const listVehicel = async (formData, optionalConfig= {}) =>{
+  try{
+    const res = await fetch(apiUrl+LIST_VEHICLE,{
+      method: 'GET',
       headers: {
-        ...(axios.defaults.headers || {}),
+        Accept: 'application/json,',
         'Content-Type': 'application/json',
       },
-      data: formData,
+      body: formData
     });
-    return { response };
-  } catch (error) {
-    return { error };
+    let response = await res.json();
+    return {response};
+  }catch(error){
+    return {error};
   }
-};
+}
 
 const Api = {
   setDefaults,
@@ -99,7 +101,7 @@ const Api = {
   getConfig,
   getNiceErrorMsg,
   login,
-  register,
+  listVehicel,
 };
 
 export default Api;

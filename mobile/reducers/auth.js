@@ -3,7 +3,6 @@ import moment from 'moment';
 export const LOGIN_START = 'auth/LOGIN_START';
 export const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
 export const LOGIN_FAILED = 'auth/LOGIN_FAILED';
-
 export const LOGOUT = 'auth/LOGOUT';
 export const initialState = {
   username: null,
@@ -48,7 +47,7 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     case LOGIN_START: {
       const { username } = action.payload;
-      console.log('start');
+
       return {
         ...state,
         username,
@@ -58,8 +57,8 @@ export default function reducer(state = initialState, action) {
       };
     }
     case LOGIN_FAILED: {
-      console.log('FAIL');
       const { error } = action.payload;
+      console.log('ERROR: ',error);
       return {
         ...state,
         isLoading: false,
