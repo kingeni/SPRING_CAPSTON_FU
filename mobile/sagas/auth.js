@@ -1,4 +1,3 @@
-
 import {
   call, put, select, all, take, race, delay
 } from 'redux-saga/effects';
@@ -34,7 +33,7 @@ export function* handleUserLogin() { // eslint-disablae-line no-underscore-dangl
         yield put(AuthActions.loginFailed('Unable to login.\nPlease try again later!'));
         continue;
       }
-      
+
       const { error, response } = login;
       if (error) {
         yield put(AuthActions.loginFailed(Api.getNiceErrorMsg(error.response)));
