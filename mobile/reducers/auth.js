@@ -3,11 +3,8 @@ import moment from 'moment';
 export const LOGIN_START = 'auth/LOGIN_START';
 export const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
 export const LOGIN_FAILED = 'auth/LOGIN_FAILED';
-export const SIGNUP_START = 'auth/SIGNUP_START';
-export const SIGNUP_SUCCESS = 'auth/SIGNUP_SUCCESS';
-export const SIGNUP_FAILED = 'auth/SIGNUP_FAILED';
-export const LOGOUT = 'auth/LOGOUT';
 
+export const LOGOUT = 'auth/LOGOUT';
 export const initialState = {
   username: null,
   token: null,
@@ -40,31 +37,6 @@ const loginSuccess = token => ({
     token,
   },
 });
-// ============ register ===================
-const register = (username, password, recaptcha) => ({
-  type: SIGNUP_START,
-  payload: {
-    recaptcha,
-    username,
-    password,
-  },
-});
-
-const registerFailed = error => ({
-  type: SIGNUP_FAILED,
-  payload: {
-    error,
-  },
-});
-
-const registerSuccess = (username, token) => ({
-  type: SIGNUP_SUCCESS,
-  payload: {
-    timestamp: moment().utc().format(),
-    username,
-    token,
-  },
-});
 
 // ============ misc
 const logout = () => ({
@@ -72,9 +44,11 @@ const logout = () => ({
 });
 
 export default function reducer(state = initialState, action) {
+
   switch (action.type) {
     case LOGIN_START: {
       const { username } = action.payload;
+      console.log('start');
       return {
         ...state,
         username,
@@ -83,8 +57,8 @@ export default function reducer(state = initialState, action) {
         error: null,
       };
     }
-    case SIGNUP_FAILED:
     case LOGIN_FAILED: {
+      console.log('FAIL');
       const { error } = action.payload;
       return {
         ...state,
@@ -104,26 +78,6 @@ export default function reducer(state = initialState, action) {
         error: null,
       };
     }
-    case SIGNUP_START: {
-      return {
-        ...state,
-        isLoading: true,
-        authenticated: false,
-        error: null,
-      };
-    }
-    case SIGNUP_SUCCESS: {
-      const { username, token, timestamp } = action.payload;
-      return {
-        ...state,
-        timestamp,
-        username,
-        token,
-        isLoading: false,
-        authenticated: true,
-        error: null,
-      };
-    }
     case LOGOUT: {
       return initialState;
     }
@@ -135,9 +89,6 @@ export const actions = {
   login,
   loginFailed,
   loginSuccess,
-  register,
-  registerFailed,
-  registerSuccess,
   logout,
 };
 

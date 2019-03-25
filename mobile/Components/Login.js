@@ -10,33 +10,37 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { CheckBox, FormValidationMessage } from 'react-native-elements';
-import PopupDiaLog from '../Components/PopupDialog';
-import FormData from 'FormData';
+// import PopupDiaLog from '../Components/PopupDialog';
+// import FormData from 'FormData';
+
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       username: '',
       password: '',
-      popUpStatus: false
+      // popUpStatus: false
     };
   }
+
   handleChange = (props, value) => {
     this.setState({ [props]: value })
   }
+
   login = () => {
     const { username, password } = this.state;
     const { login } = this.props;
     login(username, password);
   }
 
-  onChangeStatus = () => {
-    this.setState({
-      popUpStatus: false
-    });
-  }
+  // onChangeStatus = () => {
+  //   this.setState({
+  //     popUpStatus: false
+  //   });
+  // }
+  
   render() {
-    const { popUpStatus } = this.state;
+    // const { popUpStatus } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.container1}>
@@ -86,7 +90,7 @@ class Login extends Component {
             />
           </View>
         </View>
-        {popUpStatus ? <PopupDiaLog msgErr={'cannot Login'} visible={popUpStatus} onChangeStatus={this.onChangeStatus} /> : null}
+        {/* {popUpStatus ? <PopupDiaLog msgErr={'cannot Login'} visible={popUpStatus} onChangeStatus={this.onChangeStatus} /> : null} */}
         <View style={styles.container2}>
           <Text style={styles.fooder}>Forgot the password? </Text>
           <Text style={styles.text_fooder}

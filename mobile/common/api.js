@@ -2,8 +2,8 @@
 import axios from 'axios';
 
 
-const apiUrl = 'localhost:3001';
-const LOGIN_PATH = '/api/auth/login';
+const apiUrl = 'http://vwms.gourl.pro';
+const LOGIN_PATH = '/api/site/login';
 const REGISTER_PATH = '/api/auth/register';
 const STAGE_PATH = '/api/stage';
 const LEVEL_PATH = '/api/level';
@@ -53,6 +53,7 @@ const getNiceErrorMsg = (response) => {
 };
 
 const login = async (formData, optionalConfig = {}) => {
+  console.log('2');
   try {
     // const request = await axios.post(`${apiUrl}${LOGIN_PATH}`, formData);
     const response = await axios({
@@ -66,6 +67,7 @@ const login = async (formData, optionalConfig = {}) => {
       },
       data: formData,
     });
+    console.log('3', response);
     return { response };
   } catch (error) {
     return { error };

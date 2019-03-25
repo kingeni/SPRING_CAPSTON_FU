@@ -15,10 +15,7 @@ export default class App extends React.Component {
       login: false
     }
   }
-
-  handleCheck = (check) => {
-    this.setState({ check: !check })
-  }
+  
   render() {
     return (
       <Provider store={store}>

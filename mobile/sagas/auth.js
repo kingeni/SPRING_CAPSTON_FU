@@ -7,9 +7,7 @@ import decode from 'jwt-decode';
 import Api from '../common/api';
 import {
   LOGIN_START,
-  SIGNUP_START,
   LOGIN_SUCCESS,
-  SIGNUP_SUCCESS,
   actions as AuthActions,
   getToken,
 } from '../reducers/auth';
@@ -20,11 +18,13 @@ import {
 export function* handleUserLogin() { // eslint-disable-line no-underscore-dangle
   while (true) {
     const { payload } = yield take(LOGIN_START);
+    console.log('1',);
     try {
       const { login, timeout } = yield race({
         login: call(Api.login, payload),
         timeout: call(delay, 15000),
       });
+       
       if (timeout) {
         yield put(AuthActions.loginFailed('Unable to login.\nPlease try again later!'));
         continue;
@@ -47,7 +47,7 @@ export function* handleUserLogin() { // eslint-disable-line no-underscore-dangle
 
 export function* validateToken() { // eslint-disable-line no-underscore-dangle
   while (true) {
-    yield take([LOGIN_SUCCESS, SIGNUP_SUCCESS]);
+    yield take(LOGIN_SUCCESS);
     try {
       const token = yield select(getToken);
       const { id } = decode(token) || {};
@@ -55,6 +55,7 @@ export function* validateToken() { // eslint-disable-line no-underscore-dangle
         checkToken: call(Api.getUserDetail, id, token),
         timeout: call(delay, 15000),
       });
+      
       if (timeout) {
         return;
       }
@@ -74,38 +75,38 @@ export function* validateToken() { // eslint-disable-line no-underscore-dangle
   }
 }
 
-export function* handleRegistration() {
-  while (true) {
-    const { payload } = yield take(SIGNUP_START);
-    try {
-      const { register, timeout } = yield race({
-        register: call(Api.register, payload),
-        timeout: call(delay, 15000),
-      });
-      if (timeout) {
-        yield put(AuthActions.registerFailed('Unable to connect to server.\nPlease try again later!'));
-        continue;
-      }
-      const { error, response } = register;
-      if (error) {
-        yield put(AuthActions.registerFailed(Api.getNiceErrorMsg(error.response)));
-        continue;
-      }
-      const { data } = response;
-      const { username, token } = data;
-      yield call(Api.setToken, data.token);
-      yield put(AuthActions.registerSuccess(username, token));
-    } catch (error) {
-      yield put(AuthActions.registerFailed(error));
-      console.log(error);
-    }
-  }
-}
+// export function* handleRegistration() {
+//   while (true) {
+//     const { payload } = yield take(SIGNUP_START);
+//     try {
+//       const { register, timeout } = yield race({
+//         register: call(Api.register, payload),
+//         timeout: call(delay, 15000),
+//       });
+//       if (timeout) {
+//         yield put(AuthActions.registerFailed('Unable to connect to server.\nPlease try again later!'));
+//         continue;
+//       }
+//       const { error, response } = register;
+//       if (error) {
+//         yield put(AuthActions.registerFailed(Api.getNiceErrorMsg(error.response)));
+//         continue;
+//       }
+//       const { data } = response;
+//       const { username, token } = data;
+//       yield call(Api.setToken, data.token);
+//       yield put(AuthActions.registerSuccess(username, token));
+//     } catch (error) {
+//       yield put(AuthActions.registerFailed(error));
+//       console.log(error);
+//     }
+//   }
+// }
 
 export default function* authFlow() {
   yield all([
     handleUserLogin(),
-    handleRegistration(),
+    // handleRegistration(),
     validateToken(),
   ]);
 }
