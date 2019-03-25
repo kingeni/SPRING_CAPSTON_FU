@@ -7,14 +7,15 @@ import InforUser from '../screens/InforUser';
 import EditInforUser from '../Components/EditInforUser';
 import ChangePassword from '../screens/ChangePassword';
 const IndexStack = createStackNavigator(
-    { Home,
+    {
+        Home,
         HistoryList,
         CarDetail
     });
 
 const Infro = createStackNavigator(
-    {   
-     
+    {
+
         InforUser,
         EditInforUser,
         ChangePassword,
@@ -36,7 +37,7 @@ const homeScreen = createStackNavigator(
         Infro,
     },
     {
-         mode: 'modal',
+        mode: 'modal',
         headerMode: 'none'
     }
 );
