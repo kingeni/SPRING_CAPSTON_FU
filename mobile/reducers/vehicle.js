@@ -24,7 +24,6 @@ export default function reducer(state = initialState, action){
     switch(action.type){
         case GET_LIST_VEHICLE_SUCCESS: 
             const {listVehicle}  = action.payload;
-             console.log('list: ',listVehicle.length);
             return {
                 ...state,
                 listVehicle,

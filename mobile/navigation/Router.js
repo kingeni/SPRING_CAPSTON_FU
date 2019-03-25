@@ -4,7 +4,7 @@ import HistoryList from '../screens/HistoryList';
 import Home from '../screens/Home';
 import Login from '../screens/Login';
 import InforUser from '../screens/InforUser';
-import EditInforUser from '../Components/EditInforUser';
+import EditInforUser from '../screens/EditInforUser';
 import ChangePassword from '../screens/ChangePassword';
 const IndexStack = createStackNavigator(
     {

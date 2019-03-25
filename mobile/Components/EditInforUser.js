@@ -20,7 +20,6 @@ class EditInforUser extends Component {
     constructor(props) {
         super();
         this.state = {
-            dataUser: props.navigation.state.params.dataUser,
             checked: true,
             isDateTimePickerVisible: false,
             first_name: '',
@@ -55,9 +54,11 @@ class EditInforUser extends Component {
             }
         }
     }
+
     handleChange(props, value) {
         this.setState({ [props]: value });
     }
+
     handleChange = (props, params) => {
         this.setState(prevState => ({
             dataUser: {
@@ -94,7 +95,7 @@ class EditInforUser extends Component {
     }
 
     render() {
-        const { dataUser } = this.state;
+        const { dataUser } = this.props;
         return (
             <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: '#d6d7da' }}>
                 <View style={{

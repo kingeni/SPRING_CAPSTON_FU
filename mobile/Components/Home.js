@@ -53,8 +53,7 @@ class Home extends Component {
   }
 
   naviagateToInfoUser = () => {
-    const { dataUser } = this.props;
-    NavigationService.navigate('InforUser', { dataUser });
+    NavigationService.navigate('InforUser');
   }
 
   renderHeader = () => (
@@ -73,6 +72,7 @@ class Home extends Component {
   render() {
     let { dataUser,listVehicle } = this.props;
     const searchData = this.handleSearch();
+   
     return (
       <View style={styles.container}>
         <View style={styles.header}>

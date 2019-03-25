@@ -40,7 +40,6 @@ class ChangePassword extends Component {
         let formData = new FormData();
         formData.append('old_password', password);
         formData.append('new_password', newPassword);
-        console.log(formData);
 
         fetch('http://vwms.gourl.pro/api/user/update-password?userId=' + user_id, {
             method: 'POST',

@@ -7,20 +7,20 @@ import {
     Text
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { Divider } from 'react-native-elements';
+
 class CarItem extends Component {
     onPressItem = (item) => {
         this.props.onPress(item);
     }
     
     render() {
-        var { id, item } = this.props;
+        var { id, item} = this.props;
         return (
             <TouchableOpacity onPress={() => this.onPressItem(item)}>
                 <View style={styles.container}>
                     <View style={styles.circle}>
                         <Image
-                            source={{uri:  `data:image/png;base64,${item.img_url}`}}
+                            source={item.img != null ? {uri: `data:image/png;base64,${item.img}`} : {uri : 'http://www.riversidefestival.charlbury.com/pictures/car%20button.jpg'} }
                             style={{ width: 70, height: 70, borderRadius: 70 / 2, borderWidth: 0.5 }}>
                         </Image>
                     </View>

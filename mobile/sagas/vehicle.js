@@ -2,9 +2,7 @@ import {
     call, put, select, all, take, race, delay,
     takeLatest,
 } from 'redux-saga/effects';
-import decode from 'jwt-decode';
 import Api from '../common/api';
-import NavigationService from '../common/NavigationService';
 import {
     LOGIN_SUCCESS,
     getToken,

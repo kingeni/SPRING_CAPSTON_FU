@@ -70,7 +70,6 @@ const getVehicleList = async (user_id, optionalConfig = {}) => {
         'Content-Type': 'application/json',
       },
     });
-    // console.log('getapi: ', response.data.length);
     return { response };
   } catch (error) {
     return { error };
