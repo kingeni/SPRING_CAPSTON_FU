@@ -54,7 +54,7 @@ const goToHome = () => {
 };
 
 const gotoLogin = () => {
-  navigate({ routeName: 'Login' });
+  navigate('Login');
 };
 
 const toggleDrawer = () => {
