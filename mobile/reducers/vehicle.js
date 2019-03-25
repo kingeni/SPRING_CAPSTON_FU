@@ -6,14 +6,14 @@ export const initialState = {
 };
 
 //actions 
-const getList = listVehicle => ({
+export const getList = listVehicle => ({
     type: GET_LIST_VEHICLE_SUCCESS,
     payload: {
         listVehicle,
     }
 });
 
-const getListFail = error =>({
+export const getListFail = error =>({
     type: GET_LIST_FAIL,
     payload: {
         error,
@@ -24,6 +24,7 @@ export default function reducer(state = initialState, action){
     switch(action.type){
         case GET_LIST_VEHICLE_SUCCESS: 
             const {listVehicle}  = action.payload;
+             console.log('list: ',listVehicle.length);
             return {
                 ...state,
                 listVehicle,
@@ -43,3 +44,6 @@ export const actions = {
     getList,
     getListFail,
   };
+
+  export const getListVehicle = ({vehicle}) => vehicle.listVehicle ;
+  export const getError = ({vehicle}) => vehicle.error;

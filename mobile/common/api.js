@@ -29,7 +29,7 @@ const getNiceErrorMsg = (response) => {
   if (status >= 500) {
     return 'Server is unreachable';
   }
-  
+
   if (status === 401) return 'Unauthorized';
   if (status >= 400) {
     if (data.message) return data.message;
@@ -58,20 +58,22 @@ const login = async (formData, optionalConfig = {}) => {
   }
 };
 
-const listVehicel = async (formData, optionalConfig= {}) =>{
-  try{
-    const res = await fetch(apiUrl+LIST_VEHICLE,{
+const getVehicleList = async (user_id, optionalConfig = {}) => {
+  try {
+    const response = await axios({
+      ...optionalConfig,
       method: 'GET',
+      baseURL: apiUrl,
+      url: `${LIST_VEHICLE}?userId=${user_id}`,
       headers: {
-        Accept: 'application/json,',
+        ...(axios.defaults.headers || {}),
         'Content-Type': 'application/json',
       },
-      body: formData
     });
-    let response = await res.json();
-    return {response};
-  }catch(error){
-    return {error};
+    // console.log('getapi: ', response.data.length);
+    return { response };
+  } catch (error) {
+    return { error };
   }
 }
 
@@ -80,7 +82,7 @@ const Api = {
   setToken,
   getNiceErrorMsg,
   login,
-  listVehicel,
+  getVehicleList,
 };
 
 export default Api;
