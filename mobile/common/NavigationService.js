@@ -50,11 +50,11 @@ const push = (routeName, params) => {
 };
 
 const goToHome = () => {
-  NavigationActions.navigate({ routeName: 'Home' });
+  navigate('homeScreen');
 };
 
 const gotoLogin = () => {
-  NavigationActions.navigate({ routeName: 'Login' });
+  navigate({ routeName: 'Login' });
 };
 
 const toggleDrawer = () => {

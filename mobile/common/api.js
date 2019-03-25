@@ -19,16 +19,6 @@ const setToken = (token) => {
   };
 };
 
-const getConfig = (optionalConfig = {}) => (
-  axios({
-    ...optionalConfig,
-    method: 'get',
-    baseURL: getApiUrlBase(),
-    url: API_CONFIG_PATH,
-  }).then(response => ({ response }))
-    .catch(error => ({ error }))
-);
-
 /* eslint-disable camelcase */
 
 const getNiceErrorMsg = (response) => {
@@ -50,31 +40,21 @@ const getNiceErrorMsg = (response) => {
 
 const login = async (formData, optionalConfig = {}) => {
   try {
-    // const request = await axios.post(`${apiUrl}${LOGIN_PATH}`, formData);
-    // const response = await axios({
-    //   ...optionalConfig,
-    //   method: 'POST',
-    //   baseURL: apiUrl,
-    //   url: LOGIN_PATH,
-    //   headers: {
-    //     ...(axios.defaults.headers || {}),
-    //     'Content-Type': 'application/json',
-    //   },
-    //   data: formData,
-    // });
-    const res = await fetch(apiUrl + LOGIN_PATH, {
+    const response = await axios({
+      ...optionalConfig,
       method: 'POST',
+      baseURL: apiUrl,
+      url: LOGIN_PATH,
       headers: {
-        Accept: 'application/json,',
+        ...(axios.defaults.headers || {}),
         'Content-Type': 'application/json',
       },
-      body: formData
+      data: formData,
     });
-    let response = await res.json();
-      
-    return  response.pop() ;
+
+    return { response };
   } catch (error) {
-      return {error};
+    return { error };
   }
 };
 
@@ -98,7 +78,6 @@ const listVehicel = async (formData, optionalConfig= {}) =>{
 const Api = {
   setDefaults,
   setToken,
-  getConfig,
   getNiceErrorMsg,
   login,
   listVehicel,
