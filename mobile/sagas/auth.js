@@ -12,17 +12,23 @@ import {
 import {
   actions as UserActions,
 } from '../reducers/user';
+import {
+  actions as TransActions,
+} from '../reducers/transactions';
 import FormData from 'FormData';
 
 
 export function* handleUserLogin() { // eslint-disablae-line no-underscore-dangle
   while (true) {
+
     const { payload } = yield take(LOGIN_START);
     let formData = new FormData();
-    // formData.append('username','huytd');
-    // formData.append('password','123456');
-    formData.append('username',payload.username);
-    formData.append('password',payload.password);
+    console.log('login');
+    formData.append('username','huytd');
+    formData.append('password','123456');
+    // formData.append('username',payload.username);
+    // formData.append('password',payload.password);
+    
     try {
       const { login, timeout } = yield race({
         login: call(Api.login, formData),
@@ -55,11 +61,15 @@ export function* handleUserLogin() { // eslint-disablae-line no-underscore-dangl
 }
 
 export function* verifyUser() { // eslint-disable-line no-underscore-dangle
+
   const token = yield select(getToken);
+  
   if (token) {
+    yield put(TransActions.stopTransaction());
     yield put(AuthActions.loginSuccess(token));
     yield call(NavigationService.goToHome);
   } else {
+    yield put(TransActions.stopTransaction());
     yield call(NavigationService.gotoLogin);
   }
 }

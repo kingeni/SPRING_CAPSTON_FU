@@ -4,6 +4,8 @@ import axios from 'axios';
 const apiUrl = 'http://vwms.gourl.pro/api';
 const LOGIN_PATH = '/site/login';
 const LIST_VEHICLE = '/vehicle/get-vehicles';
+const LIST_TRANSACTION ='/transaction/get-transactions';
+const LIST_TRANSACTION_ERROR = '/transaction/get-v-transactions';
 
 const setDefaults = (defaults) => {
   Object.keys(defaults).forEach((key) => {
@@ -75,13 +77,49 @@ const getVehicleList = async (user_id, optionalConfig = {}) => {
     return { error };
   }
 }
-
+const getAllTransactions = async (vehicle_id, optionalConfig= {})=>{
+  try{
+  
+    const response = await axios({
+      ...optionalConfig,
+      method : 'GET',
+      baseURL: apiUrl,
+      url : `${LIST_TRANSACTION}?vehicleId=${vehicle_id}`,
+      header : {
+        ...(axios.defaults.headers|| {}),
+        'Content-type': 'application/json'
+      },
+    });
+    return {response};
+  }catch(error){
+    return {error};
+  }
+}
+const getErrTransactions= async (vehicle_id, optionalConfig= {})=>{
+  try{
+    const response = await axios({
+      ...optionalConfig,
+      method:'GET',
+      baseURL: apiUrl,
+      url: `${LIST_TRANSACTION_ERROR}?vehicleId=${vehicle_id}`,
+      header: {
+        ...(axios.defaults.headers|| {}),
+        'Content-type': 'application/json'
+      },
+    });
+    return {response};
+  }catch(error){
+    return {error};
+  }
+}
 const Api = {
   setDefaults,
   setToken,
   getNiceErrorMsg,
   login,
   getVehicleList,
+  getAllTransactions,
+  getErrTransactions,
 };
 
 export default Api;

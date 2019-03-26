@@ -59,24 +59,24 @@ class EditInforUser extends Component {
         this.setState({ [props]: value });
     }
 
-    handleChange = (props, params) => {
-        this.setState(prevState => ({
-            dataUser: {
-                ...prevState.dataUser,
-                [props]: params
-            }
-        }));
-    }
+    // handleChange = (props, params) => {
+    //     this.setState(prevState => ({
+    //         dataUser: {
+    //             ...prevState.dataUser,
+    //             [props]: params
+    //         }
+    //     }));
+    // }
 
     onSave = () => {
         const { dataUser, email, first_name, last_name, date_of_birth } = this.state
         let formData = new FormData();
         formData.append('first_name', dataUser.first_name);
         formData.append('last_name', dataUser.last_name);
-        formData.append('gender', userData.gender);
-        formData.append('date_of_birth', userData.date_of_birth);
-        formData.append('email', userData.email);
-        formData.append('img', userData.img_url);
+        formData.append('gender', dataUser.gender);
+        formData.append('date_of_birth', dataUser.date_of_birth);
+        formData.append('email', dataUser.email);
+        formData.append('img', dataUser.img_url);
         fetch('http://vwms.gourl.pro/api/user-profile/update-user-profile?userId=' + this.state.dataUser.user_id, {
             method: 'POST',
             headers: {
@@ -96,6 +96,7 @@ class EditInforUser extends Component {
 
     render() {
         const { dataUser } = this.props;
+        console.log(dataUser);
         return (
             <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: '#d6d7da' }}>
                 <View style={{

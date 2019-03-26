@@ -58,7 +58,6 @@ export default function reducer(state = initialState, action) {
     }
     case LOGIN_FAILED: {
       const { error } = action.payload;
-      console.log('ERROR: ',error);
       return {
         ...state,
         isLoading: false,

@@ -41,7 +41,7 @@ export function* getListVehicle() {
 
             const { error, response } = getVehicleList;
             if (error) {
-                console.log(error);
+                console.log('111:',error);
                 continue;
             }
 
@@ -49,7 +49,7 @@ export function* getListVehicle() {
             yield put(getList(data));
 
         } catch (error) {
-            console.log(error.message || error)
+            console.log('222:',error.message || error)
         }
 
         yield delay(20000);
@@ -60,7 +60,6 @@ export function* watchLogin() {
     // chờ khi nào login success mới bắt đầu
     // takeLatest = nh khi 1 action dispatch nh lần, chỉ lấy cái cuối cùng
     yield takeLatest(LOGIN_SUCCESS, getListVehicle);
-
 }
 
 export default function* vehicleSaga() {

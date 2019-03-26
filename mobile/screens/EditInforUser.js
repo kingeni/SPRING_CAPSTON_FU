@@ -1,1 +1,1 @@
-export {default} from '../Components/EditInforUser';
+export {default} from '../containers/EditInfo';

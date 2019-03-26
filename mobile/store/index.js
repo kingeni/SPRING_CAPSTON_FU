@@ -27,7 +27,10 @@ export default () => {
     ),
   );
   sagaMiddleware.run(rootSaga);
-  const persistor = persistStore(store, null, () => store.dispatch({ type: REHYDRATION_COMPLETE }));
+  const persistor = persistStore(store, null, () =>  {
+    console.log('PERSIST IS READY!');
+    return store.dispatch({ type: REHYDRATION_COMPLETE });
+  });
   return { store, persistor };
 };
 

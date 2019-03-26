@@ -111,7 +111,6 @@ export const actions = {
   updateUserInfoFailed,
 };
 
-export const IAmDrgnz = ({ user }) => (user.user || {}).IAmDrgnz;
 export const selectUser = ({ user }) => user.user || {};
 export const selectStatus = ({ user }) => user.isLoading || false;
 export const selectError = ({ user }) => user.error || '';

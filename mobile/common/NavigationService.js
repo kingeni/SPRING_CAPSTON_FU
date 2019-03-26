@@ -57,14 +57,6 @@ const gotoLogin = () => {
   navigate('Login');
 };
 
-const toggleDrawer = () => {
-  navigator.dispatch(DrawerActions.toggleDrawer());
-};
-
-const closeDrawer = () => {
-  navigator.dispatch(DrawerActions.closeDrawer());
-};
-
 const navigationServices = {
   setTopLevelNavigator,
   isNavigating,
@@ -75,8 +67,6 @@ const navigationServices = {
   push,
   goToHome,
   gotoLogin,
-  toggleDrawer,
-  closeDrawer,
   goBack,
   getNavigator,
 };

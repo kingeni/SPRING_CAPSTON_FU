@@ -20,36 +20,32 @@ class Home extends Component {
     super();
     this.state = {
       search: '',
-      dataOfCars: [],
       searchData: null,
-      componentCrashed: false,
       isLoading: false
     }
-    this.timeId = null;
   }
 
   static navigationOptions = {
     header: null
   };
 
-
   handleSearch = () => {
-    // fetch rồi phải lấy data ra từ state
-    // đổi tên data thành gì đó ngữ nghĩa chút
     const { search } = this.state;
     const { listVehicle } = this.props;
     const searchData = listVehicle.filter(date => date.name.includes(search));
-    return searchData; // can not find text
+    return searchData;
   }
 
   handleSearchText = (text) => {
     this.setState({
       search: text,
-    })
+    });
   }
 
   navigateToHistoryList = (item) => {
-    NavigationService.navigate('HistoryList', { item });
+    const { getStart} = this.props;
+    NavigationService.navigate('HistoryList', { item : item.id });
+    getStart(item.id);
   }
 
   naviagateToInfoUser = () => {
@@ -61,7 +57,7 @@ class Home extends Component {
       <View style={styles.icon_flex}>
         <AntDesign name='search1' size={20} color='gray' />
       </View>
-      <TextInput 
+      <TextInput
         style={styles.search_text}
         onChangeText={this.handleSearchText}
         placeholder='Searching'
@@ -70,7 +66,7 @@ class Home extends Component {
   )
 
   render() {
-    let { dataUser,listVehicle } = this.props;
+    let { dataUser, listVehicle } = this.props;
     const searchData = this.handleSearch();
    
     return (
@@ -93,8 +89,7 @@ class Home extends Component {
 
         <View style={styles.item_contain} >
           <FlatList
-            // data={this.state.searchData === null ? this.state.dataOfCars : this.state.dataOfCars}
-            data = {listVehicle}
+            data={searchData === null ? listVehicle : searchData}
             ListHeaderComponent={this.renderHeader}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) =>
