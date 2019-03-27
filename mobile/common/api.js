@@ -1,12 +1,13 @@
 
 import axios from 'axios';
 
-const apiUrl = 'http://vwms.gourl.pro/api';
-const LOGIN_PATH = '/site/login';
-const LIST_VEHICLE = '/vehicle/get-vehicles';
-const LIST_TRANSACTION ='/transaction/get-transactions';
-const LIST_TRANSACTION_ERROR = '/transaction/get-v-transactions';
-
+const apiUrl                 = 'http://vwms.gourl.pro/api';
+const LOGIN_PATH             = '/site/login';
+const LIST_VEHICLE_PATH      = '/vehicle/get-vehicles';
+const LIST_TRANSACTION_PATH  = '/transaction/get-transactions';
+const LIST_TRANSACTION_VIOLENT = '/transaction/get-v-transactions';
+const UPDATE_STATUS_READING_PATH = '/transaction/update-is-read-transaction';
+const LIST_IMAGE_VEHICLE_PATH ='/vehicle/get-vehicle-img';
 const setDefaults = (defaults) => {
   Object.keys(defaults).forEach((key) => {
     axios.defaults[key] = defaults[key];
@@ -66,7 +67,7 @@ const getVehicleList = async (user_id, optionalConfig = {}) => {
       ...optionalConfig,
       method: 'GET',
       baseURL: apiUrl,
-      url: `${LIST_VEHICLE}?userId=${user_id}`,
+      url: `${LIST_VEHICLE_PATH}?userId=${user_id}`,
       headers: {
         ...(axios.defaults.headers || {}),
         'Content-Type': 'application/json',
@@ -77,39 +78,75 @@ const getVehicleList = async (user_id, optionalConfig = {}) => {
     return { error };
   }
 }
-const getAllTransactions = async (vehicle_id, optionalConfig= {})=>{
-  try{
-  
+const getAllTransactions = async (vehicle_id, optionalConfig = {}) => {
+  try {
+
     const response = await axios({
       ...optionalConfig,
-      method : 'GET',
+      method: 'GET',
       baseURL: apiUrl,
-      url : `${LIST_TRANSACTION}?vehicleId=${vehicle_id}`,
-      header : {
-        ...(axios.defaults.headers|| {}),
+      url: `${LIST_TRANSACTION_PATH}?vehicleId=${vehicle_id}`,
+      header: {
+        ...(axios.defaults.headers || {}),
         'Content-type': 'application/json'
       },
     });
-    return {response};
-  }catch(error){
-    return {error};
+    return { response };
+  } catch (error) {
+    return { error };
   }
 }
-const getErrTransactions= async (vehicle_id, optionalConfig= {})=>{
-  try{
+const getErrTransactions = async (vehicle_id, optionalConfig = {}) => {
+  try {
     const response = await axios({
       ...optionalConfig,
-      method:'GET',
+      method: 'GET',
       baseURL: apiUrl,
-      url: `${LIST_TRANSACTION_ERROR}?vehicleId=${vehicle_id}`,
+      url: `${LIST_TRANSACTION_VIOLENT}?vehicleId=${vehicle_id}`,
       header: {
-        ...(axios.defaults.headers|| {}),
+        ...(axios.defaults.headers || {}),
         'Content-type': 'application/json'
       },
     });
-    return {response};
-  }catch(error){
-    return {error};
+    
+    return { response };
+  } catch (error) {
+    return { error };
+  }
+}
+const updateStatusReading = async (vehicle_id, optionalConfig = {}) => {
+  try {
+    const response = await axios({
+      ...optionalConfig,
+      method: 'GET',
+      baseURL: apiUrl,
+      url: `${UPDATE_STATUS_READING_PATH}?vehicleId=${vehicle_id}`,
+      header: {
+        ...(axios.defaults.headers || {}),
+        'Content-type': 'application/json'
+      },
+    });
+    return { response };
+  } catch (error) {
+    return { error };
+  }
+}
+const getListImage = async (vehicle_id, optionalConfig = {}) => {
+  try {
+    const response = await axios({
+      ...optionalConfig,
+      method: 'GET',
+      baseURL: apiUrl,
+      url: `${LIST_IMAGE_VEHICLE_PATH}?vehicleId=${vehicle_id}`,
+      header: {
+        ...(axios.defaults.headers || {}),
+        'Content-type': 'application/json'
+      },
+    });
+    console.log('data API RESPONE : ',response.data.length);
+    return { response };
+  } catch (error) {
+    return { error };
   }
 }
 const Api = {
@@ -120,6 +157,8 @@ const Api = {
   getVehicleList,
   getAllTransactions,
   getErrTransactions,
+  updateStatusReading,
+  getListImage,
 };
 
 export default Api;

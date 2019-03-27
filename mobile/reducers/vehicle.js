@@ -2,9 +2,11 @@ import { LOGOUT } from './auth';
 
 export const GET_LIST_VEHICLE_SUCCESS = 'list/GET_VEHICLE';
 export const GET_LIST_FAIL = 'list/GET_VEHICLE_FAIL';
+
 export const initialState = {
     listVehicle: null,
-    error: null
+    error: null,
+    isLoading: false,
 };
 
 //actions 
@@ -29,14 +31,17 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 listVehicle,
-                error: null
+                error: null,
+                isLoading: true,
             }
+
         case GET_LIST_FAIL:
             const { error } = action.payload;
             return {
                 ...state,
-                error
+                error,
             }
+
         case LOGOUT: {
             return initialState;
         }
@@ -51,4 +56,5 @@ export const actions = {
 
 export const getListVehicle = ({ vehicle }) => vehicle.listVehicle;
 export const getError = ({ vehicle }) => vehicle.error;
-export const getOneDetail = ({ vehicle }, id) => vehicle.find((item) => item.id === id ? item : null);
+export const getOneDetail = ({ vehicle, transactions }) => vehicle.listVehicle.find((item) => item.id === transactions.vehicle_id ? item : null);
+export const isLoading = ({ vehicle }) => vehicle.isLoading;

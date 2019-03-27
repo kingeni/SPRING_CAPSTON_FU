@@ -3,6 +3,7 @@ import auth from './auth';
 import user from './user';
 import vehicle from './vehicle';
 import transactions from './transactions';
+import image from './image';
 export const REHYDRATION_COMPLETE = 'REHYDRATION_COMPLETE';
 export const NAVIGATION_FINISH = 'NAVIGATION_FINISH';
 
@@ -11,4 +12,5 @@ export default combineReducers({
   user,
   vehicle,
   transactions,
+  image
 });

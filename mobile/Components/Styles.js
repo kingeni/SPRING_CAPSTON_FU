@@ -5,14 +5,14 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'stretch',
         backgroundColor:'#d6d7da',
-        marginTop: 5
     },
     container1: {
         flex: 1,
-        marginLeft: 10,
-        marginRight: 10,
-        marginBottom: 20,
-        alignItems: 'stretch'
+        // marginLeft: 10,
+        // marginRight: 10,
+        marginBottom: 10,
+        alignItems: 'stretch',
+        backgroundColor:'#d6d7da',
     },
     circle: {
         height: 60,
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         flex: 12,
         alignItems: 'center',
 
-        backgroundColor: 'white'
+        backgroundColor: '#d6d7da'
     },
     header_contain: {
         flex: 80,

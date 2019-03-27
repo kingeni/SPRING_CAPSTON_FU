@@ -8,20 +8,19 @@ import {
   FlatList,
   Alert,
   TouchableOpacity,
-  ImageBackground
+  ActivityIndicator,
 } from 'react-native';
 import styles from '../Components/Styles';
 import { AntDesign } from '@expo/vector-icons';
 import CarItem from '../Components/CarItem';
 import NavigationService from '../common/NavigationService';
-
+import dataDB from '../dataDB';
 class Home extends Component {
   constructor(props) {
     super();
     this.state = {
       search: '',
       searchData: null,
-      isLoading: false
     }
   }
 
@@ -32,8 +31,11 @@ class Home extends Component {
   handleSearch = () => {
     const { search } = this.state;
     const { listVehicle } = this.props;
-    const searchData = listVehicle.filter(date => date.name.includes(search));
-    return searchData;
+    if (listVehicle !== null) {
+      const searchData = listVehicle.filter(date => date.name.includes(search));
+      return searchData;
+    }
+
   }
 
   handleSearchText = (text) => {
@@ -43,9 +45,10 @@ class Home extends Component {
   }
 
   navigateToHistoryList = (item) => {
-    const { getStart} = this.props;
-    NavigationService.navigate('HistoryList', { item : item.id });
-    getStart(item.id);
+    const { getStart, updateStatusReading } = this.props;
+    NavigationService.navigate('HistoryList', { item: item.id });
+    getStart(item.id, false);
+    updateStatusReading(item.id);
   }
 
   naviagateToInfoUser = () => {
@@ -55,7 +58,7 @@ class Home extends Component {
   renderHeader = () => (
     <View style={styles.search_contain} >
       <View style={styles.icon_flex}>
-        <AntDesign name='search1' size={20} color='gray' />
+        <AntDesign name='search1' size={20} color='blue' />
       </View>
       <TextInput
         style={styles.search_text}
@@ -66,14 +69,15 @@ class Home extends Component {
   )
 
   render() {
-    let { dataUser, listVehicle } = this.props;
+    let { dataUser, listVehicle, isLoading } = this.props;
     const searchData = this.handleSearch();
-   
+    // listVehicle.map(({ img, ...rest }) => rest);
+    console.log('dataget:',listVehicle);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <View style={{ flex: 1 }}>
-            <View style={{ flex: 0.8, paddingLeft: 5, flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flex: 1, backgroundColor: '#d6d7da', paddingTop: 12 }}>
+            <View style={{ flex: 0.8, paddingLeft: 5, flexDirection: 'row', alignItems: 'center', backgroundColor: '#d6d7da' }}>
               <TouchableOpacity style={styles.circle} onPress={this.naviagateToInfoUser}>
                 <Image
                   source={{ uri: `data:image/png;base64,${dataUser.img_url}` }}
@@ -88,16 +92,20 @@ class Home extends Component {
         </View>
 
         <View style={styles.item_contain} >
-          <FlatList
-            data={searchData === null ? listVehicle : searchData}
-            ListHeaderComponent={this.renderHeader}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) =>
-              (<CarItem item={item} onPress={this.navigateToHistoryList} id={item.id} />)
-            }
-          >
-          </FlatList>
+          {(listVehicle !== null) && (listVehicle.length > 0) ?
+            <FlatList
+              // data={searchData === null ? listVehicle : searchData}
+              data={listVehicle}
+              ListHeaderComponent={this.renderHeader}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) =>
+                (<CarItem item={item} onPress={this.navigateToHistoryList} id={item.id} />)
+              }
+            >
+            </FlatList> : <ActivityIndicator size="large" color="blue" />
+          }
         </View>
+
       </View>
     );
   }

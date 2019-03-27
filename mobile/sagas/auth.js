@@ -24,10 +24,10 @@ export function* handleUserLogin() { // eslint-disablae-line no-underscore-dangl
     const { payload } = yield take(LOGIN_START);
     let formData = new FormData();
     console.log('login');
-    formData.append('username','huytd');
-    formData.append('password','123456');
-    // formData.append('username',payload.username);
-    // formData.append('password',payload.password);
+    // formData.append('username','huytd');
+    // formData.append('password','123456');
+    formData.append('username',payload.username);
+    formData.append('password',payload.password);
     
     try {
       const { login, timeout } = yield race({

@@ -6,21 +6,25 @@ export const TRANSACTION_STOP = 'transaction/STOP';
 export const TRANSACTION_SUCCESS = 'transaction/SUCCESS';
 export const TRANSACTION_FAIL = 'transaction/FAIL';
 export const TRANSACTION_SUCCESS_ERROR = 'transaction/VIOLATE';
+export const TRANSACTION_UPDATE_READ = 'transaction/UPDATE_READING';
+
 export const initialState = {
     vehicle_id: null,
-    transactions: null,
+    transactions: {},
     error: null,
     status: false,
-    transactionsErr: null,
+    transactionsErr: {},
     statusErr: false,
+    isLoading: false,
 }
 
 //action
-const startTransaction = vehicle_id => ({
+const startTransaction = (vehicle_id,isLoading) => ({
     type: TRANSACTION_START,
     payload: {
         vehicle_id,
         status: true,
+        isLoading,
     }
 });
 
@@ -53,10 +57,18 @@ const getTransactionFail = error => ({
         error,
     }
 });
+
 const getTransactionSuccessErr = transactionsErr => ({
     type: TRANSACTION_SUCCESS_ERROR,
     payload: {
         transactionsErr
+    }
+});
+
+const updateStatusReading = vehicle_id => ({
+    type: TRANSACTION_UPDATE_READ,
+    payload: {
+        vehicle_id
     }
 });
 
@@ -98,20 +110,21 @@ let findData = (title, handle) => {
     return null;
 }
 
-export default function Reducer(state = initialState, actions) {
-    switch (actions.type) {
+export default function Reducer(state = initialState, action) {
+    switch (action.type) {
         case TRANSACTION_START: {
-            const { vehicle_id, status } = actions.payload;
+            const { vehicle_id, status,isLoading } = action.payload;
             return {
                 ...state,
                 vehicle_id,
                 status,
                 error: null,
                 statusErr: false,
+                isLoading,
             };
         }
         case TRANSACTION_START_ERROR: {
-            const { vehicle_id, statusErr } = actions.payload;
+            const { vehicle_id, statusErr} = action.payload;
             return {
                 ...state,
                 vehicle_id,
@@ -120,48 +133,58 @@ export default function Reducer(state = initialState, actions) {
             };
         }
         case TRANSACTION_SUCCESS_ERROR: {
-            const { transactionsErr } = actions.payload;
+            const { transactionsErr } = action.payload;
             const dataConvert = test(transactionsErr);
             return {
                 ...state,
                 transactionsErr: dataConvert,
+                isLoading: true,
             };
         }
         case TRANSACTION_SUCCESS: {
-            const { transactions } = actions.payload;
+            const { transactions } = action.payload;
             const dataConvert = test(transactions);
             return {
                 ...state,
                 transactions: dataConvert,
+                isLoading: true,
             };
         }
         case TRANSACTION_FAIL:
-            const { error } = actions.payload;
+            const { error } = action.payload;
             return {
                 ...state,
                 error,
             };
         case TRANSACTION_STOP: {
-            const { status,statusErr } = actions.payload;
+            const { status, statusErr } = action.payload;
             return {
                 ...state,
                 status,
-                statusErr
+                statusErr,
+                isLoading: false,
             };
         }
-        case LOGOUT: {
-            return initialState;
+        case TRANSACTION_UPDATE_READ: {
+            const { vehicle_id } = action.payload;
+            return {
+                ...state,
+                vehicle_id,
+            }
         }
+        
         default: return state;
     }
 }
+
 export const actions = {
     startTransaction,
     stopTransaction,
     getTransactionSuccess,
     getTransactionFail,
     startTransactionErr,
-    getTransactionSuccessErr
+    getTransactionSuccessErr,
+    updateStatusReading,
 }
 
 export const getError = ({ transactions }) => transactions.error;
@@ -169,4 +192,6 @@ export const getTransactions = ({ transactions }) => transactions.transactions;
 export const getTransactionErr = ({ transactions }) => transactions.transactionsErr;
 export const getStatus = ({ transactions }) => transactions.status;
 export const getVehicleID = ({ transactions }) => transactions.vehicle_id;
-export const getStatusErr= ({ transactions }) => transactions.statusErr;
+export const getStatusErr = ({ transactions }) => transactions.statusErr;
+export const isLoading = ({ transactions }) => transactions.isLoading;
+

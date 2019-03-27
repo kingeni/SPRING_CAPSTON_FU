@@ -9,7 +9,8 @@ import {
     Alert,
     SectionList,
     ScrollView,
-    Button
+    Button,
+    ActivityIndicator,
 } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
 import FormData from 'FormData';
@@ -30,10 +31,9 @@ class HistoryList extends Component {
         }
     }
 
-
     static navigationOptions = ({ navigation }) => {
         const { selectedIndex } = navigation.state.params;
-        const buttons = ['all', 'error'];
+        const buttons = ['all', 'overWeight'];
         return {
             headerBackTitle: null,
             headerTitle: (
@@ -42,7 +42,7 @@ class HistoryList extends Component {
                     selectedIndex={selectedIndex === undefined ? 0 : selectedIndex}
                     buttons={buttons}
                     containerBorderRadius={1}
-                    containerStyle={{ width: 170, height: 35 }}
+                    containerStyle={{ width: 180, height: 35 }}
                     buttonStyle={{ backgroundColor: 'white' }}
                     selectedButtonStyle={{ backgroundColor: '#0068ff' }}
                     textStyle={{ color: '#0068ff' }}
@@ -59,21 +59,24 @@ class HistoryList extends Component {
                     navigation.state.params.getEnd();
                     return navigation.goBack();
                 }}></Button>,
+            headerStyle: {
+                borderBottomWidth: 0,
+                backgroundColor: '#d6d7da',
+            },
         };
     };
 
     _handleChangeIndex = (selectedIndex) => {
-        let { getEnd, getStart, getStartErr,vehicleId ,dataTransErr} = this.props;
-        console.log(selectedIndex);
+        let { getEnd, getStart, getStartErr, vehicleId, dataTransErr } = this.props;
         if (selectedIndex === 1) {
             getEnd();
             getStartErr(vehicleId);
         }
-        
-        // if (selectedIndex === 0) {
-        //     getEnd();
-        //     getStart(vehicleId);
-        // }
+
+        if (selectedIndex === 0) {
+            getEnd();
+            getStart(vehicleId, true);
+        }
 
         this.setState({
             selectedIndex,
@@ -86,25 +89,13 @@ class HistoryList extends Component {
 
     _showInfor = () => {
         let { item } = this.props.navigation.state.params;
+        const { getStartImage, vehicleId } = this.props;
         this.props.navigation.navigate('CarDetail', { item });
+        getStartImage(vehicleId);
     }
-
 
     componentDidMount() {
         let { selectedIndex } = this.state;
-        let formData = new FormData();
-        formData.append('vehicleId', this.props.navigation.state.params.item.id);
-        fetch('http://vwms.gourl.pro/api/transaction/update-is-read-transaction?vehicleId=' + this.props.navigation.state.params.item.id, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: formData
-        })
-            .catch((error) => {
-                console.log(error);
-            })
 
         this.props.navigation.setParams({
             handleChangeIndex: (index) => this._handleChangeIndex(index),
@@ -115,24 +106,33 @@ class HistoryList extends Component {
     }
 
     render() {
-        const { dataTrans, dataTransErr } = this.props;
+        const { dataTrans, dataTransErr, isLoading } = this.props;
+
         return (
+
             <ScrollView contentContainerStyle={styles.container1} >
-                <SectionList
-                    sections={this.state.selectedIndex === 0 ? dataTrans : dataTransErr}
-                    // sections={dataTrans}
-                    renderSectionHeader={({ section: { title } }) =>
-                        (<_headerComponet section={title} />)}
+                {isLoading ?
 
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={(props) =>
-                        (<HistoryItem item={props.item} id={props.index} />)
-                    }
+                    <SectionList
+                        sections={this.state.selectedIndex === 0 ? dataTrans : dataTransErr}
 
-                    stickySectionHeadersEnabled={true}
-                >
-                </SectionList>
+                        renderSectionHeader={({ section: { title } }) => {
+                            return (<_headerComponet section={title} />);
+                        }}
+
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={(props) =>
+                            (<HistoryItem item={props.item} id={props.index} />)
+                        }
+
+                        stickySectionHeadersEnabled={true}
+                    >
+                    </SectionList>
+                    :
+                    <View style={{marginTop: 5}}><ActivityIndicator size="large" color="white" /></View>
+                }
             </ScrollView>
+
         );
     }
 }

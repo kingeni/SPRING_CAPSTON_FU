@@ -13,7 +13,7 @@ class HistoryItem extends Component {
         var { id, item } = this.props;
         const finalStyle = item.status == 1 ? styles.text1: styles.text2;
         return (
-            <View style={styles.container}>
+            <View style={{...styles.container, backgroundColor:'white'}}>
                 
                 <Text style={finalStyle}>Time: {item.time}</Text>
                 <Text style={finalStyle}>Station : {item.station_id}- Weight: {item.vehicle_weight}KG</Text>

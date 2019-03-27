@@ -69,7 +69,7 @@ class Login extends Component {
             <Button onPress={() => this.login()}
               title='Login' color='white'></Button>
           </View>
-          <View>
+          {/* <View>
             <CheckBox
               containerStyle={{
                 backgroundColor: 'white',
@@ -81,16 +81,16 @@ class Login extends Component {
               iconRight
               checked={this.props.checkValue}
             />
-          </View>
+          </View> */}
         </View>
       
-        <View style={styles.container2}>
+        {/* <View style={styles.container2}>
           <Text style={styles.fooder}>Forgot the password? </Text>
           <Text style={styles.text_fooder}
             onPress={() => Linking.openURL('http://google.com')}>
             Get password
               </Text>
-        </View>
+        </View> */}
       </View>
     );
   }
@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
   container1: {
     flex: 90,
     justifyContent: 'center',
-
   },
   container2: {
     flex: 10,

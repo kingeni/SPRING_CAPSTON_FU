@@ -4,6 +4,7 @@ import { REHYDRATION_COMPLETE, NAVIGATION_FINISH } from '../reducers';
 import authSagas from './auth';
 import vehicleSagas from './vehicle';
 import transactionsSaga from './transactions';
+import ImageSage from './image';
 
 export default function* rootSaga() {
   console.log('WAITING FOR REHYDRATION_COMPLETE AND NAVIGATION_FINISH');
@@ -17,5 +18,6 @@ export default function* rootSaga() {
     authSagas(),
     vehicleSagas(), 
     transactionsSaga(),
+    ImageSage(),
   ]);
 }

@@ -27,7 +27,7 @@ class InforUser extends Component {
     }
 
     render() {
-        const { dataUser } = this.props;
+        const { dataUser, logout  } = this.props;
         
         return (
             < ScrollView style={styles.main}>
@@ -120,7 +120,9 @@ class InforUser extends Component {
                 }}>
 
                     <View style={{  height: '45%', padding: 5, backgroundColor:'white'}}>
-                        <Button title='Log out'  onPress={() => this.props.navigation.navigate('Login')}></Button>
+                        <Button title='Log out'  onPress={() => {
+                                        logout();
+                            return this.props.navigation.navigate('Login');}}></Button>
                     </View>
 
                 </View>

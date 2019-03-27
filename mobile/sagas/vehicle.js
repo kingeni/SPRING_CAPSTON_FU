@@ -46,13 +46,14 @@ export function* getListVehicle() {
             }
 
             const { data } = response;
-            yield put(getList(data));
+            console.log('dataAPI: ', data.length);
+            yield put(getList(data.map(({img,...rest})=> rest)));
 
         } catch (error) {
             console.log('222:',error.message || error)
         }
 
-        yield delay(20000);
+        yield delay(4000);
     }
 }
 

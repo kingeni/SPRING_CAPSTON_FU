@@ -19,6 +19,7 @@ export default class ImageItem extends Component {
     }
 
     render() {
+         const {item} = this.props;
         return (
             <TouchableOpacity
              onPress= {()=> this._onChangeVisible(true)}
@@ -31,7 +32,7 @@ export default class ImageItem extends Component {
                 marginBottom: 1,
                 marginRight: 1
             }} >
-                <Image source={require('../assets/images/robot-dev.png')}
+                <Image source={{uri: `data:image/png;base64,${item.img0}`}}
                     style={{
                         flex: 1,
                         width: null,
