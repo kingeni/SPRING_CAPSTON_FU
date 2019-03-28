@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\search\VehicleSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Vehicles';
+$this->title = 'Tất cả Phương Tiện';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vehicle-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Vehicle', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tạo mới Phương Tiện', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

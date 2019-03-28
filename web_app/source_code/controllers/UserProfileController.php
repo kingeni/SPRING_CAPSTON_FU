@@ -104,11 +104,13 @@ class UserProfileController extends Controller
     {
         $model = $this->findModel($userId);
         $url = $model->img_url;
+
         $model->date_of_birth = date("d-m-Y", strtotime($model->date_of_birth));
         if ($model->load(Yii::$app->request->post())) {
             $model->date_of_birth = date("Y-m-d", strtotime($model->date_of_birth));
             $img = UploadedFile::getInstance($model, 'img_url');
             if ($img != null) {
+                unset($url);
                 $img->saveAs('data/user_profile/' . $model->user_id . '.' . $img->extension);
                 $model->img_url = 'data/user_profile/' . $model->user_id . '.' . $img->extension;
             } else {

@@ -26,7 +26,19 @@ class TransactionController extends Controller
 
     public function actionGetTransactions($vehicleId)
     {
-        $listTransactions = Transaction::findAll(['vehicle_id' => $vehicleId]);
+        $listTransactions = Transaction::find()->where(['vehicle_id' => $vehicleId])->orderBy(['created_at' => SORT_DESC])->all();
+        if (count($listTransactions) > 0) {
+            foreach ($listTransactions as $item) {
+                if (file_exists($item->img_url))
+                    $item->img_url = base64_encode(file_get_contents($item->img_url));
+            }
+        }
+        return Json::encode($listTransactions);
+    }
+
+    public function actionGetVTransactions($vehicleId)
+    {
+        $listTransactions = Transaction::find()->where(['vehicle_id' => $vehicleId])->andWhere(['status' => Transaction::STATUS_OVERLOAD])->orderBy(['created_at' => SORT_DESC])->all();
         if (count($listTransactions) > 0) {
             foreach ($listTransactions as $item) {
                 if (file_exists($item->img_url))

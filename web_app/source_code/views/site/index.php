@@ -27,14 +27,14 @@ $pVTran = number_format($pVTran, 1, '.', '');
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>VEHICLE WEIGHT MEASURING SYSTEM</h1>
+        <h1>HỆ THỐNG CÂN ĐO TẢI TRỌNG XE</h1>
     </div>
 
     <div class="body-content">
 
         <div class="row">
             <div class="col-lg-6">
-                <h2>All times</h2>
+                <h2>Toàn thời gian</h2>
                 <?php echo ChartJs::widget([
                     'type' => 'pie',
                     'id' => 'fPie',
@@ -44,7 +44,7 @@ $pVTran = number_format($pVTran, 1, '.', '');
                     ],
                     'data' => [
                         'radius' => "90%",
-                        'labels' => ['Violation Transactions', 'Normal Transactions'], // Your labels
+                        'labels' => ['Số lần vi phạm: ' . $pVTran . '%', 'Số lần không vi phạm: ' . $pNorTran . '%'], // Your labels
                         'datasets' => [
                             [
                                 'data' => [$pVTran, $pNorTran], // Your dataset
@@ -53,13 +53,19 @@ $pVTran = number_format($pVTran, 1, '.', '');
                                     '#FF0000',
                                     '#50C878'
                                 ],
+                                'borderColor' => [
+                                    '#fff',
+                                    '#fff'
+                                ],
+                                'borderWidth' => 1,
+                                'hoverBorderColor' => ["#999", "#999"],
                             ]
                         ]
                     ],
                 ]) ?>
             </div>
             <div class="col-lg-6">
-                <h2>Last month</h2>
+                <h2>Tháng gần nhất</h2>
                 <?php echo ChartJs::widget([
                     'type' => 'pie',
                     'id' => 'sPie',
@@ -69,15 +75,21 @@ $pVTran = number_format($pVTran, 1, '.', '');
                     ],
                     'data' => [
                         'radius' => "90%",
-                        'labels' => ['Violation Transactions', 'Normal Transactions'], // Your labels
+                        'labels' => ['Số lần vi phạm: ' . $pVTranLast . '%', 'Số lần không vi phạm: ' . $pNorTranLast . '%'], // Your labels
                         'datasets' => [
                             [
                                 'data' => [$pVTranLast, $pNorTranLast], // Your dataset
                                 'label' => '',
                                 'backgroundColor' => [
                                     '#FF0000',
-                                    '#50C878'
+                                    '#50C878',
                                 ],
+                                'borderColor' => [
+                                    '#fff',
+                                    '#fff'
+                                ],
+                                'borderWidth' => 1,
+                                'hoverBorderColor' => ["#999", "#999"],
                             ]
                         ]
                     ],

@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
 $listImgUrl = [];
 $listNameSize = [];
-if (count($model->img_url) > 0) {
+if ($model->img_url != null) {
     foreach ($model->img_url as $item) {
         $listImgUrl[] = Yii::getAlias('@web') . '/' . $item;
         $urlExploded = explode('/', $item);

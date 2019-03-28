@@ -68,9 +68,9 @@ class Transaction extends \yii\db\ActiveRecord
     public static function statuses()
     {
         return [
-            self::STATUS_DONE => 'Done',
-            self::STATUS_OVERLOAD => 'Overload',
-            self::STATUS_UNDONE => 'Undone'
+            self::STATUS_DONE => 'Hoàn Thành',
+            self::STATUS_OVERLOAD => 'Quá Tải',
+            self::STATUS_UNDONE => 'Chưa Hoàn Thành'
         ];
     }
 

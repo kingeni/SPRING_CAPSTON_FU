@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\User;
 use app\models\Vehicle;
+use ElephantIO\Client;
+use ElephantIO\Engine\SocketIO\Version2X;
 use kartik\mpdf\Pdf;
 use Yii;
 use app\models\Transaction;
@@ -18,6 +20,8 @@ use yii\filters\VerbFilter;
  */
 class TransactionController extends Controller
 {
+    protected $socket;
+
     /**
      * {@inheritdoc}
      */
@@ -100,6 +104,14 @@ class TransactionController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            try {
+                $client = new Client(new Version2X('http://localhost:1337'));
+                $client->initialize();
+                $client->emit('new_transaction', ['message' => 'have_new_transaction: ' . $model->created_at]);
+                $client->close();
+            } catch (ServerConnectionFailureException  $e) {
+            }
+
             $content = $this->renderPartial('report', ['model' => $model]);
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_UTF8,
