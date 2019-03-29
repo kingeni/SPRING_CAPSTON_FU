@@ -23,6 +23,7 @@ export default class ImageItem extends Component {
         return (
             <TouchableOpacity
              onPress= {()=> this._onChangeVisible(true)}
+            
             style={{
                 borderWidth: 1,
                 width: '33%',
@@ -40,7 +41,7 @@ export default class ImageItem extends Component {
                         resizeMode: 'contain',
                     }}>
                 </Image>
-                <ImageModal visibleStatus={this.props.visibleStatus} onChangeVisible={this.props.onChangeVisible}/>
+                <ImageModal img = {item.img0} visibleStatus={this.props.visibleStatus} onChangeVisible={this.props.onChangeVisible}/>
             </TouchableOpacity>
         );
 

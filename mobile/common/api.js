@@ -1,13 +1,14 @@
 
 import axios from 'axios';
 
-const apiUrl                 = 'http://vwms.gourl.pro/api';
-const LOGIN_PATH             = '/site/login';
-const LIST_VEHICLE_PATH      = '/vehicle/get-vehicles';
-const LIST_TRANSACTION_PATH  = '/transaction/get-transactions';
+const apiUrl = 'http://vwms.gourl.pro/api';
+const LOGIN_PATH = '/site/login';
+const LIST_VEHICLE_PATH = '/vehicle/get-vehicles';
+const LIST_TRANSACTION_PATH = '/transaction/get-transactions';
 const LIST_TRANSACTION_VIOLENT = '/transaction/get-v-transactions';
 const UPDATE_STATUS_READING_PATH = '/transaction/update-is-read-transaction';
-const LIST_IMAGE_VEHICLE_PATH ='/vehicle/get-vehicle-img';
+const LIST_IMAGE_VEHICLE_PATH = '/vehicle/get-vehicle-img';
+const UPDATE_INFO_USER = '/user-profile/update-user-profile';
 const setDefaults = (defaults) => {
   Object.keys(defaults).forEach((key) => {
     axios.defaults[key] = defaults[key];
@@ -108,7 +109,7 @@ const getErrTransactions = async (vehicle_id, optionalConfig = {}) => {
         'Content-type': 'application/json'
       },
     });
-    
+
     return { response };
   } catch (error) {
     return { error };
@@ -143,7 +144,25 @@ const getListImage = async (vehicle_id, optionalConfig = {}) => {
         'Content-type': 'application/json'
       },
     });
-    console.log('data API RESPONE : ',response.data.length);
+    return { response };
+  } catch (error) {
+    return { error };
+  }
+}
+const updateUserInfor = async (formData, userId, optionalConfig = {}) => {
+  try {
+    const response = await axios({
+      ...optionalConfig,
+      method: 'POST',
+      baseURL: apiUrl,
+      header: {
+        ...(axios.defaults.headers || {}),
+        'Content-type': 'application/json',
+      },
+      url: `${UPDATE_INFO_USER}?userId=${userId}`,
+      data: formData
+    });
+
     return { response };
   } catch (error) {
     return { error };
@@ -159,6 +178,7 @@ const Api = {
   getErrTransactions,
   updateStatusReading,
   getListImage,
+  updateUserInfor,
 };
 
 export default Api;

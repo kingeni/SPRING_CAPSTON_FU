@@ -5,11 +5,11 @@ import {
   View,
   TextInput,
   Text,
-  Button,
-  Linking
+  Linking,
+  TouchableHighlight,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { CheckBox, FormValidationMessage } from 'react-native-elements';
+import { CheckBox, FormValidationMessage , Button} from 'react-native-elements';
 
 class Login extends Component {
   constructor(props) {
@@ -28,21 +28,21 @@ class Login extends Component {
     const { username, password } = this.state;
     const { login, errorMsg } = this.props;
     login(username, password);
-    if(errorMsg){
+    if (errorMsg) {
       alert(errorMsg);
     }
   }
-  
+
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.container1}>
+        <View style={{ height: '50%', width: '100%', alignItems: 'center', justifyContent: 'flex-start' }}>
           <View style={styles.text}>
             <Text style={styles.text}> VEHICLE MONITORING</Text>
           </View>
 
-          <View style={{ borderWidth: 0.5, borderRadius: 7, borderColor: '#d6d7da' }}>
-            <View style={{ ...styles.view_input, ...styles.border_content }}>
+          <View style={{ width: '80%' }}>
+            <View style={{ ...styles.view_input, marginBottom: 10 }}>
               <View style={{ justifyContent: 'center', flex: 10, paddingLeft: 5 }}>
                 <Feather name="user" size={30} color="gray" />
               </View>
@@ -53,6 +53,7 @@ class Login extends Component {
               >
               </TextInput>
             </View>
+
             <View style={{ ...styles.view_input }}>
               <View style={{ justifyContent: 'center', flex: 10, paddingLeft: 5 }}>
                 <Feather name="lock" size={30} color="gray" />
@@ -65,10 +66,18 @@ class Login extends Component {
             </View>
           </View>
 
-          <View style={styles.btn}>
-            <Button onPress={() => this.login()}
-              title='Login' color='white'></Button>
-          </View>
+          <TouchableHighlight onPress={() => this.login()} style={{ width: '80%', marginTop: 20, borderRadius: 15, }}>
+            <View style={styles.btn}>
+              <Text style={{
+                fontSize: 20,
+                fontWeight: 'bold',
+                color: 'white', 
+                textAlign:'center',
+                paddingVertical: 10,
+              }}>LOGIN</Text>
+            </View>
+          </TouchableHighlight>
+       
           {/* <View>
             <CheckBox
               containerStyle={{
@@ -83,7 +92,7 @@ class Login extends Component {
             />
           </View> */}
         </View>
-      
+
         {/* <View style={styles.container2}>
           <Text style={styles.fooder}>Forgot the password? </Text>
           <Text style={styles.text_fooder}
@@ -98,17 +107,14 @@ class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgb(66,73,79)',
     justifyContent: 'center',
-    alignItems: 'stretch',
-    marginTop: 20,
-    marginLeft: 35,
-    marginRight: 35,
-    marginBottom: 20
+    alignItems: 'center',
   },
   container1: {
     flex: 90,
     justifyContent: 'center',
+    borderWidth: 1,
   },
   container2: {
     flex: 10,
@@ -129,7 +135,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 25,
     padding: 5,
-    marginBottom: 10
+    marginBottom: 10,
+    color: 'white'
   },
   border_content: {
     borderBottomWidth: 0.5,
@@ -142,6 +149,9 @@ const styles = StyleSheet.create({
   },
   view_input: {
     flexDirection: 'row',
+    borderRadius: 7,
+    backgroundColor: 'white',
+
   },
   padding_font: {
     paddingLeft: 5
@@ -149,8 +159,10 @@ const styles = StyleSheet.create({
   btn: {
     borderRadius: 15,
     padding: 10,
-    backgroundColor: '#0068ff',
-    marginTop: 20
+    backgroundColor: 'rgb(243,177,127)',
+    width: '100%',
+    // fontSize: 15,
+    // fontWeight: 'bold',
   },
   fooder: {
     textAlign: 'center'

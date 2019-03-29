@@ -11,21 +11,27 @@ import {
 } from 'react-native';
 import {
     ButtonGroup,
-    CheckBox
+    CheckBox,
 } from 'react-native-elements';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { Octicons, AntDesign } from '@expo/vector-icons';
-import FormData from 'FormData';
+import { ImagePicker, Permissions } from 'expo';
+import { Octicons, AntDesign, Entypo } from '@expo/vector-icons';
+
 class EditInforUser extends Component {
     constructor(props) {
         super();
         this.state = {
-            checked: true,
+            checkedMale: false,
+            checkFemale: false,
+            firstNameValid: ' ',
+            lastNameValid: ' ',
+            phoneValid: ' ',
+            emailValid: ' ',
+            visibleSave: true,
             isDateTimePickerVisible: false,
-            first_name: '',
-            last_name: '',
-            date_of_birth: '',
-            email: '',
+            isLoading: false,
+            dataUser: {},
+
         }
     }
 
@@ -37,204 +43,352 @@ class EditInforUser extends Component {
         this.handleChange('date_of_birth', date);
         this.hideDateTimePicker();
     };
-
-    handleCheck = (checked, gender) => {
-        this.setState({
-            checked: !checked,
-        })
+    pickImage = async () => {
+        console.log('aaaa');
+        await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+            base64: true,
+        });
+        if (!result.cancelled) {
+            this.setState(prevState => ({
+                dataUser: {
+                    ...prevState.dataUser,
+                    img_url: result.base64,
+                }
+            }));
+        }
+    };
+    handleCheck = (gender) => {
+        if (gender === 'Male') {
+            this.setState(prevState => ({
+                checkedMale: true,
+                checkFemale: false,
+                dataUser: {
+                    ...prevState.dataUser,
+                    gender,
+                }
+            }));
+        } else {
+            this.setState(prevState => ({
+                checkedMale: false,
+                checkFemale: true,
+                dataUser: {
+                    ...prevState.dataUser,
+                    gender,
+                }
+            }));
+        }
     };
 
     static navigationOptions = ({ navigation }) => {
         return {
-            headerLeft: <Button title='Cancel' onPress={() => navigation.goBack()}></Button>,
-            title: 'Change Information',
+            headerLeft: (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <View style={{ backgroundColor: 'rgb(47, 54, 61)' }}>
+                        <Text style={{ color: 'rgb(243,177,127)', paddingLeft: 9 }}>Cancel</Text>
+                        {/* <Button title='Done' color='rgb(243,177,127)' onPress={() => navigation.navigate('Home')}> </Button> */}
+                    </View>
+                </TouchableOpacity>),
+            //  (<View style={{ backgroundColor: 'rgb(47, 54, 61)' }}>
+            //     <Button title='Cancel' color='rgb(243,177,127)' onPress={() => navigation.goBack()}></Button>
+            // </View>),
+            title: 'EDIT INFORMATION',
             headerStyle: {
                 borderBottomWidth: 0,
-                backgroundColor: '#d6d7da'
+                backgroundColor: 'rgb(47, 54, 61)',
+            },
+            headerTitleStyle: {
+                textAlign: 'center',
+                color: 'white',
+                fontSize: 25,
+            }
+
+
+        }
+    }
+
+    handleChange = (props, value) => {
+        const name = /^[a-zA-Z0-9]+$/;
+        const number = /^[0-9]+$/;
+        const email = /^[a-z0-9][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
+        if (props === 'first_name') {
+            if (name.test(value)) {
+                this.setState(prevState => ({
+                    firstNameValid: ' ',
+                    dataUser: {
+                        ...prevState.dataUser,
+                        [props]: value
+                    },
+                }));
+            } else {
+                this.setState({
+                    firstNameValid: 'Input only alpha and number',
+                });
+            }
+        }
+        if (props === 'last_name') {
+            if (name.test(value)) {
+                this.setState(prevState => ({
+                    lastNameValid: ' ',
+                    dataUser: {
+                        ...prevState.dataUser,
+                        [props]: value
+                    },
+                }));
+            } else {
+                this.setState({
+                    lastNameValid: 'Input only alpha and number',
+                });
+            }
+        }
+        if (props === 'phone_number') {
+            if (number.test(value)) {
+                this.setState(prevState => ({
+                    phoneValid: ' ',
+                    dataUser: {
+                        ...prevState.dataUser,
+                        [props]: value
+                    },
+                }));
+            } else {
+                this.setState({
+                    phoneValid: 'Input only number',
+
+                });
+            }
+        }
+        if (props === 'email') {
+            if (email.test(value)) {
+                this.setState(prevState => ({
+                    emailValid: ' ',
+                    dataUser: {
+                        ...prevState.dataUser,
+                        [props]: value
+                    },
+                }));
+            } else {
+                this.setState({
+                    emailValid: 'xxxxxx@xxx.xxx.xx',
+                });
             }
         }
     }
 
-    handleChange(props, value) {
-        this.setState({ [props]: value });
+    componentDidMount() {
+        const { dataUser } = this.props;
+
+        if (dataUser.gender === 'Male') {
+            this.setState({
+                checkedMale: true,
+                checkFemale: false,
+                dataUser,
+                isLoading: true,
+            });
+        } else {
+            this.setState({
+                checkedMale: false,
+                checkFemale: true,
+                dataUser,
+                isLoading: true,
+            });
+        }
+
     }
 
-    // handleChange = (props, params) => {
-    //     this.setState(prevState => ({
-    //         dataUser: {
-    //             ...prevState.dataUser,
-    //             [props]: params
-    //         }
-    //     }));
-    // }
-
     onSave = () => {
-        const { dataUser, email, first_name, last_name, date_of_birth } = this.state
-        let formData = new FormData();
-        formData.append('first_name', dataUser.first_name);
-        formData.append('last_name', dataUser.last_name);
-        formData.append('gender', dataUser.gender);
-        formData.append('date_of_birth', dataUser.date_of_birth);
-        formData.append('email', dataUser.email);
-        formData.append('img', dataUser.img_url);
-        fetch('http://vwms.gourl.pro/api/user-profile/update-user-profile?userId=' + this.state.dataUser.user_id, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: formData
-        })
-            .then((response)=> response.json())
-            .then((responseJSON)=> {
-                this.props.navigation.navigate('Home');
-            })
-            .catch((error) => {
-                console.error(error);
-            })
+        const { updateInfo } = this.props;
+        const { dataUser } = this.state;
+        updateInfo(dataUser);
+        this.props.navigation.navigate('InforUser');
     }
 
     render() {
-        const { dataUser } = this.props;
-        console.log(dataUser);
+        const { dataUser, firstNameValid, lastNameValid, phoneValid, emailValid, isLoading } = this.state;
         return (
-            <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: '#d6d7da' }}>
-                <View style={{
-                    flex: 1, justifyContent: 'flex-start'
-                }}>
 
-                    <View style={{ height: 150, flexDirection: 'row',backgroundColor: 'white', paddingRight: 20, paddingLeft: 20 }}>
-                        <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center' }}>
-                            <Image source={{ uri: `data:image/png;base64,${dataUser.img_url}` }}
-                                style={{ width: 80, height: 80, borderRadius: 80 / 2, borderWidth: 0.5 }}>
-                            </Image>
-                        </View>
-
-                        <View style={{ flex: 7, flexDirection: 'column', }}>
-                            <View style={{ height: 50, borderBottomWidth: 0.5, borderColor: '#d6d7da', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                                <View style={{ flex: 90 }}>
-                                    <TextInput placeholder='First Name'
-                                        onChangeText={value => this.handleChange('first_name', value)}>
-                                        {dataUser.first_name}
-                                    </TextInput>
-
-                                </View>
-                                <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                    <Octicons name='pencil' size={12} color='black' />
-                                </View>
-                            </View>
-                            <View style={{ height: 50, borderBottomWidth: 0.5, borderColor: '#d6d7da', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                                <View style={{ flex: 90 }}>
-                                    <TextInput placeholder='Last Name'
-                                        onChangeText={value => this.handleChange('last_name', value)}>{dataUser.last_name}
-                                    </TextInput>
-                                </View>
-                                <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                    <Octicons name='pencil' size={12} color='black' />
-                                </View>
-                            </View>
-
-                            <View style={{ flex: 1, height: 50, flexDirection: 'row', borderColor: '#d6d7da', justifyContent: 'flex-start' }}>
-                                <CheckBox
-                                    title='Male'
-                                    onPress={() => this.handleCheck(this.state.checked, 'Male')}
-                                    checked={this.state.checked}
-                                    containerStyle={{
-                                        width: 100, height: 43,
-                                        backgroundColor: 'white',
-                                        borderWidth: 0,
-                                    }}></CheckBox>
-
-                                <CheckBox title='FeMale'
-                                    iconLeft
-                                    onPress={() => this.handleCheck(this.state.checked, 'Female')}
-                                    checked={!this.state.checked}
-                                    containerStyle={{
-                                        width: 100, height: 43,
-                                        backgroundColor: 'white',
-                                        borderWidth: 0,
-                                        alignItems: 'flex-start'
-                                    }}></CheckBox>
-
-                            </View>
-
-                        </View>
-                    </View>
-
-                    <View style={{ height: 50, flexDirection: 'row',backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
-                        <View style={{ flex: 30, justifyContent: 'flex-end' }}>
-                            <Text>Date of birth</Text>
-                        </View>
-                        <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
-                            <TouchableOpacity onPress={this.showDateTimePicker}>
-                                <Text>{dataUser.date_of_birth}</Text>
-                            </TouchableOpacity>
-                            <DateTimePicker
-                                isVisible={this.state.isDateTimePickerVisible}
-                                onConfirm={this.handleDatePicked}
-                                onCancel={this.hideDateTimePicker}
-                            />
-                        </View>
-                        <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                            <Octicons name='pencil' size={12} color='black' />
-                        </View>
-                    </View>
-
-                    <View style={{  height: 50, flexDirection: 'row',backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
-                        <View style={{ flex: 30, justifyContent: 'flex-end' }}>
-                            <Text>Phone Number</Text>
-                        </View>
-                        <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
-                            <TextInput style={{ textAlign: 'left' }} placeholder='Phone number'
-                                onChangeText={value => this.handleChange('phone_number', value)} >{dataUser.phone_number}
-                            </TextInput>
-                        </View>
-                        <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                            <Octicons name='pencil' size={12} color='black' />
-                        </View>
-                    </View>
-
-                    <View style={{  height: 50, flexDirection: 'row',backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
-                        <View style={{ flex: 30, justifyContent: 'flex-end' }}>
-                            <Text>Email</Text>
-                        </View>
-                        <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
-                            <TextInput style={{ textAlign: 'left' }} placeholder='Email'
-                                onChangeText={value => this.handleChange('email', value)}>{dataUser.email}</TextInput>
-                        </View>
-                        <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                            <Octicons name='pencil' size={12} color='black' />
-                        </View>
-                    </View>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangePassword', { password: dataUser.password_hash, user_id: dataUser.user_id })}>
-                        <View style={{  height: 50, flexDirection: 'row',backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15  }}>
-                            <View style={{ flex: 30, justifyContent: 'flex-end' }}>
-                                <Text>Password</Text>
-                            </View>
-
-                            <View style={{ flex: 70, justifyContent: 'flex-end', marginTop: 5, }}>
-                                <Text style={{ textAlign: 'left' }}>*********</Text>
-                            </View>
-                            <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-
-                                <AntDesign name='caretright' size={15} color='black' />
-
-                            </View>
-                        </View>
-                    </TouchableOpacity>
+            <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: 'rgb(79,88,86)', }}>
+                {isLoading ?
                     <View style={{
-                        borderRadius: 15,
-                        padding: 10,
-                        backgroundColor: '#0068ff',
-                        marginTop: 20
+                        flex: 1, justifyContent: 'flex-start'
                     }}>
 
-                        <Button onPress={this.onSave}
-                            title='Save' color='white'></Button>
-                    </View>
+                        <View style={{ height: 190, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20 }}>
+                            <TouchableOpacity
+                                onPress={() => this.pickImage()}
+                                style={{ flex: 3, alignItems: 'center', justifyContent: 'center' }}>
+                                <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center' }} >
+                                    <Image source={{ uri: `data:image/png;base64,${dataUser.img_url}` }}
+                                        style={{ width: 80, height: 80, borderRadius: 80 / 2, borderWidth: 0.5 }}>
+                                    </Image>
+                                </View>
+                            </TouchableOpacity>
 
 
-                </View>
+                            <View style={{ flex: 7, flexDirection: 'column', }}>
+                                <View>
+                                    <View style={{ height: 50, borderBottomWidth: 0.5, borderColor: '#d6d7da', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                                        <View style={{ flex: 90 }}>
+                                            <TextInput placeholder='First Name'
+                                                onChangeText={value => this.handleChange('first_name', value)}>
+                                                {dataUser.first_name}
+                                            </TextInput>
+                                        </View>
+                                        <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                            <Octicons name='pencil' size={12} color='black' />
+                                        </View>
+                                    </View>
+                                    <View><Text style={{ color: 'red' }}>{firstNameValid}</Text></View>
+                                </View>
+
+                                <View style={{ height: 50, borderBottomWidth: 0.5, borderColor: '#d6d7da', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ flex: 90 }}>
+                                        <TextInput placeholder='Last Name'
+                                            onChangeText={value => this.handleChange('last_name', value)}>{dataUser.last_name}
+                                        </TextInput>
+                                    </View>
+                                    <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                        <Octicons name='pencil' size={12} color='black' />
+                                    </View>
+                                </View>
+                                <View><Text style={{ color: 'red' }}>{lastNameValid}</Text></View>
+
+                                <View style={{ flex: 1, height: 50, flexDirection: 'row', borderColor: '#d6d7da', justifyContent: 'flex-start' }}>
+                                    <CheckBox
+                                        title='Male'
+                                        onPress={() => this.handleCheck('Male')}
+                                        checked={this.state.checkedMale}
+                                        containerStyle={{
+                                            width: 100, height: 43,
+                                            backgroundColor: 'white',
+                                            borderWidth: 0,
+                                        }}></CheckBox>
+
+                                    <CheckBox title='FeMale'
+                                        iconLeft
+                                        onPress={() => this.handleCheck('FeMale')}
+                                        checked={this.state.checkFemale}
+                                        containerStyle={{
+                                            width: 100, height: 43,
+                                            backgroundColor: 'white',
+                                            borderWidth: 0,
+                                            alignItems: 'flex-start'
+                                        }}></CheckBox>
+
+                                </View>
+
+                            </View>
+                        </View>
+                        <View><Text style={{ color: 'red' }}></Text></View>
+                        <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
+                            <View style={{ flex: 30, justifyContent: 'flex-end', fontSize: 'bold' }}>
+                                <Text>Date of birth</Text>
+                            </View>
+                            <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
+                                <TouchableOpacity onPress={this.showDateTimePicker}>
+                                    <Text>{dataUser.date_of_birth}</Text>
+                                </TouchableOpacity>
+                                <DateTimePicker
+                                    isVisible={this.state.isDateTimePickerVisible}
+                                    onConfirm={this.handleDatePicked}
+                                    onCancel={this.hideDateTimePicker}
+                                />
+                            </View>
+
+                            <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                <Octicons name='pencil' size={12} color='black' />
+                            </View>
+                        </View>
+                        <View><Text style={{ color: 'red' }}>{lastNameValid}</Text></View>
+
+                        <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
+                            <View style={{ flex: 30, justifyContent: 'flex-end', fontSize: 'bold' }}>
+                                <Text>Phone Number</Text>
+                            </View>
+                            <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
+                                <TextInput style={{ textAlign: 'left' }} placeholder='Phone number'
+                                    onChangeText={value => this.handleChange('phone_number', value)} >{dataUser.phone_number}
+                                </TextInput>
+                            </View>
+
+                            <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                <Octicons name='pencil' size={12} color='black' />
+                            </View>
+                        </View>
+                        <View><Text style={{ color: 'red' }}>{phoneValid}</Text></View>
+
+                        <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
+                            <View style={{ flex: 30, justifyContent: 'flex-end', fontSize: 'bold' }}>
+                                <Text>Email</Text>
+                            </View>
+                            <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
+                                <TextInput style={{ textAlign: 'left' }} placeholder='Email'
+                                    onChangeText={value => this.handleChange('email', value)}>{dataUser.email}</TextInput>
+                            </View>
+                            <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                <Octicons name='pencil' size={12} color='black' />
+                            </View>
+                        </View>
+                        <View><Text style={{ color: 'red' }}>{emailValid}</Text></View>
+
+                        <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
+                            <View style={{ flex: 30, justifyContent: 'flex-end', fontSize: 'bold' }}>
+                                <Text>Identity Number</Text>
+                            </View>
+                            <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
+                                <Text style={{ textAlign: 'left' }}>{dataUser.identity_number}</Text>
+                            </View>
+                            <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                <Entypo name='block' size={12} color='black' />
+                            </View>
+                        </View>
+                        <View><Text style={{ color: 'red' }}></Text></View>
+
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangePassword', { password: dataUser.password_hash, user_id: dataUser.user_id })}>
+                            <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
+                                <View style={{ flex: 30, justifyContent: 'flex-end', fontSize: 'bold' }}>
+                                    <Text>Password</Text>
+                                </View>
+
+                                <View style={{ flex: 60, justifyContent: 'flex-end', marginTop: 5, }}>
+                                    <Text style={{ textAlign: 'left' }}>*********</Text>
+                                </View>
+                                <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
+
+                                    <AntDesign name='caretright' size={15} color='black' />
+
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                        <View style={{
+                            alignItems: 'center', width: '100%'
+                        }}>
+
+                            <View style={{
+                                borderRadius: 15,
+                                padding: 10,
+                                borderRadius: 40, backgroundColor: 'rgb(243,177,127)', width: '80%',
+                                marginTop: 10,
+
+                            }}>
+                                {firstNameValid === ' ' && lastNameValid === ' ' && phoneValid === ' ' && emailValid === ' '
+                                    ?
+                                    <Text style={{
+                                        textAlign: 'center',
+                                        paddingVertical: 8,
+                                        color:'white',
+                                        fontSize: 15,
+                                        fontWeight: 'bold',
+                                    }}>SAVE</Text>
+                                    :
+                                    <Text>SAVE</Text>
+                                }
+                            </View>
+                        </View>
+
+                    </View> : <View></View>
+                }
             </ScrollView >
         );
     }

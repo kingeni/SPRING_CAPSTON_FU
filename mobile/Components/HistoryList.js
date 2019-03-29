@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
 import FormData from 'FormData';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import styles from '../Components/Styles';
 import HistoryItem from '../Components/HistoryItem';
 
@@ -33,7 +33,7 @@ class HistoryList extends Component {
 
     static navigationOptions = ({ navigation }) => {
         const { selectedIndex } = navigation.state.params;
-        const buttons = ['all', 'overWeight'];
+        const buttons = ['All', 'overWeight'];
         return {
             headerBackTitle: null,
             headerTitle: (
@@ -41,28 +41,42 @@ class HistoryList extends Component {
                     onPress={navigation.state.params.handleChangeIndex}
                     selectedIndex={selectedIndex === undefined ? 0 : selectedIndex}
                     buttons={buttons}
-                    containerBorderRadius={1}
-                    containerStyle={{ width: 180, height: 35 }}
-                    buttonStyle={{ backgroundColor: 'white' }}
-                    selectedButtonStyle={{ backgroundColor: '#0068ff' }}
-                    textStyle={{ color: '#0068ff' }}
+                    // containerBorderRadius={1}
+                    containerStyle={{
+                        width: '90%',
+                        height: 35,
+                        backgroundColor: 'rgb(47, 54, 61)',
+                        alignItems: 'center',
+                        borderColor: 'rgb(243,177,127)',
+                    }}
+                    buttonStyle={{ backgroundColor: 'rgb(47, 54, 61)' }}
+                    selectedButtonStyle={{ backgroundColor: 'rgb(243,177,127)' }}
+                    textStyle={{ color: 'rgb(243,177,127)' }}
                     selectedTextStyle={{ color: 'white' }}
                 />
             ),
             headerRight: (<AntDesign name='infocirlceo'
-                size={25} color='gray'
+                size={30} color='rgb(243,177,127)'
                 style={{ paddingRight: 5 }}
                 onPress={() => navigation.state.params.showInfor()} />),
-            headerLeft: <Button
-                title='Cancel'
-                onPress={() => {
-                    navigation.state.params.getEnd();
-                    return navigation.goBack();
-                }}></Button>,
+            headerLeft:
+                (<Ionicons name='ios-arrow-back'
+                    size={30} color='rgb(243,177,127)'
+                    style={{ paddingLeft: 10 }}
+                    onPress={() => {
+                        navigation.state.params.getEnd();
+                        return navigation.goBack();
+                    }} />),
             headerStyle: {
                 borderBottomWidth: 0,
-                backgroundColor: '#d6d7da',
+                backgroundColor: 'rgb(47, 54, 61)',
             },
+            headerTitleStyle: {
+                flex: 1,
+                alignSeft: 'center',
+                borderWidth:1,
+                borderColor: 'red',
+            }
         };
     };
 
@@ -129,7 +143,7 @@ class HistoryList extends Component {
                     >
                     </SectionList>
                     :
-                    <View style={{marginTop: 5}}><ActivityIndicator size="large" color="white" /></View>
+                    <View style={{ marginTop: 5 }}><ActivityIndicator size="large" color="white" /></View>
                 }
             </ScrollView>
 

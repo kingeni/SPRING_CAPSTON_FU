@@ -19,10 +19,10 @@ class CarItem extends Component {
             <TouchableOpacity onPress={() => this.onPressItem(item)}>
                 <View style={styles.container}>
                     <View style={styles.circle}>
-                        {/* <Image
+                        <Image
                             source={item.img != null ? {uri: `data:image/png;base64,${item.img}`} : {uri : 'http://www.riversidefestival.charlbury.com/pictures/car%20button.jpg'} }
                             style={{ width: 70, height: 70, borderRadius: 70 / 2, borderWidth: 0.5 }}>
-                        </Image> */}
+                        </Image>
                     </View>
                     <View style={styles.header_contain}>
                         {item.number_of_unread > 0 ?
@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         flexDirection: 'row',
         backgroundColor: 'white',
-        padding : 5
+        padding : 5,
+        borderRadius: 5,
     },
     circle: {
         flex: 20

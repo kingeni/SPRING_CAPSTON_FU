@@ -71,31 +71,31 @@ class Home extends Component {
   render() {
     let { dataUser, listVehicle, isLoading } = this.props;
     const searchData = this.handleSearch();
-    // listVehicle.map(({ img, ...rest }) => rest);
-    console.log('dataget:',listVehicle);
+
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <View style={{ flex: 1, backgroundColor: '#d6d7da', paddingTop: 12 }}>
-            <View style={{ flex: 0.8, paddingLeft: 5, flexDirection: 'row', alignItems: 'center', backgroundColor: '#d6d7da' }}>
+          <View style={{ flex: 1, paddingTop: 12, flexDirection: 'row' }}>
+            <View style={{ flex: 0.2, paddingLeft: 5 }}>
               <TouchableOpacity style={styles.circle} onPress={this.naviagateToInfoUser}>
                 <Image
                   source={{ uri: `data:image/png;base64,${dataUser.img_url}` }}
                   style={{ width: 60, height: 60, borderRadius: 60 / 2, borderWidth: 0.5 }}>
                 </Image>
               </TouchableOpacity>
-              <View style={styles.header_contain}>
-                <Text style={styles.header_text}>{dataUser.first_name} {dataUser.last_name}</Text>
-              </View>
+            </View>
+            <View style={styles.header_contain}>
+              <Text style={styles.header_text}>{dataUser.first_name.toUpperCase()} {dataUser.last_name.toUpperCase()}</Text>
             </View>
           </View>
         </View>
 
+
         <View style={styles.item_contain} >
           {(listVehicle !== null) && (listVehicle.length > 0) ?
             <FlatList
-              // data={searchData === null ? listVehicle : searchData}
-              data={listVehicle}
+              data={searchData === null ? listVehicle : searchData}
+              // data={listVehicle}
               ListHeaderComponent={this.renderHeader}
               keyExtractor={(item, index) => index.toString()}
               renderItem={({ item }) =>

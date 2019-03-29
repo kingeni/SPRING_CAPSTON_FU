@@ -4,15 +4,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'stretch',
-        backgroundColor:'#d6d7da',
+        // backgroundColor:'#d6d7da',
+        backgroundColor: 'rgb(79,88,86)',
     },
     container1: {
         flex: 1,
         // marginLeft: 10,
         // marginRight: 10,
-        marginBottom: 10,
+        // marginBottom: 10,
         alignItems: 'stretch',
-        backgroundColor:'#d6d7da',
+       backgroundColor: 'rgb(79,88,86)',
     },
     circle: {
         height: 60,
@@ -21,24 +22,25 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         flex: 12,
-        alignItems: 'center',
-
-        backgroundColor: '#d6d7da'
+        // alignItems: 'center',
+        backgroundColor: 'rgb(47, 54, 61)',
+        // borderWidth: 1,
     },
     header_contain: {
-        flex: 80,
+        flex: 0.8,
         height: 60,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     header_text: {
-        fontSize: 20,
+        fontSize: 25,
         fontWeight: 'bold',
+        color:'white'
 
 
     },
     search_contain: {
         flexDirection: 'row',
-        borderRadius: 12,
+        borderRadius: 5,
         backgroundColor: 'white',
         borderWidth: 0.5,
         borderColor: '#d6d7da',

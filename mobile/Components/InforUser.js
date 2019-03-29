@@ -5,7 +5,8 @@ import {
     Button,
     StyleSheet,
     Image,
-    ScrollView
+    ScrollView,
+    TouchableOpacity,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 class InforUser extends Component {
@@ -15,23 +16,44 @@ class InforUser extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
             headerRight: (
-                <Button title='Done' onPress={() => navigation.navigate('Home')}></Button>
-            ),
-            headerLeft: <Button title='Edit' onPress={() => navigation.navigate('EditInforUser')}></Button>,
+                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                    <View style={{ backgroundColor: 'rgb(47, 54, 61)' }}>
+                        <Text style={{ color: 'rgb(243,177,127)', paddingRight: 9 }}>Done</Text>
+                        {/* <Button title='Done' color='rgb(243,177,127)' onPress={() => navigation.navigate('Home')}> </Button> */}
+                    </View>
+                </TouchableOpacity>),
+            headerLeft:(
+                <TouchableOpacity onPress={() => navigation.navigate('EditInforUser')}>
+                    <View style={{ backgroundColor: 'rgb(47, 54, 61)' }}>
+                        <Text style={{ color: 'rgb(243,177,127)', paddingLeft: 9 }}>Edit</Text>
+                        {/* <Button title='Done' color='rgb(243,177,127)' onPress={() => navigation.navigate('Home')}> </Button> */}
+                    </View>
+                </TouchableOpacity>),
+
+                // (<View style={{ backgroundColor: 'rgb(47, 54, 61)' }}>
+                //     <Button title='Edit' color='rgb(243,177,127)' onPress={() => navigation.navigate('EditInforUser')}></Button>
+                // </View>),
+            title: 'DETAIL',
             headerStyle: {
                 borderBottomWidth: 0,
-                backgroundColor: '#d6d7da',
+                backgroundColor: 'rgb(47, 54, 61)',
             },
-            swipeEnabled: false
+            swipeEnabled: false,
+            headerTitleStyle: {
+                textAlign: "center",
+                flex: 1,
+                color: 'white',
+                fontSize: 25,
+            },
         }
     }
 
     render() {
-        const { dataUser, logout  } = this.props;
-        
+        const { dataUser, logout } = this.props;
+
         return (
             < ScrollView style={styles.main}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, }}>
                     <View style={{ flex: 30, justifyContent: 'center', alignItems: 'center' }}>
                         <View style={{ flex: 80, justifyContent: 'center', alignItems: 'center' }}>
                             <Image source={{ uri: `data:image/png;base64,${dataUser.img_url}` }}
@@ -39,12 +61,12 @@ class InforUser extends Component {
                             </Image>
                         </View>
 
-                        <Text style={{ flex: 20, fontWeight: 'bold', fontSize: 35 }}>{dataUser.first_name} {dataUser.last_name}</Text>
+                        <Text style={{ flex: 20, fontWeight: 'bold', color: 'white', fontSize: 35 }}>{dataUser.first_name} {dataUser.last_name}</Text>
                     </View>
                     <View style={{ flex: 70, alignItems: 'stretch', marginTop: 15, backgroundColor: 'white' }}>
-                        <View style={{ flex: 14, borderBottomWidth: 0.5, flexDirection: 'row', borderColor: '#d6d7da', padding: 15}}>
+                        <View style={{ flex: 14, borderBottomWidth: 0.5, flexDirection: 'row', borderColor: '#d6d7da', padding: 15 }}>
                             <View style={{ flex: 30, justifyContent: 'flex-start' }}>
-                                <Text>Username</Text>
+                                <Text style={{ fontWeight: 'bold' }}>Username</Text>
                             </View>
                             <View style={{ flex: 70, justifyContent: 'flex-end' }}>
                                 <Text style={{ textAlign: 'right' }}>{dataUser.username}</Text>
@@ -53,7 +75,7 @@ class InforUser extends Component {
 
                         <View style={{ flex: 14, borderBottomWidth: 0.5, borderColor: '#d6d7da', flexDirection: 'row', padding: 15 }}>
                             <View style={{ flex: 30 }}>
-                                <Text>Gender</Text>
+                                <Text style={{ fontWeight: 'bold' }}>Gender</Text>
                             </View>
                             <View style={{ flex: 70, justifyContent: 'flex-end', textAlign: 'right' }}>
                                 <Text style={{ textAlign: 'right' }}>{dataUser.gender}</Text>
@@ -62,7 +84,7 @@ class InforUser extends Component {
 
                         <View style={{ flex: 14, borderBottomWidth: 0.5, borderColor: '#d6d7da', flexDirection: 'row', padding: 15 }}>
                             <View style={{ flex: 30 }}>
-                                <Text>Phone Number</Text>
+                                <Text style={{ fontWeight: 'bold' }}>Phone Number</Text>
                             </View>
                             <View style={{ flex: 70, justifyContent: 'flex-end', textAlign: 'right' }}>
                                 <Text style={{ textAlign: 'right' }}>{dataUser.phone_number}</Text>
@@ -71,7 +93,7 @@ class InforUser extends Component {
 
                         <View style={{ flex: 14, borderBottomWidth: 0.5, borderColor: '#d6d7da', flexDirection: 'row', padding: 15 }}>
                             <View style={{ flex: 30 }}>
-                                <Text>CMND</Text>
+                                <Text style={{ fontWeight: 'bold' }}>CMND</Text>
                             </View>
                             <View style={{ flex: 70, justifyContent: 'flex-end', textAlign: 'right' }}>
                                 <Text style={{ textAlign: 'right' }}>{dataUser.identity_number}</Text>
@@ -80,7 +102,7 @@ class InforUser extends Component {
 
                         <View style={{ flex: 14, borderBottomWidth: 0.5, flexDirection: 'row', borderColor: '#d6d7da', padding: 15 }}>
                             <View style={{ flex: 30 }}>
-                                <Text>Email</Text>
+                                <Text style={{ fontWeight: 'bold' }}>Email</Text>
                             </View>
                             <View style={{ flex: 70, justifyContent: 'center', textAlign: 'right' }}>
                                 <Text style={{ textAlign: 'right' }}>{dataUser.email}</Text>
@@ -89,16 +111,17 @@ class InforUser extends Component {
 
                         <View style={{ flex: 14, borderBottomWidth: 0.5, flexDirection: 'row', borderColor: '#d6d7da', padding: 15 }}>
                             <View style={{ flex: 30 }}>
-                                <Text>Day of Birth</Text>
+                                <Text style={{ fontWeight: 'bold' }}>Day of Birth</Text>
                             </View>
                             <View style={{ flex: 70, justifyContent: 'center', textAlign: 'right' }}>
                                 <Text style={{ textAlign: 'right' }}>{dataUser.date_of_birth}</Text>
                             </View>
                         </View>
 
+
                         <View style={{ flexDirection: 'row', padding: 15, }}>
-                            <View style={{ flex: 30 }}>
-                                <Text>Password</Text>
+                            <View style={{ flex: 30, }}>
+                                <Text style={{ fontWeight: 'bold' }}>Password</Text>
                             </View>
 
                             <View style={{ flex: 70, justifyContent: 'center', marginTop: 5, flexDirection: 'row' }}>
@@ -115,14 +138,34 @@ class InforUser extends Component {
                 </View>
                 <View style={{
                     height: 120,
-                    justifyContent: 'space-between',
-                    marginTop: 5
+
+                    marginTop: 5,
+                    alignItems: 'center'
                 }}>
 
-                    <View style={{  height: '45%', padding: 5, backgroundColor:'white'}}>
-                        <Button title='Log out'  onPress={() => {
-                                        logout();
-                            return this.props.navigation.navigate('Login');}}></Button>
+                    <View style={{
+                        height: '45%',
+                        padding: 5,
+                        borderRadius: 40,
+                        backgroundColor: 'rgb(243,177,127)',
+                        width: '70%'
+                    }}>
+                        <TouchableOpacity onPress={() => {
+                            logout();
+                            return this.props.navigation.navigate('Login');
+                        }}>
+                            <Text style={{
+                                textAlign: 'center',
+                                paddingTop: 10,
+                                fontSize: 15,
+                                color: 'white',
+                                fontWeight: 'bold',
+                            }}>SIGN OUT</Text>
+                        </TouchableOpacity>
+                        {/* <Button title='SIGN OUT' color='white' onPress={() => {
+                            logout();
+                            return this.props.navigation.navigate('Login');
+                        }}></Button> */}
                     </View>
 
                 </View>
@@ -138,7 +181,7 @@ const styles = StyleSheet.create(
             flex: 1,
             // paddingRight: 20,
             // paddingLeft: 20,
-            backgroundColor: '#d6d7da'
+            backgroundColor: 'rgb(79,88,86)',
         }
     }
 );

@@ -10,11 +10,11 @@ import {
     ScrollView,
     ActivityIndicator,
 } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import styles from '../Components/Styles';
 // import ImageModal from './ImageModal';
 import ImageItem from '../Components/ImageItem';
-// let check = false;
+
 class CarDetail extends Component {
 
     constructor(props) {
@@ -32,13 +32,27 @@ class CarDetail extends Component {
             title,
             headerStyle: {
                 borderBottomWidth: 0,
-                backgroundColor: '#d6d7da',
+                backgroundColor: 'rgb(47, 54, 61)',
             },
+            headerBackTitle: null,
+            headerLeft:
+                (<Ionicons name='ios-arrow-back'
+                    size={30} color='rgb(243,177,127)'
+                    style={{ paddingLeft: 10 }}
+                    onPress={() =>  navigation.goBack() } />),
+            headerStyle: {
+                borderBottomWidth: 0,
+                backgroundColor: 'rgb(47, 54, 61)',
+            },
+            headerTitleStyle: {
+                flex:1,
+                textAlign: 'center',
+                color: 'white',
+                fontSize: 25,
+            }
         }
     }
-    // componentDidMount() {
-    //     const { getDetailVehicle } = this.props;
-    // }
+
     changeVisibleStatus = (bool) => {
         this.setState({
             visibleStatus: bool
@@ -48,7 +62,7 @@ class CarDetail extends Component {
         let { visibleStatus } = this.state;
         const { getDetailVehicle, getListImage, isLoading } = this.props;
         return (
-            <ScrollView style={{ flex: 1, backgroundColor: '#d6d7da' }}>
+            <ScrollView style={{ flex: 1, backgroundColor: 'rgb(79,88,86)' }}>
                 <View style={{ alignItems: 'stretch' }}>
                     <View style={{ ...styles.flex_row, padding: 15, marginTop: 25, backgroundColor: 'white' }}>
                         <Text style={styles.flex_50}>License plates</Text>
@@ -66,14 +80,14 @@ class CarDetail extends Component {
                         <Text style={styles.flex_50}>Max load</Text>
                         <Text style={{ ...styles.flex_50, textAlign: 'right' }}>{getDetailVehicle.vehicle_maxload}</Text>
                     </View>
-                    <View style={{ ...styles.flex_row, padding: 15,borderBottomWidth: 0, marginBottom: 5, backgroundColor: 'white' }}>
+                    <View style={{ ...styles.flex_row, padding: 15, borderBottomWidth: 0, marginBottom: 5, backgroundColor: 'white' }}>
                         <Text style={styles.flex_50}>Breaking Law's number  </Text>
                         <Text style={{ ...styles.flex_50, textAlign: 'right' }}>{getDetailVehicle.number_of_violations}</Text>
                     </View>
                 </View>
 
-                <View style={{ alignItems: 'stretch', paddingTop: 10, paddingLeft:10 }}>
-                    <Text style={{ fontSize: 15, color: 'blue' }}>Image</Text>
+                <View style={{ alignItems: 'stretch', paddingTop: 10, paddingLeft: 10 }}>
+                    <Text style={{ fontSize: 15, color: 'rgb(243,177,127)' }}>Image</Text>
                 </View>
 
                 <View style={{
@@ -81,7 +95,6 @@ class CarDetail extends Component {
                     justifyContent: 'space-between',
                     flexWrap: 'wrap',
                     width: '100%',
-                    backgroundColor: 'white'
                 }}>
                     {isLoading ?
                         <FlatList
@@ -95,7 +108,7 @@ class CarDetail extends Component {
                             }
                         >
                         </FlatList> :
-                         <ActivityIndicator size="small" color="#0000ff"/>
+                        <ActivityIndicator size="small" color="#0000ff" />
                     }
 
 

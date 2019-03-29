@@ -23,6 +23,7 @@ export default class App extends React.Component {
          <RootApp/>
         </PersistGate>
       </Provider>
-    )
+
+    );
   }
 }

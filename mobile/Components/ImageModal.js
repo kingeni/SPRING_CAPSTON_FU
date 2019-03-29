@@ -7,10 +7,12 @@ class ImageModal extends React.Component {
 
     }
     render() {
+        const {img} = this.props;
         return (
             <Modal
                 animationType='slide'
                 visible={this.props.visibleStatus}
+                onRequestClose={()=>{}}
             >
                 <View style={{ flex: 1, backgroundColor: 'black' }}>
                 <TouchableHighlight>
@@ -20,7 +22,7 @@ class ImageModal extends React.Component {
                 onPress={()=>this.closeVisible(false)}/>
                 </TouchableHighlight>
                     <Image
-                    source={require('../assets/images/robot-dev.png')}
+                    source={{uri : `data:image/png;base64,${img}`}}
                     style={{
                         flex: 1,
                         width: null,

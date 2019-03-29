@@ -1,10 +1,14 @@
 import { connect } from 'react-redux';
 import { 
-    selectUser
+    selectUser,
+    actions,
 } from '../reducers/user';
 import EditInforUser from '../Components/EditInforUser';
 
 const mapStateToProps = state => ({
     dataUser : selectUser(state),
 });
-export default connect(mapStateToProps)(EditInforUser);
+const mapDispatchToProps = {
+    updateInfo: actions.updateUserInfo,
+}
+export default connect(mapStateToProps,mapDispatchToProps)(EditInforUser);
