@@ -132,18 +132,18 @@ def videoDetector():
 def imageDetector():
     global i, input_segmments 
     imageToCheck = captureImage()
-    cv2.imwrite("captured.jpg", imageToCheck)
-    cv2.imshow('Plate', imageToCheck)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.imwrite("captured.jpg", imageToCheck)
+    # cv2.imshow('Plate', imageToCheck)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
     # imageToCheck = cv2.imread(imagePath)
     possible_plates = plateDetector.find_possible_plates(imageToCheck)
     if possible_plates is not None:
         print("Detected license plate!")
         for plates in possible_plates:
-            cv2.imshow('Plate', plates)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
+            # cv2.imshow('Plate', plates)
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
             # for c in plateDetector.char_on_plate[0]:
             #     cv2.imshow('c', c)
                 # cv2.waitKey(0)
