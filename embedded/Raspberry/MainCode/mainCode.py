@@ -1,40 +1,30 @@
-# import numpy as np
-# import cv2
-# import tensorflow
-# import argparse
-# import glob
-# import math
-# import threading
-# from collections import Counter
-# import multiprocessing as mp
 import cv2
 import base64
-from class_CNN import NeuralNetwork
-from class_PlateDetection import PlateDetector
 import serial
 from RFID import PyRfid
-import stringdist  # thư viện so sánh dựa theo %
+import stringdist  # compare library follow percent
 import requests
 import json
 import random
 import string
 from time import sleep
-from playsound import playsound
-import LicenseDetector
+# from playsound import playsound
+import Plate
 import math
+import pygame
 # _________________________________________init camera plate detector
-plateDetector = PlateDetector(type_of_plate='RECT_PLATE', minPlateArea=3000, maxPlateArea=30000) # Initialize the plate detector
-myNetwork = NeuralNetwork(modelFile="model/v3.pb", labelFile="model/v2.txt") # Initialize the Neural Network
-coordinates = (0, 0)
-plates_value = []
-plates_length = []
-processes = []
-input_segmments = []
-i = 0 
+# plateDetector = PlateDetector(type_of_plate='RECT_PLATE', minPlateArea=3000, maxPlateArea=30000) # Initialize the plate detector
+# myNetwork = NeuralNetwork(modelFile="model/v3.pb", labelFile="model/v2.txt") # Initialize the Neural Network
+# coordinates = (0, 0)
+# plates_value = []
+# plates_length = []
+# processes = []
+# input_segmments = []
+# i = 0 
 #____________________________________________________________________
 baseUrl = "http://vwms.gourl.pro/api/"
-arduinoPort = "COM3"
-rfidPort = "COM6"
+arduinoPort = "/dev/ttyACM0"
+rfidPort = "/dev/ttyUSB0"
 
 weight = "0"
 maxLoad = "0"
@@ -45,7 +35,8 @@ cameraPlate = ""
 rfidPlate = ""
 plate = ""
 imagePath = "captured.jpg"
-ser = serial.Serial(port=arduinoPort, baudrate=9600, parity=serial.PARITY_NONE,stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
+
+
 # define command
 SendWeight = 1
 Notification = 2
@@ -57,10 +48,9 @@ status = 4
 #     return float(weight)
 
 def sendCommand(command, body):
-    # return True #simulation result
-    # ser = serial.Serial(port=arduinoPort, baudrate=9600, parity=serial.PARITY_NONE,stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
     data = str(command)+'|'+body
     print("Raspberry's sended : ",data)
+    #return True #simulation result
     sleep(1)
 
     ser.write(data.encode())
@@ -70,9 +60,9 @@ def sendCommand(command, body):
     return True
     
 def readWeight():
-    # return "10" #simulation data
+    #return "10" #simulation data
     # ser = serial.Serial(port=arduinoPort, baudrate=9600, parity=serial.PARITY_NONE,stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
-    # print("connect to: ",ser.portstr)
+    print("connect to: ",ser.portstr)
     value = '0'
     while True:
         received = ser.readline().decode().rstrip()
@@ -85,13 +75,13 @@ def readWeight():
 
 
 def readCard():
-    # return "12345"  # virtual return
+    #return "12345"  # virtual return
 
     try:
         rfid = PyRfid(rfidPort, 9600)
         print('Waiting for tag...\n')
         rfid.readTag()
-        print('Tag Id:' + rfid.tagIdFloat)
+        # print('Tag Id:' + rfid.tagIdFloat)
         return rfid.tagIdFloat
     except Exception as e:
         print('[Exception] ' + str(e))
@@ -99,7 +89,8 @@ def readCard():
 
 
 def getCameraPlate():
-    cameraPlate = LicenseDetector.imageDetector()
+    #return None
+    cameraPlate = Plate.plateDetector()
     if cameraPlate != None:
         return cameraPlate
     else:
@@ -143,14 +134,13 @@ def getInfoFromServer(cardId):
     query = {'tagId': str(cardId)}
     try:
         res = requests.get(baseUrl+'vehicle/get-plate-by-tag-id', params=query)
-        print(res.url)
+        # print(res.url)
         result = json.loads(res.text)
         global rfidPlate
         global maxLoad
         rfidPlate = result["license_plates"]
         if len(rfidPlate) >0:
             rfidPlate = str(rfidPlate).replace('-','')
-
         print("Bien so: "+ rfidPlate)
         maxLoad = str(result["vehicle_maxload"])
         print("Max load: "+str(maxLoad))
@@ -174,8 +164,8 @@ def SendTransactionToServer(tagId, transactionId, status, weight, botId):
     try:
         res = requests.post(baseUrl+'transaction/submit-transaction',data)
         # print("url: "+res.url)
-        print("return: "+res.text)
-        print("Send transaction done!")
+        # print("return: "+res.text)
+        print("Send transaction done! Waitting response from server!")
         # print("response code: "+ str(res.status_code))
         return True
     except Exception:
@@ -184,10 +174,15 @@ def SendTransactionToServer(tagId, transactionId, status, weight, botId):
 def processUndefinedInfo():
     print("Start processing anonymous transaction:")
     sendCommand(Notification, "errorIdentify") #can not detect tag
-    playsound('audio/moidoitronggiaylat.mp3')
+    
+    pygame.mixer.music.load("audio/moidoitronggiaylat.wav")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy() == True:
+        continue
+    # playsound('audio/moidoitronggiaylat.mp3')
 
     SendTransactionToServer("Null",transactionId,3,weight,botId)
-    print("Get transaction info:",end='')
+    print("Get transaction info:",end=' ')
     while(True):
         # global transactionId
         if(getTransactionInfo(transactionId)) == True:
@@ -205,14 +200,26 @@ def createTransactionID():
     return ''.join(random.choice(chars) for _ in range(size))
 
 if __name__=="__main__":
+    ser = serial.Serial(port=arduinoPort, baudrate=9600, parity=serial.PARITY_NONE,stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
+    pygame.mixer.init()
     while (True):
         transactionId =  createTransactionID()
         print("Start transaction:",transactionId)
-        playsound('audio/moixevaotram.mp3')
+
+        pygame.mixer.music.load("audio/moixevaotram.wav")
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            continue
+        # playsound('audio/moixevaotram.mp3')
         if(float(weight) < 1):
             weight = readWeight()
             print("Trong tai cua xe:",weight)
-            playsound('audio/moiquetthe.mp3')
+
+            pygame.mixer.music.load("audio/moiquetthe.wav")
+            pygame.mixer.music.play()
+            while pygame.mixer.music.get_busy() == True:
+                continue
+            # playsound('audio/moiquetthe.mp3')
             tagId = readCard()
             print("tagID: "+tagId)
 
@@ -222,13 +229,13 @@ if __name__=="__main__":
         # if(tagId != 'Null'):
         i = 1
         while(True):
-            getInfoFromServer(tagId)
-            if(getInfoFromServer(tagId)):  # kiểm tra xem có tagId có trong db không
+            # getInfoFromServer(tagId)
+            if(getInfoFromServer(tagId)):  # Check if tag id contain in Database
                 # So sanh bien so tu server va bien so tu camera
                 # if(True):
                 if(comparePlateInfo(rfidPlate, cameraPlate)):
                     plate = rfidPlate  # su dung bien so tu rfid lam bien so chinh thuc
-                    print("Hoàn thành cân!")
+                    print("Finish weight!")
                     sendCommand(SendPlateMaxweight, plate+'|'+maxLoad)
                     if (float(weight) <= float(maxLoad)):
                         # playsound('audio/moiditiep.mp3')
@@ -240,33 +247,63 @@ if __name__=="__main__":
                     processUndefinedInfo()
                     print("done!")
                 if(float(weight) <= float(maxLoad)):
+                    sleep(4)
                     sendCommand(status, 'done')
-                    playsound('audio/moiditiep.mp3')
+
+                
+                    pygame.mixer.music.load("audio/moiditiep.wav")
+                    pygame.mixer.music.play()
+                    while pygame.mixer.music.get_busy() == True:
+                        continue
+                    # playsound('audio/moiditiep.mp3')
 
                 else:
+                    sleep(4)
                     print("Xe qua tai")
                     sendCommand(status, 'overLoad')
-                    playsound('audio/moihatai.mp3')
+
+                    pygame.mixer.music.load("audio/moihatai.wav")
+                    pygame.mixer.music.play()
+                    while pygame.mixer.music.get_busy() == True:
+                        continue
+                    # playsound('audio/moihatai.mp3')
 
                 weight = "0"
                 break
-            else:  # không có tagId trong db
-                # cho thử lại 3 lần
+            else:  # Not contain TagId in Database
+                # try again 3 times
                 print("Can not found tagID: "+tagId+" in server")
                 sendCommand(Notification, "canNotIdentify")
                 
                 if(i > 2):
                     processUndefinedInfo()
                     if(float(weight) <= float(maxLoad)):
+                        sleep(4)
                         sendCommand(status, 'done')
-                        playsound('audio/moiditiep.mp3')
+
+                        pygame.mixer.music.load("audio/moiditiep.wav")
+                        pygame.mixer.music.play()
+                        while pygame.mixer.music.get_busy() == True:
+                            continue
+                        # playsound('audio/moiditiep.mp3')
                     else:
-                        playsound('audio/moihatai.mp3')
+                        sleep(4)
+
+                        pygame.mixer.music.load("audio/moihatai.wav")
+                        pygame.mixer.music.play()
+                        while pygame.mixer.music.get_busy() == True:
+                            continue
+                        # playsound('audio/moihatai.mp3')
                         sendCommand(status, 'overLoad')
                         # weight = "0"
                     break
                 else:
-                    playsound('audio/moithulai.mp3')
+
+                    pygame.mixer.music.load("audio/moithulai.wav")
+                    pygame.mixer.music.play()
+                    while pygame.mixer.music.get_busy() == True:
+                        continue
+                    # playsound('audio/moithulai.mp3')
                 # sleep(5)
                 tagId = readCard()
                 i = i+1
