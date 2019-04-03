@@ -41,7 +41,7 @@ class SiteController extends Controller
                 return Json::encode($arr);
             }
         } else {
-            Json::encode(['status' => false]);
+            return Json::encode(['status' => false]);
         }
     }
 }

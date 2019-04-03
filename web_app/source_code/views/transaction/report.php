@@ -102,7 +102,7 @@ $lastName = $userProfile->last_name;
         </tr>
     </table>
 </div>
-<div style="float: left; width: 50%;"><?php echo Html::img(Yii::getAlias('@web') . '/' . $model->img_url, ['height' => '1200px', 'width' => '800px']) . ' '; ?></div>
+<div style="float: left; width: 50%;"><?php echo Html::img(Yii::getAlias('@web') . '/' . $model->img_url, ['height' => '800px', 'width' => '1200px']) . ' '; ?></div>
 <br>
 <div>
     <p style="font-weight: bold; margin-left: 5px">Kết quả cân được</p>

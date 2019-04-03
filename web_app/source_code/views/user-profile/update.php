@@ -51,7 +51,7 @@ $nameSize[] = ['caption' => end($urlExploded), 'size' => filesize($model->img_ur
             ],
             'pluginOptions' => [
                 'showUpload' => false,
-                'initialPreview' => $model->img_url != null ? [Yii::getAlias('@web') . '/' . $model->img_url] : '',
+                'initialPreview' => $model->img_url != null ? Yii::getAlias('@web') . '/' . $model->img_url : '',
                 'initialPreviewAsData' => true,
                 'initialCaption' => "1 files selected",
                 'initialPreviewConfig' => $nameSize,

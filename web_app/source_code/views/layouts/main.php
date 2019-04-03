@@ -39,32 +39,32 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Trang chủ', 'url' => ['/site/index']],
 //            ['label' => 'About', 'url' => ['/site/about']],
             [
-                'label' => 'Manage Transaction',
+                'label' => 'Quản lý Lượt Cân',
                 'url' => '/transaction/index'
             ],
             [
-                'label' => 'Manage Vehicle',
+                'label' => 'Quản lý Phương Tiện',
                 'items' => [
-                    ['label' => 'Manage Vehicle', 'url' => '/vehicle/index'],
+                    ['label' => 'Quản lý Phương Tiện', 'url' => '/vehicle/index'],
                     '<li class="divider"></li>',
-                    ['label' => 'Manage Vehicle Weight', 'url' => '/vehicle-weight/index'],
+                    ['label' => 'Quản lý Loại Xe', 'url' => '/vehicle-weight/index'],
                 ],
             ],
             [
-                'label' => 'Manage Station',
+                'label' => 'Quản lý Trạm Cân',
                 'url' => '/station/index'
             ],
             [
-                'label' => 'Manage User',
+                'label' => 'Quản lý Người Dùng',
                 'items' => [
-                    ['label' => 'Manage User', 'url' => '/user/index'],
+                    ['label' => 'Quản lý Người Dùng', 'url' => '/user/index'],
                     '<li class="divider"></li>',
-                    ['label' => 'Manage User Profile', 'url' => '/user-profile/index'],
+                    ['label' => 'Quản lý Thông Tin Người Dùng', 'url' => '/user-profile/index'],
                     '<li class="divider"></li>',
-                    ['label' => 'Manage Role', 'url' => ['/role/index']],
+                    ['label' => 'Quản lý Vai Trò Người Dùng', 'url' => ['/role/index']],
                 ],
             ],
 //            ['label' => 'Contact', 'url' => ['/site/contact']],
@@ -93,14 +93,6 @@ AppAsset::register($this);
         <?= $content ?>
     </div>
 </div>
-
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
-</footer>
 
 <?php $this->endBody() ?>
 </body>

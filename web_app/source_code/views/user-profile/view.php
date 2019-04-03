@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Avatar',
                 'attribute' => 'img_url',
-                'value' => '/' . $model->img_url,
+                'value' => '@web/' . $model->img_url,
                 'format' => ['image', ['width' => '100', 'height' => '100']],
             ],
 //            'user.username',

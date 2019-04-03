@@ -36,6 +36,17 @@ class VehicleController extends Controller
                 $item['number_of_violations'] = count(Transaction::find()->where(['vehicle_id' => $item['id']])->andWhere(['status' => 2])->all());
                 $item['number_of_unread'] = count(Transaction::find()->where(['vehicle_id' => $item['id']])->andWhere(['is_read' => 0])->all());
                 $item['newest_transaction'] = Transaction::find()->where(['vehicle_id' => $item['id']])->orderBy(['created_at' => SORT_DESC])->one();
+                $listVehicleImg = VehicleImg::findAll(['vehicle_id' => $item['id']]);
+                if (count($listVehicleImg) > 0) {
+                    $imgUrl = array_values($listVehicleImg)[0]->img_url;
+                    if (file_exists($imgUrl)) {
+                        $item['img'] = base64_encode(file_get_contents($imgUrl));
+                    } else {
+                        $item['img'] = null;
+                    }
+                } else {
+                    $item['img'] = null;
+                }
                 $arr[] = $item;
             }
         }
@@ -47,14 +58,20 @@ class VehicleController extends Controller
         $listVehicleImg = VehicleImg::findAll(['vehicle_id' => $vehicleId]);
         $arr = [];
         if (count($listVehicleImg) > 0) {
-            $count = 0;
             foreach ($listVehicleImg as $item) {
-                $data = file_get_contents($item->img_url);
-                $arr[] = [
-                    'img' . $count => base64_encode($data)
-                ];
-                $count++;
+                if (file_exists($item->img_url)) {
+                    $data = file_get_contents($item->img_url);
+                    $arr[] = [
+                        'img0' => base64_encode($data)
+                    ];
+                } else {
+                    $arr[] = [
+                        'img0' => null
+                    ];
+                }
             }
+        } else {
+            $arr = ['img0' => null];
         }
         return Json::encode($arr);
     }

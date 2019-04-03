@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\search\TransactionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Transactions';
+$this->title = 'Tất cả Lượt Cân';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transaction-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Transaction', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tạo mới Lượt Cân', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -27,28 +27,50 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'vehicle_weight',
-            'unit',
-            'created_at',
-            'img_url:url',
-            //'vehicle_id',
-            //'station_id',
+            [
+                'attribute' => 'id',
+                'label' => 'Mã Lượt cân',
+            ],
+            [
+                'attribute' => 'vehicle_id',
+                'label' => 'Mã Phương tiện',
+            ],
+            [
+                'attribute' => 'vehicle_weight',
+                'label' => 'Tải trọng Xe',
+                'value' => function ($model) {
+                    return $model->vehicle_weight . ' ' . $model->unit;
+                },
+            ],
+            [
+                'attribute' => 'created_at',
+                'label' => 'Tạo lúc',
+                'value' => function ($model) {
+                    return date('h:i d-m-Y', strtotime($model->created_at));
+                },
+            ],
+//            'created_at',
+//            'img_url:url',
+            [
+                'attribute' => 'station_id',
+                'label' => 'Mã Trạm cân',
+            ],
             [
                 'attribute' => 'status',
+                'label' => 'Trạng thái',
                 'format' => 'raw',
                 'value' => function ($model) {
                     if ($model->status == Transaction::STATUS_DONE) {
-                        return '<span class="badge badge-success">Done</span>';
+                        return '<span class="badge badge-success">Hoàn Thành</span>';
                     } else if ($model->status == Transaction::STATUS_OVERLOAD) {
-                        return '<span class="badge badge-danger">Overload</span>';
+                        return '<span class="badge badge-danger">Quá Tải</span>';
                     } else if ($model->status == Transaction::STATUS_UNDONE) {
-                        return '<span class="badge badge-secondary">Undone</span>';
+                        return '<span class="badge badge-secondary">Chưa Hoàn Thành</span>';
                     } else {
                         return '(not set)';
                     }
                 },
-                'filter' => array('1' => 'Done', '2' => 'Overload', '3' => 'Undone')
+                'filter' => array('1' => 'Hoàn Thành', '2' => 'Quá Tải', '3' => 'Chưa Hoàn Thành')
             ],
 
             ['class' => 'yii\grid\ActionColumn'],
