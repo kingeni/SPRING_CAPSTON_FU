@@ -8,7 +8,8 @@ const LIST_TRANSACTION_PATH = '/transaction/get-transactions';
 const LIST_TRANSACTION_VIOLENT = '/transaction/get-v-transactions';
 const UPDATE_STATUS_READING_PATH = '/transaction/update-is-read-transaction';
 const LIST_IMAGE_VEHICLE_PATH = '/vehicle/get-vehicle-img';
-const UPDATE_INFO_USER = '/user-profile/update-user-profile';
+const UPDATE_INFO_USER_PATH = '/user-profile/update-user-profile';
+const CHANGE_PASSWORD_PATH = '/user/update-password';
 const setDefaults = (defaults) => {
   Object.keys(defaults).forEach((key) => {
     axios.defaults[key] = defaults[key];
@@ -28,7 +29,7 @@ const setToken = (token) => {
 const getNiceErrorMsg = (response) => {
   const { status, data } = response || {};
 
-  if (!status) return 'Unknown error occurred!';
+  if (!status) return 'Please check internet!';
 
   if (status >= 500) {
     return 'Server is unreachable';
@@ -78,7 +79,7 @@ const getVehicleList = async (user_id, optionalConfig = {}) => {
   } catch (error) {
     return { error };
   }
-}
+};
 const getAllTransactions = async (vehicle_id, optionalConfig = {}) => {
   try {
 
@@ -96,7 +97,7 @@ const getAllTransactions = async (vehicle_id, optionalConfig = {}) => {
   } catch (error) {
     return { error };
   }
-}
+};
 const getErrTransactions = async (vehicle_id, optionalConfig = {}) => {
   try {
     const response = await axios({
@@ -114,7 +115,7 @@ const getErrTransactions = async (vehicle_id, optionalConfig = {}) => {
   } catch (error) {
     return { error };
   }
-}
+};
 const updateStatusReading = async (vehicle_id, optionalConfig = {}) => {
   try {
     const response = await axios({
@@ -131,7 +132,7 @@ const updateStatusReading = async (vehicle_id, optionalConfig = {}) => {
   } catch (error) {
     return { error };
   }
-}
+};
 const getListImage = async (vehicle_id, optionalConfig = {}) => {
   try {
     const response = await axios({
@@ -148,7 +149,7 @@ const getListImage = async (vehicle_id, optionalConfig = {}) => {
   } catch (error) {
     return { error };
   }
-}
+};
 const updateUserInfor = async (formData, userId, optionalConfig = {}) => {
   try {
     const response = await axios({
@@ -159,7 +160,7 @@ const updateUserInfor = async (formData, userId, optionalConfig = {}) => {
         ...(axios.defaults.headers || {}),
         'Content-type': 'application/json',
       },
-      url: `${UPDATE_INFO_USER}?userId=${userId}`,
+      url: `${UPDATE_INFO_USER_PATH }?userId=${userId}`,
       data: formData
     });
 
@@ -167,7 +168,27 @@ const updateUserInfor = async (formData, userId, optionalConfig = {}) => {
   } catch (error) {
     return { error };
   }
-}
+};
+const changePassword = async (formData, userId, optionalConfig = {}) => {
+  try {
+    const response = await axios({
+      ...optionalConfig,
+      method: 'POST',
+      baseURL: apiUrl,
+      header: {
+        ...(axios.defaults.headers || {}),
+        'Content-type': 'application/json',
+      },
+      url: `${CHANGE_PASSWORD_PATH}?userId=${userId}`,
+      data: formData,
+    });
+    console.log('response: ', response.data);
+    return { response };
+  } catch (error) {
+    console.log(error);
+    return { error };
+  }
+};
 const Api = {
   setDefaults,
   setToken,
@@ -179,6 +200,7 @@ const Api = {
   updateStatusReading,
   getListImage,
   updateUserInfor,
+  changePassword,
 };
 
 export default Api;

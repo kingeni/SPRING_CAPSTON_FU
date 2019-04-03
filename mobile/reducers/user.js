@@ -6,7 +6,8 @@ export const DOWNLOAD_USER_INFO_FAILED = 'user/DOWNLOAD_USER_INFO_FAILED';
 export const UPDATE_USER_INFO_START = 'user/UPDATE_USER_INFO_START';
 export const UPDATE_USER_INFO_SUCCESS = 'user/UPDATE_USER_INFO_SUCCESS';
 export const UPDATE_USER_INFO_FAILED = 'user/UPDATE_USER_INFO_FAILED';
-
+export const UPDATE_PASSWORD = 'user/UPDATE_PASSWORD';
+export const UPDATE_PASSWORD_FAIL = 'user/UPDATE_PASSWORD_FAIL';
 const downloadUserInfo = id => ({
   type: DOWNLOAD_USER_INFO_START,
   payload: {
@@ -28,11 +29,6 @@ const downloadUserInfoFailed = error => ({
   },
 });
 
-/**
- *
- * @param {Object} user
- * Should contains id, username, fullname and new password
- */
 const updateUserInfo = user => ({
   type: UPDATE_USER_INFO_START,
   payload: {
@@ -53,16 +49,34 @@ const updateUserInfoFailed = error => ({
     error,
   },
 });
-
+const updatePassword = (oldPassword, newPassword) => ({
+  type: UPDATE_PASSWORD,
+  payload: {
+    oldPassword,
+    newPassword,
+  }
+});
+const updatePasswordFail = error => ({
+  type: UPDATE_PASSWORD_FAIL,
+  payload: {
+    error
+  }
+});
 const initialState = {
   user: {},
-  isLoading: null,
+  isLoading: false,
   error: null,
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case UPDATE_USER_INFO_START:
+    case UPDATE_USER_INFO_START: {
+      return {
+        ...state,
+        isLoading: true,
+      }
+    }
+
     case DOWNLOAD_USER_INFO_START: {
       return {
         ...state,
@@ -77,9 +91,16 @@ export default function reducer(state = initialState, action) {
         user,
       };
     }
-    case UPDATE_USER_INFO_FAILED:
+    case UPDATE_USER_INFO_FAILED: {
+      const { error } = action.payload;
+      return {
+        ...state,
+        error,
+        isLoading: false,
+      };
+    }
     case DOWNLOAD_USER_INFO_FAILED: {
-      const { error } = action.payload || {};
+      const { error } = action.payload;
       return {
         ...state,
         error,
@@ -93,6 +114,20 @@ export default function reducer(state = initialState, action) {
         error: null,
         user,
       };
+    }
+    case UPDATE_PASSWORD: {
+      return {
+        ...state,
+        isLoading: true,
+      }
+    }
+    case UPDATE_PASSWORD_FAIL: {
+      const { error } = action.payload;
+      return {
+        ...state,
+        error,
+        isLoading: true,
+      }
     }
     case LOGOUT: {
       return initialState;
@@ -109,8 +144,10 @@ export const actions = {
   updateUserInfo,
   updateUserInfoSuccess,
   updateUserInfoFailed,
+  updatePassword,
+  updatePasswordFail,
 };
 
-export const selectUser = ({ user }) => user.user || {};
-export const selectStatus = ({ user }) => user.isLoading || false;
-export const selectError = ({ user }) => user.error || '';
+export const getUser = ({ user }) => user.user;
+export const getStatus = ({ user }) => user.isLoading;
+export const getError = ({ user }) => user.error;

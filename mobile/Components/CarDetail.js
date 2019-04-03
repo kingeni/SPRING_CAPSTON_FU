@@ -39,13 +39,13 @@ class CarDetail extends Component {
                 (<Ionicons name='ios-arrow-back'
                     size={30} color='rgb(243,177,127)'
                     style={{ paddingLeft: 10 }}
-                    onPress={() =>  navigation.goBack() } />),
+                    onPress={() => navigation.goBack()} />),
             headerStyle: {
                 borderBottomWidth: 0,
                 backgroundColor: 'rgb(47, 54, 61)',
             },
             headerTitleStyle: {
-                flex:1,
+                flex: 1,
                 textAlign: 'center',
                 color: 'white',
                 fontSize: 25,
@@ -62,26 +62,30 @@ class CarDetail extends Component {
         let { visibleStatus } = this.state;
         const { getDetailVehicle, getListImage, isLoading } = this.props;
         return (
-            <ScrollView style={{ flex: 1, backgroundColor: 'rgb(79,88,86)' }}>
+            <ScrollView style={{
+                flex: 1,
+                // backgroundColor: 'rgb(79,88,86)',
+                backgroundColor:'#d6d7da',
+            }}>
                 <View style={{ alignItems: 'stretch' }}>
                     <View style={{ ...styles.flex_row, padding: 15, marginTop: 25, backgroundColor: 'white' }}>
-                        <Text style={styles.flex_50}>License plates</Text>
+                        <Text style={{ ...styles.flex_50, fontWeight: 'bold' }}>License plates</Text>
                         <Text style={{ ...styles.flex_50, textAlign: 'right' }}>{getDetailVehicle.license_plates}</Text>
                     </View>
                     <View style={{ ...styles.flex_row, padding: 15, backgroundColor: 'white' }}>
-                        <Text style={styles.flex_50}>Name</Text>
+                        <Text style={{ ...styles.flex_50, fontWeight: 'bold' }}>Name</Text>
                         <Text style={{ ...styles.flex_50, textAlign: 'right' }}>{getDetailVehicle.name}</Text>
                     </View>
                     <View style={{ ...styles.flex_row, padding: 15, backgroundColor: 'white' }}>
-                        <Text style={styles.flex_50}>Expiration date</Text>
+                        <Text style={{ ...styles.flex_50, fontWeight: 'bold' }}>Expiration date</Text>
                         <Text style={{ ...styles.flex_50, textAlign: 'right' }}>{getDetailVehicle.expiration_date}</Text>
                     </View>
                     <View style={{ ...styles.flex_row, padding: 15, backgroundColor: 'white' }}>
-                        <Text style={styles.flex_50}>Max load</Text>
+                        <Text style={{ ...styles.flex_50, fontWeight: 'bold' }}>Max load</Text>
                         <Text style={{ ...styles.flex_50, textAlign: 'right' }}>{getDetailVehicle.vehicle_maxload}</Text>
                     </View>
                     <View style={{ ...styles.flex_row, padding: 15, borderBottomWidth: 0, marginBottom: 5, backgroundColor: 'white' }}>
-                        <Text style={styles.flex_50}>Breaking Law's number  </Text>
+                        <Text style={{ ...styles.flex_50, fontWeight: 'bold' }}>Breaking Law's number  </Text>
                         <Text style={{ ...styles.flex_50, textAlign: 'right' }}>{getDetailVehicle.number_of_violations}</Text>
                     </View>
                 </View>
@@ -108,7 +112,7 @@ class CarDetail extends Component {
                             }
                         >
                         </FlatList> :
-                        <ActivityIndicator size="small" color="#0000ff" />
+                        <ActivityIndicator size="small" color="black" />
                     }
 
 

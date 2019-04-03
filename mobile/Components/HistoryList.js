@@ -13,13 +13,12 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
-import FormData from 'FormData';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import styles from '../Components/Styles';
 import HistoryItem from '../Components/HistoryItem';
 
 let _headerComponet = ({ section }) =>
-    (<View style={{ alignItems: 'flex-start', backgroundColor: '#d6d7da' }}>
+    (<View style={{ alignItems: 'flex-start', backgroundColor: 'white' }}>
         <Text style={{ fontSize: 30, }}>{section}</Text>
     </View>)
 
@@ -51,7 +50,7 @@ class HistoryList extends Component {
                     }}
                     buttonStyle={{ backgroundColor: 'rgb(47, 54, 61)' }}
                     selectedButtonStyle={{ backgroundColor: 'rgb(243,177,127)' }}
-                    textStyle={{ color: 'rgb(243,177,127)' }}
+                    textStyle={{ color: 'white' }}
                     selectedTextStyle={{ color: 'white' }}
                 />
             ),
@@ -74,7 +73,7 @@ class HistoryList extends Component {
             headerTitleStyle: {
                 flex: 1,
                 alignSeft: 'center',
-                borderWidth:1,
+                borderWidth: 1,
                 borderColor: 'red',
             }
         };
@@ -124,7 +123,7 @@ class HistoryList extends Component {
 
         return (
 
-            <ScrollView contentContainerStyle={styles.container1} >
+            <ScrollView contentContainerStyle={{ ...styles.container1 }} >
                 {isLoading ?
 
                     <SectionList
@@ -143,9 +142,10 @@ class HistoryList extends Component {
                     >
                     </SectionList>
                     :
-                    <View style={{ marginTop: 5 }}><ActivityIndicator size="large" color="white" /></View>
+                    <View style={{ marginTop: 5 }}><ActivityIndicator size="large" color="black" /></View>
                 }
             </ScrollView>
+
 
         );
     }

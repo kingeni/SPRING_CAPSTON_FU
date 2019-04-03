@@ -11,6 +11,8 @@ import {
 } from '../reducers/auth';
 import {
   UPDATE_USER_INFO_START,
+  UPDATE_PASSWORD,
+  getUser,
   actions as UserActions,
 } from '../reducers/user';
 import {
@@ -24,7 +26,6 @@ export function* handleUserLogin() { // eslint-disablae-line no-underscore-dangl
 
     const { payload } = yield take(LOGIN_START);
     let formData = new FormData();
-    console.log('login');
     // formData.append('username','huytd');
     // formData.append('password','123456');
     formData.append('username', payload.username);
@@ -38,25 +39,35 @@ export function* handleUserLogin() { // eslint-disablae-line no-underscore-dangl
 
       if (timeout) {
         yield put(AuthActions.loginFailed('Unable to login.\nPlease try again later!'));
+        yield put(AuthActions.loginFailed(null));
         continue;
       }
 
       const { error, response } = login;
       if (error) {
         yield put(AuthActions.loginFailed(Api.getNiceErrorMsg(error.response)));
+        yield put(AuthActions.loginFailed(null));
         continue;
       }
 
       const { data } = response;
       // yield call(Api.setToken, data.token);
 
-      const userData = data[0] || {};
+      const userData = data[0] || null;
+
+      if (userData === null) {
+
+        yield put(AuthActions.loginFailed('Wrong Username or password'));
+        yield put(AuthActions.loginFailed(null));
+        continue;
+      }
 
       yield put(AuthActions.loginSuccess(userData.access_token));
       yield put(UserActions.downloadUserInfoSuccess(userData));
       yield call(NavigationService.goToHome);
     } catch (error) {
       yield put(AuthActions.loginFailed(error));
+      yield put(AuthActions.loginFailed(null));
     }
   }
 }
@@ -64,7 +75,7 @@ export function* handleUserLogin() { // eslint-disablae-line no-underscore-dangl
 export function* verifyUser() { // eslint-disable-line no-underscore-dangle
 
   const token = yield select(getToken);
-
+  console.log('VerifyUser');
   if (token) {
     yield put(TransActions.stopTransaction());
     yield put(AuthActions.loginSuccess(token));
@@ -74,8 +85,9 @@ export function* verifyUser() { // eslint-disable-line no-underscore-dangle
     yield call(NavigationService.gotoLogin);
   }
 }
-function* updateUsersInfor() {
+export function* updateUsersInfor() {
   while (true) {
+    console.log('update');
     const { payload } = yield take(UPDATE_USER_INFO_START);
     const { user } = payload;
     let formData = new FormData();
@@ -92,22 +104,62 @@ function* updateUsersInfor() {
         timeout: delay(15000),
       });
       if (timeout) {
-        console.log('Unable to update.\nPlease try again later!')
+        yield put(UserActions.updateUserInfoFailed('Request Timeout.\nPlease try again later!'));
+        yield put(UserActions.updateUserInfoFailed(null));
         continue;
       }
       const { response, error } = updateStatus;
 
       if (error) {
-        console.log('error Response:', error);
+        yield put(UserActions.updateUserInfoFailed(Api.getNiceErrorMsg(error.response)));
+        yield put(UserActions.updateUserInfoFailed(null));
         continue;
       }
 
       const { data } = response;
-      console.log('data:', data);
       yield put(UserActions.updateUserInfoSuccess(user));
+      yield call(NavigationService.gotoInfo);
+    } catch (error) {
+      yield put(UserActions.updateUserInfoFailed(error));
+      yield put(UserActions.updateUserInfoFailed(null));
+    }
+  }
+}
+export function* changePass() {
+  while (true) {
+    const { payload } = yield take(UPDATE_PASSWORD);
+    const user = yield select(getUser);
+    let formData = new FormData();
+    formData.append('old_password', payload.oldPassword);
+    formData.append('new_password', payload.newPassword);
+    try {
+      const { changePass, timeout } = yield race({
+        changePass: call(Api.changePassword, formData, user.user_id),
+        timeout: delay(15000),
+      });
+      if (timeout) {
+        yield put(UserActions.updatePasswordFail('Check Internet\nPlease try again later!'));
+        yield put(UserActions.updatePasswordFail(null));
+        continue;
+      }
+      const { response, error } = changePass;
+      if (error) {
+        yield put(UserActions.updatePasswordFail(error));
+        yield put(UserActions.updatePasswordFail(null));
+        console.log('error API: ', error);
+        continue;
+      }
+      const { data } = response;
+      if (data.status) {
+        yield call(NavigationService.gotoLogin);
+      } else {
+        yield put(UserActions.updatePasswordFail('Please check current password'));
+      }
 
     } catch (error) {
-      console.log('errorUpdate: ', error);
+      yield put(UserActions.updatePasswordFail(error));
+      yield put(UserActions.updatePasswordFail(null));
+      console.log('test: ', error);
     }
   }
 }
@@ -116,5 +168,6 @@ export default function* authFlow() {
     handleUserLogin(),
     verifyUser(),
     updateUsersInfor(),
+    changePass(),
   ]);
 }

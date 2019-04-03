@@ -1,4 +1,4 @@
-import { NavigationActions, StackActions, DrawerActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 
 let navigator = null;
 const setTopLevelNavigator = (navigatorRef) => {
@@ -56,6 +56,9 @@ const goToHome = () => {
 const gotoLogin = () => {
   navigate('Login');
 };
+const gotoInfo = () => {
+  navigate('InforUser');
+};
 
 const navigationServices = {
   setTopLevelNavigator,
@@ -69,5 +72,6 @@ const navigationServices = {
   gotoLogin,
   goBack,
   getNavigator,
+  gotoInfo,
 };
 export default navigationServices;

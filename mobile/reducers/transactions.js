@@ -72,43 +72,7 @@ const updateStatusReading = vehicle_id => ({
     }
 });
 
-let test = (data) => {
-    var handle = [];
-    for (var i = 0; i < data.length; i++) {
-        var item = data[i];
 
-        var createDate = item.created_at;
-        var title = createDate.split(' ')[0];
-        var time = createDate.split(' ')[1];
-        var newData = {
-            time: time,
-            station_id: item.station_id,
-            vehicle_weight: item.vehicle_weight,
-            status: item.status
-        };
-        var subData = findData(title, handle);
-        if (subData != null) {
-            subData.data.push(newData);
-        } else {
-            newItem = {
-                title: title,
-                data: [newData]
-            };
-            handle.push(newItem);
-        };
-    }
-    return handle;
-}
-
-let findData = (title, handle) => {
-    for (var i = 0; i < handle.length; i++) {
-        item = handle[i];
-        if (item.title.toLowerCase().localeCompare(title.toLowerCase()) == 0) {
-            return item;
-        }
-    }
-    return null;
-}
 
 export default function Reducer(state = initialState, action) {
     switch (action.type) {
@@ -134,19 +98,19 @@ export default function Reducer(state = initialState, action) {
         }
         case TRANSACTION_SUCCESS_ERROR: {
             const { transactionsErr } = action.payload;
-            const dataConvert = test(transactionsErr);
+
             return {
                 ...state,
-                transactionsErr: dataConvert,
+                transactionsErr,
                 isLoading: true,
             };
         }
         case TRANSACTION_SUCCESS: {
             const { transactions } = action.payload;
-            const dataConvert = test(transactions);
+           
             return {
                 ...state,
-                transactions: dataConvert,
+                transactions,
                 isLoading: true,
             };
         }

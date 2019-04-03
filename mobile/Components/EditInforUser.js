@@ -16,7 +16,8 @@ import {
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { ImagePicker, Permissions } from 'expo';
 import { Octicons, AntDesign, Entypo } from '@expo/vector-icons';
-
+import PopupDialog from './PopupDialog';
+import moment from 'moment';
 class EditInforUser extends Component {
     constructor(props) {
         super();
@@ -40,11 +41,12 @@ class EditInforUser extends Component {
     hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
     handleDatePicked = (date) => {
-        this.handleChange('date_of_birth', date);
+        this.handleChange('date_of_birth', moment(date).format('YYYY-MM-DD'));
         this.hideDateTimePicker();
+        // console.log('date:',moment(date).format('YYYY-MM-DD HH:mm:ss'));
     };
+
     pickImage = async () => {
-        console.log('aaaa');
         await Permissions.askAsync(Permissions.CAMERA_ROLL);
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
@@ -87,13 +89,10 @@ class EditInforUser extends Component {
             headerLeft: (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <View style={{ backgroundColor: 'rgb(47, 54, 61)' }}>
-                        <Text style={{ color: 'rgb(243,177,127)', paddingLeft: 9 }}>Cancel</Text>
+                        <Text style={{ color: 'rgb(243,177,127)', paddingLeft: 9, fontSize: 18 }}>Cancel</Text>
                         {/* <Button title='Done' color='rgb(243,177,127)' onPress={() => navigation.navigate('Home')}> </Button> */}
                     </View>
                 </TouchableOpacity>),
-            //  (<View style={{ backgroundColor: 'rgb(47, 54, 61)' }}>
-            //     <Button title='Cancel' color='rgb(243,177,127)' onPress={() => navigation.goBack()}></Button>
-            // </View>),
             title: 'EDIT INFORMATION',
             headerStyle: {
                 borderBottomWidth: 0,
@@ -174,6 +173,14 @@ class EditInforUser extends Component {
                 });
             }
         }
+        if (props === 'date_of_birth') {
+            this.setState(preveState => ({
+                dataUser: {
+                    ...preveState.dataUser,
+                    [props]: value,
+                }
+            }));
+        }
     }
 
     componentDidMount() {
@@ -201,14 +208,19 @@ class EditInforUser extends Component {
         const { updateInfo } = this.props;
         const { dataUser } = this.state;
         updateInfo(dataUser);
-        this.props.navigation.navigate('InforUser');
+        // this.props.navigation.navigate('InforUser');
     }
 
     render() {
         const { dataUser, firstNameValid, lastNameValid, phoneValid, emailValid, isLoading } = this.state;
+        const { isLoadingStatus, errorMsg } = this.props;
         return (
 
-            <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: 'rgb(79,88,86)', }}>
+            <ScrollView contentContainerStyle={{
+                flex: 1,
+                // backgroundColor: 'rgb(79,88,86)',
+                backgroundColor: '#d6d7da',
+            }}>
                 {isLoading ?
                     <View style={{
                         flex: 1, justifyContent: 'flex-start'
@@ -282,8 +294,8 @@ class EditInforUser extends Component {
                         </View>
                         <View><Text style={{ color: 'red' }}></Text></View>
                         <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
-                            <View style={{ flex: 30, justifyContent: 'flex-end', fontSize: 'bold' }}>
-                                <Text>Date of birth</Text>
+                            <View style={{ flex: 30, }}>
+                                <Text style={{ fontWeight: 'bold' }}>Date of birth</Text>
                             </View>
                             <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
                                 <TouchableOpacity onPress={this.showDateTimePicker}>
@@ -300,27 +312,10 @@ class EditInforUser extends Component {
                                 <Octicons name='pencil' size={12} color='black' />
                             </View>
                         </View>
-                        <View><Text style={{ color: 'red' }}>{lastNameValid}</Text></View>
-
+                        <View><Text style={{ color: 'red' }}></Text></View>
                         <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
-                            <View style={{ flex: 30, justifyContent: 'flex-end', fontSize: 'bold' }}>
-                                <Text>Phone Number</Text>
-                            </View>
-                            <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
-                                <TextInput style={{ textAlign: 'left' }} placeholder='Phone number'
-                                    onChangeText={value => this.handleChange('phone_number', value)} >{dataUser.phone_number}
-                                </TextInput>
-                            </View>
-
-                            <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                <Octicons name='pencil' size={12} color='black' />
-                            </View>
-                        </View>
-                        <View><Text style={{ color: 'red' }}>{phoneValid}</Text></View>
-
-                        <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
-                            <View style={{ flex: 30, justifyContent: 'flex-end', fontSize: 'bold' }}>
-                                <Text>Email</Text>
+                            <View style={{ flex: 30, justifyContent: 'flex-end', fontWeight: 'bold' }}>
+                                <Text style={{ fontWeight: 'bold' }}>Email</Text>
                             </View>
                             <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
                                 <TextInput style={{ textAlign: 'left' }} placeholder='Email'
@@ -333,8 +328,8 @@ class EditInforUser extends Component {
                         <View><Text style={{ color: 'red' }}>{emailValid}</Text></View>
 
                         <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
-                            <View style={{ flex: 30, justifyContent: 'flex-end', fontSize: 'bold' }}>
-                                <Text>Identity Number</Text>
+                            <View style={{ flex: 30, justifyContent: 'flex-end' }}>
+                                <Text style={{ fontWeight: 'bold' }}>CMND</Text>
                             </View>
                             <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
                                 <Text style={{ textAlign: 'left' }}>{dataUser.identity_number}</Text>
@@ -344,11 +339,26 @@ class EditInforUser extends Component {
                             </View>
                         </View>
                         <View><Text style={{ color: 'red' }}></Text></View>
+                        <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
+                            <View style={{ flex: 30, justifyContent: 'flex-end', fontWeight: 'bold' }}>
+                                <Text style={{ fontWeight: 'bold' }}>Phone Number</Text>
+                            </View>
+                            <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
+                                <Text style={{ textAlign: 'left' }} placeholder='Phone number'
+                                    onChangeText={value => this.handleChange('phone_number', value)} >{dataUser.phone_number}
+                                </Text>
+                            </View>
+
+                            <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                <Entypo name='block' size={12} color='black' />
+                            </View>
+                        </View>
+                        <View><Text style={{ color: 'red' }}>{phoneValid}</Text></View>
 
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangePassword', { password: dataUser.password_hash, user_id: dataUser.user_id })}>
                             <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
-                                <View style={{ flex: 30, justifyContent: 'flex-end', fontSize: 'bold' }}>
-                                    <Text>Password</Text>
+                                <View style={{ flex: 30, justifyContent: 'flex-start', fontWeight: 'bold' }}>
+                                    <Text style={{ fontWeight: 'bold' }}>Password</Text>
                                 </View>
 
                                 <View style={{ flex: 60, justifyContent: 'flex-end', marginTop: 5, }}>
@@ -374,21 +384,31 @@ class EditInforUser extends Component {
                             }}>
                                 {firstNameValid === ' ' && lastNameValid === ' ' && phoneValid === ' ' && emailValid === ' '
                                     ?
+                                    <TouchableOpacity onPress={this.onSave}>
+                                        <Text style={{
+                                            textAlign: 'center',
+                                            paddingVertical: 8,
+                                            color: 'white',
+                                            fontSize: 15,
+                                            fontWeight: 'bold',
+                                        }}>SAVE</Text>
+                                    </TouchableOpacity>
+                                    :
                                     <Text style={{
                                         textAlign: 'center',
                                         paddingVertical: 8,
-                                        color:'white',
+                                        color: 'white',
                                         fontSize: 15,
                                         fontWeight: 'bold',
                                     }}>SAVE</Text>
-                                    :
-                                    <Text>SAVE</Text>
                                 }
+                                {/* <PopupDialog visible={isLoadingStatus}/> */}
                             </View>
                         </View>
 
                     </View> : <View></View>
                 }
+                {errorMsg === null ? <View></View> : alert(errorMsg)}
             </ScrollView >
         );
     }

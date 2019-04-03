@@ -2,10 +2,12 @@ import { LOGOUT } from './auth';
 
 export const GET_IMAGE_START = 'image/IMAGE_START';
 export const GET_LIST_IMAGE = 'image/GET_IMAGE';
+export const GET_LIST_IMAGE_FAIL = 'image/GET_FAIL';
 const initialState = {
     vehicle_id: null,
     imageVehicle: null,
     isLoading: false,
+    error: null,
 }
 const startListImage = vehicle_id => ({
     type: GET_IMAGE_START,
@@ -19,6 +21,13 @@ const downloadListImage = imageVehicle => ({
         imageVehicle,
     }
 });
+const downladListImageFail = error => ({
+    type: GET_LIST_IMAGE_FAIL,
+    payload: {
+        error
+    }
+});
+
 export default function Reducer(state = initialState, action) {
     switch (action.type) {
         case GET_LIST_IMAGE: {
@@ -29,6 +38,7 @@ export default function Reducer(state = initialState, action) {
                 isLoading: true,
             }
         }
+
         case GET_IMAGE_START:
             const { vehicle_id } = action.payload;
             return {
@@ -36,6 +46,14 @@ export default function Reducer(state = initialState, action) {
                 vehicle_id,
                 isLoading: false,
             }
+
+        case GET_LIST_IMAGE_FAIL:
+            const { error } = action.payload;
+            return {
+                ...state,
+                error,
+            }
+
         case LOGOUT: {
             return initialState;
 
@@ -46,8 +64,10 @@ export default function Reducer(state = initialState, action) {
 
 export const action = {
     startListImage,
-    downloadListImage
+    downloadListImage,
+    downladListImageFail,
 };
 
 export const getListImage = ({ image }) => image.imageVehicle;
 export const getIsLoading = ({ image }) => image.isLoading;
+export const getListImageError = ({image})=> image.error;

@@ -22,6 +22,7 @@ export function* getTransactions() {
                 transactions: call(Api.getAllTransactions, vehicle_id),
                 timeout: delay(15000),
             });
+            console.log('1111');
             if (timeout) {
                 yield put(TransActions.getTransactionFail('Unable to get transactions.\nPlease try again later!'));
                 continue;
@@ -29,17 +30,57 @@ export function* getTransactions() {
 
             const { error, response } = transactions;
             if (error) {
-                console.log('Error : ', error);
+                yield put(TransActions.getTransactionFail(error.response));
                 continue;
             }
             const { data } = response;
-            yield put(TransActions.getTransactionSuccess(data));
+            const dataConvert = convertData(data);
+      
+            yield put(TransActions.getTransactionSuccess(dataConvert));
 
         } catch (error) {
-            console.log('Error1 : ', error);
+            yield put(TransActions.getTransactionFail(error));
         }
         yield delay(5000);
     }
+}
+
+let convertData = (data) => {
+    var handle = [];
+    for (var i = 0; i < data.length; i++) {
+        var item = data[i];
+
+        var createDate = item.created_at;
+        var title = createDate.split(' ')[0];
+        var time = createDate.split(' ')[1];
+        var newData = {
+            time: time,
+            station_id: item.station_id,
+            vehicle_weight: item.vehicle_weight,
+            status: item.status
+        };
+        var subData = findData(title, handle);
+        if (subData != null) {
+            subData.data.push(newData);
+        } else {
+            newItem = {
+                title: title,
+                data: [newData]
+            };
+            handle.push(newItem);
+        };
+    }
+    return handle;
+}
+
+let findData = (title, handle) => {
+    for (var i = 0; i < handle.length; i++) {
+        item = handle[i];
+        if (item.title.toLowerCase().localeCompare(title.toLowerCase()) == 0) {
+            return item;
+        }
+    }
+    return null;
 }
 export function* getErrTransactions() {
     while (true) {
@@ -47,13 +88,15 @@ export function* getErrTransactions() {
 
         if (!status) return;
         const vehicle_id = yield select(getVehicleID);
-
+      
         try {
 
             const { transactions, timeout } = yield race({
                 transactions: call(Api.getErrTransactions, vehicle_id),
                 timeout: delay(15000),
             });
+         
+
             if (timeout) {
                 yield put(TransActions.getTransactionFail('Unable to get transactions.\nPlease try again later!'));
                 continue;
@@ -61,16 +104,16 @@ export function* getErrTransactions() {
 
             const { error, response } = transactions;
             if (error) {
-                console.log('Error : ', error);
+                yield put(TransActions.getTransactionFail(error.response));
                 continue;
             }
             const { data } = response;
-
-            yield put(TransActions.getTransactionSuccessErr(data));
-
+            const dataConvert = convertData(data);
+      
+            yield put(TransActions.getTransactionSuccessErr(dataConvert));
 
         } catch (error) {
-            console.log('Error1: ', error);
+            yield put(TransActions.getTransactionFail(error));
         }
         yield delay(3000);
     }
@@ -78,8 +121,6 @@ export function* getErrTransactions() {
 export function* updateStatusRead() {
     while (true) {
         const { payload } = yield take(TRANSACTION_UPDATE_READ);
-
-        // console.log('aaa', payload.vehicle_id);
         try {
             const { updateStatus, timeout } = yield race({
                 updateStatus: call(Api.updateStatusReading, payload.vehicle_id),
@@ -91,16 +132,14 @@ export function* updateStatusRead() {
             }
             const { error } = updateStatus;
             if (error) {
-                yield put(TransActions.getTransactionFail(error));
-                console.log('Error2 : ', error);
+                yield put(TransActions.getTransactionFail(error.response));
                 continue;
             }
 
         } catch (error) {
             yield put(TransActions.getTransactionFail(error));
-            console.log('Error1 : ', error);
-        }
 
+        }
     }
 }
 

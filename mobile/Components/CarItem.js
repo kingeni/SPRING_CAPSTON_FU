@@ -17,7 +17,7 @@ class CarItem extends Component {
         var { id, item} = this.props;
         return (
             <TouchableOpacity onPress={() => this.onPressItem(item)}>
-                <View style={styles.container}>
+                <View style={{...styles.container}}>
                     <View style={styles.circle}>
                         <Image
                             source={item.img != null ? {uri: `data:image/png;base64,${item.img}`} : {uri : 'http://www.riversidefestival.charlbury.com/pictures/car%20button.jpg'} }
@@ -28,11 +28,11 @@ class CarItem extends Component {
                         {item.number_of_unread > 0 ?
                             <View style={{ flex: 90 }} >
                                 <Text style={{ fontSize: 18, fontWeight: '900' }} >{item.name} {`(${item.number_of_unread})`} </Text>
-                                <Text style={{ fontSize: 13, color: 'gray',fontWeight: 'bold' }} >{item.newest_transaction.created_at}</Text>
+                                <Text style={{ fontSize: 13, color: 'gray',fontWeight: 'bold' }} >{item.newest_transaction}</Text>
                             </View> :
                             <View style={{ flex: 90 }} >
                                 <Text style={{ fontSize: 18, fontWeight: 'normal' }} >{item.name} </Text>
-                                <Text style={{ fontSize: 13, color: 'gray', fontWeight: 'normal' }} >{item.create_at}</Text>
+                                <Text style={{ fontSize: 13, color: 'gray', fontWeight: 'normal' }} ></Text>
                             </View>}
 
                         <View style={{ flex: 10 }}>
@@ -50,11 +50,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 5,
-        justifyContent: 'flex-start',
         flexDirection: 'row',
+        justifyContent: 'center',
         backgroundColor: 'white',
         padding : 5,
-        borderRadius: 5,
+        // borderRadius: 5,
+        // borderWidth: 1
     },
     circle: {
         flex: 20

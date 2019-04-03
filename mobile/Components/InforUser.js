@@ -8,7 +8,7 @@ import {
     ScrollView,
     TouchableOpacity,
 } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 class InforUser extends Component {
     constructor(props) {
         super();
@@ -18,21 +18,21 @@ class InforUser extends Component {
             headerRight: (
                 <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                     <View style={{ backgroundColor: 'rgb(47, 54, 61)' }}>
-                        <Text style={{ color: 'rgb(243,177,127)', paddingRight: 9 }}>Done</Text>
-                        {/* <Button title='Done' color='rgb(243,177,127)' onPress={() => navigation.navigate('Home')}> </Button> */}
+                        <Text style={{ color: 'rgb(243,177,127)', paddingRight: 9, fontSize: 18 }}>Done</Text>
+
                     </View>
                 </TouchableOpacity>),
-            headerLeft:(
+            headerLeft: (
                 <TouchableOpacity onPress={() => navigation.navigate('EditInforUser')}>
                     <View style={{ backgroundColor: 'rgb(47, 54, 61)' }}>
-                        <Text style={{ color: 'rgb(243,177,127)', paddingLeft: 9 }}>Edit</Text>
-                        {/* <Button title='Done' color='rgb(243,177,127)' onPress={() => navigation.navigate('Home')}> </Button> */}
+                        <Text style={{ color: 'rgb(243,177,127)', paddingLeft: 9, fontSize: 18 }}>Edit</Text>
+
                     </View>
                 </TouchableOpacity>),
 
-                // (<View style={{ backgroundColor: 'rgb(47, 54, 61)' }}>
-                //     <Button title='Edit' color='rgb(243,177,127)' onPress={() => navigation.navigate('EditInforUser')}></Button>
-                // </View>),
+            // (<View style={{ backgroundColor: 'rgb(47, 54, 61)' }}>
+            //     <Button title='Edit' color='rgb(243,177,127)' onPress={() => navigation.navigate('EditInforUser')}></Button>
+            // </View>),
             title: 'DETAIL',
             headerStyle: {
                 borderBottomWidth: 0,
@@ -50,7 +50,6 @@ class InforUser extends Component {
 
     render() {
         const { dataUser, logout } = this.props;
-
         return (
             < ScrollView style={styles.main}>
                 <View style={{ flex: 1, }}>
@@ -61,14 +60,14 @@ class InforUser extends Component {
                             </Image>
                         </View>
 
-                        <Text style={{ flex: 20, fontWeight: 'bold', color: 'white', fontSize: 35 }}>{dataUser.first_name} {dataUser.last_name}</Text>
+                        <Text style={{ flex: 20, fontWeight: 'bold', color: 'black', fontSize: 35 }}>{dataUser.first_name} {dataUser.last_name}</Text>
                     </View>
                     <View style={{ flex: 70, alignItems: 'stretch', marginTop: 15, backgroundColor: 'white' }}>
                         <View style={{ flex: 14, borderBottomWidth: 0.5, flexDirection: 'row', borderColor: '#d6d7da', padding: 15 }}>
-                            <View style={{ flex: 30, justifyContent: 'flex-start' }}>
-                                <Text style={{ fontWeight: 'bold' }}>Username</Text>
+                            <View style={{ flex: 30, justifyContent: 'flex-start', flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={{ fontWeight: 'bold' }}> Username</Text>
                             </View>
-                            <View style={{ flex: 70, justifyContent: 'flex-end' }}>
+                            <View style={{ flex: 70 }}>
                                 <Text style={{ textAlign: 'right' }}>{dataUser.username}</Text>
                             </View>
                         </View>
@@ -77,7 +76,7 @@ class InforUser extends Component {
                             <View style={{ flex: 30 }}>
                                 <Text style={{ fontWeight: 'bold' }}>Gender</Text>
                             </View>
-                            <View style={{ flex: 70, justifyContent: 'flex-end', textAlign: 'right' }}>
+                            <View style={{ flex: 70 }}>
                                 <Text style={{ textAlign: 'right' }}>{dataUser.gender}</Text>
                             </View>
                         </View>
@@ -86,7 +85,7 @@ class InforUser extends Component {
                             <View style={{ flex: 30 }}>
                                 <Text style={{ fontWeight: 'bold' }}>Phone Number</Text>
                             </View>
-                            <View style={{ flex: 70, justifyContent: 'flex-end', textAlign: 'right' }}>
+                            <View style={{ flex: 70 }}>
                                 <Text style={{ textAlign: 'right' }}>{dataUser.phone_number}</Text>
                             </View>
                         </View>
@@ -95,7 +94,7 @@ class InforUser extends Component {
                             <View style={{ flex: 30 }}>
                                 <Text style={{ fontWeight: 'bold' }}>CMND</Text>
                             </View>
-                            <View style={{ flex: 70, justifyContent: 'flex-end', textAlign: 'right' }}>
+                            <View style={{ flex: 70 }}>
                                 <Text style={{ textAlign: 'right' }}>{dataUser.identity_number}</Text>
                             </View>
                         </View>
@@ -104,7 +103,7 @@ class InforUser extends Component {
                             <View style={{ flex: 30 }}>
                                 <Text style={{ fontWeight: 'bold' }}>Email</Text>
                             </View>
-                            <View style={{ flex: 70, justifyContent: 'center', textAlign: 'right' }}>
+                            <View style={{ flex: 70 }}>
                                 <Text style={{ textAlign: 'right' }}>{dataUser.email}</Text>
                             </View>
                         </View>
@@ -113,27 +112,27 @@ class InforUser extends Component {
                             <View style={{ flex: 30 }}>
                                 <Text style={{ fontWeight: 'bold' }}>Day of Birth</Text>
                             </View>
-                            <View style={{ flex: 70, justifyContent: 'center', textAlign: 'right' }}>
+                            <View style={{ flex: 70 }}>
                                 <Text style={{ textAlign: 'right' }}>{dataUser.date_of_birth}</Text>
                             </View>
                         </View>
 
-
-                        <View style={{ flexDirection: 'row', padding: 15, }}>
-                            <View style={{ flex: 30, }}>
-                                <Text style={{ fontWeight: 'bold' }}>Password</Text>
-                            </View>
-
-                            <View style={{ flex: 70, justifyContent: 'center', marginTop: 5, flexDirection: 'row' }}>
-                                <View style={{ flex: 0.89 }}>
-                                    <Text style={{ textAlign: 'right' }}>*********</Text>
+                        <TouchableOpacity onPress={()=> this.props.navigation.navigate('ChangePassword')}>
+                            <View style={{ flexDirection: 'row', padding: 15, }}>
+                                <View style={{ flex: 30, }}>
+                                    <Text style={{ fontWeight: 'bold' }}>Password</Text>
                                 </View>
-                                <View style={{ flex: 0.11, alignItems: 'flex-end', justifyContent: 'center' }}>
-                                    <AntDesign name='caretright' size={20} color='gray' />
+
+                                <View style={{ flex: 70, justifyContent: 'center', marginTop: 5, flexDirection: 'row' }}>
+                                    <View style={{ flex: 0.89 }}>
+                                        <Text style={{ textAlign: 'right' }}>*********</Text>
+                                    </View>
+                                    <View style={{ flex: 0.11, alignItems: 'flex-end', justifyContent: 'center' }}>
+                                        <AntDesign name='caretright' size={18} color='gray' />
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={{
@@ -181,7 +180,8 @@ const styles = StyleSheet.create(
             flex: 1,
             // paddingRight: 20,
             // paddingLeft: 20,
-            backgroundColor: 'rgb(79,88,86)',
+            // backgroundColor: 'rgb(79,88,86)',
+            backgroundColor: '#d6d7da',
         }
     }
 );

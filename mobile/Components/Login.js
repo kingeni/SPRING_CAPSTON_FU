@@ -7,9 +7,11 @@ import {
   Text,
   Linking,
   TouchableHighlight,
+  TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { CheckBox, FormValidationMessage , Button} from 'react-native-elements';
+import { CheckBox, FormValidationMessage, Button } from 'react-native-elements';
 
 class Login extends Component {
   constructor(props) {
@@ -17,23 +19,54 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
+      loading: false,
+      text: 1,
     };
   }
 
   handleChange = (props, value) => {
-    this.setState({ [props]: value })
+    const string = /^[a-z0-9_]+$/i;
+    if (props === 'username') {
+
+      if (!string.test(value)) {
+        console.log('1');
+        styles.errorInput1 = {
+          paddingLeft: 5,
+          borderColor: 'red',
+          borderWidth: 1
+        };
+      } else {
+        styles.errorInput1 = {
+        };
+      }
+    }
+
+    if (props === 'password') {
+      if (value === "") {
+        styles.errorInput2 = {
+          paddingLeft: 5,
+          borderColor: 'red',
+          borderWidth: 1
+        };
+      } else {
+        styles.errorInput2 = {
+        };
+      }
+    }
+
+    this.setState({ [props]: value });
   }
+
 
   login = () => {
     const { username, password } = this.state;
-    const { login, errorMsg } = this.props;
+    const { login } = this.props;
     login(username, password);
-    if (errorMsg) {
-      alert(errorMsg);
-    }
   }
 
   render() {
+    const { isLoading, errorMsg } = this.props;
+    console.log(isLoading ? 'true' : 'flase');
     return (
       <View style={styles.container}>
         <View style={{ height: '50%', width: '100%', alignItems: 'center', justifyContent: 'flex-start' }}>
@@ -42,7 +75,7 @@ class Login extends Component {
           </View>
 
           <View style={{ width: '80%' }}>
-            <View style={{ ...styles.view_input, marginBottom: 10 }}>
+            <View style={{ ...styles.view_input, marginBottom: 10, ...styles.errorInput1 }}>
               <View style={{ justifyContent: 'center', flex: 10, paddingLeft: 5 }}>
                 <Feather name="user" size={30} color="gray" />
               </View>
@@ -50,11 +83,12 @@ class Login extends Component {
               <TextInput style={{ ...styles.input, ...styles.padding_font }}
                 placeholder='Username'
                 onChangeText={value => this.handleChange('username', value)}
+              
               >
               </TextInput>
             </View>
 
-            <View style={{ ...styles.view_input }}>
+            <View style={{ ...styles.view_input, ...styles.errorInput2 }}>
               <View style={{ justifyContent: 'center', flex: 10, paddingLeft: 5 }}>
                 <Feather name="lock" size={30} color="gray" />
               </View>
@@ -62,22 +96,31 @@ class Login extends Component {
                 placeholder='Password'
                 onChangeText={value => this.handleChange('password', value)}
                 secureTextEntry={true}>
+
               </TextInput>
             </View>
           </View>
-
-          <TouchableHighlight onPress={() => this.login()} style={{ width: '80%', marginTop: 20, borderRadius: 15, }}>
-            <View style={styles.btn}>
-              <Text style={{
-                fontSize: 20,
-                fontWeight: 'bold',
-                color: 'white', 
-                textAlign:'center',
-                paddingVertical: 10,
-              }}>LOGIN</Text>
+          {isLoading ?
+            <View style={{ width: '80%', marginTop: 20, borderRadius: 15, }}>
+              <View style={styles.btn}>
+                <ActivityIndicator style={{ paddingVertical: 10 }} size="small" color="white" />
+              </View>
             </View>
-          </TouchableHighlight>
-       
+            :
+            <TouchableOpacity onPress={() => this.login()} style={{ width: '80%', marginTop: 20, borderRadius: 15, }}>
+              <View style={styles.btn}>
+                <Text style={{
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  color: 'white',
+                  textAlign: 'center',
+                  paddingVertical: 8,
+                }}>LOGIN</Text>
+              </View>
+            </TouchableOpacity>
+
+          }
+          {errorMsg === null ? <View></View> : alert(errorMsg)}
           {/* <View>
             <CheckBox
               containerStyle={{
@@ -171,6 +214,10 @@ const styles = StyleSheet.create({
     color: 'blue',
     fontStyle: 'italic',
     textAlign: 'center'
+  },
+  errorInput1: {
+  },
+  errorInput2: {
   }
 });
 

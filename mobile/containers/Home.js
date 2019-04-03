@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import {
-  selectUser
+  getUser
 } from '../reducers/user';
 import {
   getListVehicle,
   isLoading,
+  getError,
 } from '../reducers/vehicle';
 import {
   actions
@@ -12,9 +13,10 @@ import {
 import Home from '../Components/Home';
 
 const mapStateToProps = state => ({
-  dataUser: selectUser(state),
+  dataUser: getUser(state),
   listVehicle: getListVehicle(state),
   isLoading: isLoading(state),
+  errorMsg : getError(state),
 });
 
 const mapDispatchToState ={

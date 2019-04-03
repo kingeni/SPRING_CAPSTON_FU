@@ -1,12 +1,16 @@
 import { connect } from 'react-redux';
 import { 
-    selectUser,
+    getUser,
     actions,
+    getError,
+    getStatus
 } from '../reducers/user';
 import EditInforUser from '../Components/EditInforUser';
 
 const mapStateToProps = state => ({
-    dataUser : selectUser(state),
+    dataUser : getUser(state),
+    isLoadingStatus : getStatus(state),
+    errorMsg : getError(state),
 });
 const mapDispatchToProps = {
     updateInfo: actions.updateUserInfo,

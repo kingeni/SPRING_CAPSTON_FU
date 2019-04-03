@@ -4,8 +4,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'stretch',
-        // backgroundColor:'#d6d7da',
-        backgroundColor: 'rgb(79,88,86)',
+        backgroundColor:'#d6d7da',
+        // backgroundColor: 'rgb(79,88,86)',
     },
     container1: {
         flex: 1,
@@ -13,11 +13,13 @@ const styles = StyleSheet.create({
         // marginRight: 10,
         // marginBottom: 10,
         alignItems: 'stretch',
-       backgroundColor: 'rgb(79,88,86)',
+    //    backgroundColor: 'rgb(79,88,86)',
+    backgroundColor:'#d6d7da',
     },
     circle: {
         height: 60,
-        flex: 20
+        flex: 20,
+        justifyContent:'flex-end'
     },
     header: {
         flexDirection: 'row',
@@ -29,14 +31,13 @@ const styles = StyleSheet.create({
     header_contain: {
         flex: 0.8,
         height: 60,
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
+
     },
     header_text: {
         fontSize: 25,
         fontWeight: 'bold',
-        color:'white'
-
-
+        color:'white',
     },
     search_contain: {
         flexDirection: 'row',
@@ -64,11 +65,13 @@ const styles = StyleSheet.create({
     },
     flex_row: {
         flexDirection: 'row',
-        borderBottomWidth: 0.5
+        borderBottomWidth: 0.5,
+        borderColor:'gray',
     },
     flex_50: {
         flex: 50,
-        fontSize: 15
+        fontSize: 15,
+       
     }
 });
 export default styles;

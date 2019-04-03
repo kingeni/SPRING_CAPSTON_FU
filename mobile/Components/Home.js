@@ -69,14 +69,14 @@ class Home extends Component {
   )
 
   render() {
-    let { dataUser, listVehicle, isLoading } = this.props;
+    let { dataUser, listVehicle, isLoading, errorMsg } = this.props;
     const searchData = this.handleSearch();
 
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={{ flex: 1, paddingTop: 12, flexDirection: 'row' }}>
-            <View style={{ flex: 0.2, paddingLeft: 5 }}>
+            <View style={{ flex: 0.2, paddingLeft: 5 , }}>
               <TouchableOpacity style={styles.circle} onPress={this.naviagateToInfoUser}>
                 <Image
                   source={{ uri: `data:image/png;base64,${dataUser.img_url}` }}
@@ -102,10 +102,10 @@ class Home extends Component {
                 (<CarItem item={item} onPress={this.navigateToHistoryList} id={item.id} />)
               }
             >
-            </FlatList> : <ActivityIndicator size="large" color="blue" />
+            </FlatList> : <ActivityIndicator size="large" color="black" />
           }
         </View>
-
+        {errorMsg === null ? <View></View> : alert(errorMsg) }
       </View>
     );
   }
