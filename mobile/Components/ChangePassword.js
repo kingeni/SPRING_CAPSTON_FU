@@ -7,6 +7,7 @@ import {
     TextInput,
     TouchableOpacity,
     StyleSheet,
+    ActivityIndicator
 } from 'react-native';
 import FormData from 'FormData';
 import { Ionicons } from '@expo/vector-icons';
@@ -76,11 +77,11 @@ class ChangePassword extends Component {
         updatePassword(oldPassword, newPassword);
     }
     render() {
-        const { errorMsg } = this.props;
+        const { errorMsg, isLoading } = this.props;
         return (
             <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: '#d6d7da', alignItems: 'stretch' }}>
                 <View>
-                    <View style={{ height: 50, marginTop: 10, backgroundColor: 'white', justifyContent: 'center' , paddingLeft: 10}}>
+                    <View style={{ height: 50, marginTop: 10, backgroundColor: 'white', justifyContent: 'center', paddingLeft: 10 }}>
                         <TextInput
                             placeholder='Enter current password'
                             onChangeText={value => this.handleChange('oldPassword', value)}
@@ -96,7 +97,7 @@ class ChangePassword extends Component {
                         </TextInput>
                     </View>
                     <View><Text style={{ color: 'red' }}>{this.state.newPasswordValid}</Text></View>
-                    <View style={{ height: 50, marginTop: 10, backgroundColor: 'white', justifyContent: 'center' , paddingLeft: 10}}>
+                    <View style={{ height: 50, marginTop: 10, backgroundColor: 'white', justifyContent: 'center', paddingLeft: 10 }}>
 
                         <TextInput
                             placeholder='Re-enter new password'
@@ -118,13 +119,15 @@ class ChangePassword extends Component {
                             {this.state.renewPasswordValid === '' && this.state.newPasswordValid === '' && this.state.oldPasswordValid === ''
                                 ?
                                 <TouchableOpacity onPress={this.onSave}>
-                                    <Text style={{
-                                        textAlign: 'center',
-                                        paddingVertical: 8,
-                                        color: 'white',
-                                        fontSize: 15,
-                                        fontWeight: 'bold',
-                                    }}>SAVE</Text>
+                                    {isLoading ?
+                                        <ActivityIndicator size='small' color='white' />
+                                        : <Text style={{
+                                            textAlign: 'center',
+                                            paddingVertical: 8,
+                                            color: 'white',
+                                            fontSize: 15,
+                                            fontWeight: 'bold',
+                                        }}>SAVE</Text>}
                                 </TouchableOpacity>
                                 :
                                 <Text style={{

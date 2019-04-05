@@ -4,7 +4,7 @@ import {
 } from '../reducers/user';
 import {
   getListVehicle,
-  isLoading,
+  getVehiStatus,
   getError,
 } from '../reducers/vehicle';
 import {
@@ -15,7 +15,7 @@ import Home from '../Components/Home';
 const mapStateToProps = state => ({
   dataUser: getUser(state),
   listVehicle: getListVehicle(state),
-  isLoading: isLoading(state),
+  isLoading: getVehiStatus(state),
   errorMsg : getError(state),
 });
 

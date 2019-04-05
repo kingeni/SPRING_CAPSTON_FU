@@ -7,7 +7,8 @@ import {
     Image,
     TextInput,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    ActivityIndicator,
 } from 'react-native';
 import {
     ButtonGroup,
@@ -385,13 +386,16 @@ class EditInforUser extends Component {
                                 {firstNameValid === ' ' && lastNameValid === ' ' && phoneValid === ' ' && emailValid === ' '
                                     ?
                                     <TouchableOpacity onPress={this.onSave}>
-                                        <Text style={{
-                                            textAlign: 'center',
-                                            paddingVertical: 8,
-                                            color: 'white',
-                                            fontSize: 15,
-                                            fontWeight: 'bold',
-                                        }}>SAVE</Text>
+                                        {isLoadingStatus
+                                            ?
+                                            <ActivityIndicator style={{ paddingVertical: 8, }} size="small" color="white" />
+                                            : <Text style={{
+                                                textAlign: 'center',
+                                                paddingVertical: 8,
+                                                color: 'white',
+                                                fontSize: 15,
+                                                fontWeight: 'bold',
+                                            }}>SAVE</Text>}
                                     </TouchableOpacity>
                                     :
                                     <Text style={{

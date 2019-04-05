@@ -71,5 +71,5 @@ export const actions = {
 export const getListVehicle = ({ vehicle }) => vehicle.listVehicle;
 export const getError = ({ vehicle }) => vehicle.error;
 export const getOneDetail = ({ vehicle, transactions }) => vehicle.listVehicle.find((item) => item.id === transactions.vehicle_id ? item : null);
-export const isLoading = ({ vehicle }) => vehicle.isLoading;
+export const getVehiStatus = ({ vehicle }) => vehicle.isLoading;
 export const getNew = ({ vehicle }) =>vehicle.newDate;

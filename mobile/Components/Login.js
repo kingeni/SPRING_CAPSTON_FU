@@ -29,7 +29,7 @@ class Login extends Component {
     if (props === 'username') {
 
       if (!string.test(value)) {
-        console.log('1');
+        // console.log('1');
         styles.errorInput1 = {
           paddingLeft: 5,
           borderColor: 'red',

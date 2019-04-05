@@ -69,5 +69,5 @@ export const action = {
 };
 
 export const getListImage = ({ image }) => image.imageVehicle;
-export const getIsLoading = ({ image }) => image.isLoading;
+export const getImgStatus = ({ image }) => image.isLoading;
 export const getListImageError = ({image})=> image.error;

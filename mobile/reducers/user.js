@@ -126,7 +126,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         error,
-        isLoading: true,
+        isLoading: false,
       }
     }
     case LOGOUT: {
@@ -149,5 +149,5 @@ export const actions = {
 };
 
 export const getUser = ({ user }) => user.user;
-export const getStatus = ({ user }) => user.isLoading;
+export const getUserStatus = ({ user }) => user.isLoading;
 export const getError = ({ user }) => user.error;

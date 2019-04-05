@@ -47,7 +47,7 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     case LOGIN_START: {
       const { username } = action.payload;
-      console.log('state:', username);
+     
       return {
         ...state,
         username,

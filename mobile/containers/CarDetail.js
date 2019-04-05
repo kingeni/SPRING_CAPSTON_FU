@@ -5,13 +5,13 @@ import {
 import {
     getListImage,
     action,
-    getIsLoading,
+    getImgStatus,
 } from '../reducers/image';
 import CarDetail from '../Components/CarDetail';
 const mapStateToProps = state => ({
     getDetailVehicle: getOneDetail(state),
     getListImage: getListImage(state),
-    isLoading : getIsLoading(state),
+    isLoading : getImgStatus(state),
 });
 const mapDispatchToProps = {
     startListImage: action.startListImage,

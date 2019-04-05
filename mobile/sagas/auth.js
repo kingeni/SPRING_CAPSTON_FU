@@ -87,7 +87,7 @@ export function* verifyUser() { // eslint-disable-line no-underscore-dangle
 }
 export function* updateUsersInfor() {
   while (true) {
-    console.log('update');
+  
     const { payload } = yield take(UPDATE_USER_INFO_START);
     const { user } = payload;
     let formData = new FormData();
@@ -146,7 +146,7 @@ export function* changePass() {
       if (error) {
         yield put(UserActions.updatePasswordFail(error));
         yield put(UserActions.updatePasswordFail(null));
-        console.log('error API: ', error);
+       
         continue;
       }
       const { data } = response;
@@ -159,7 +159,7 @@ export function* changePass() {
     } catch (error) {
       yield put(UserActions.updatePasswordFail(error));
       yield put(UserActions.updatePasswordFail(null));
-      console.log('test: ', error);
+     
     }
   }
 }

@@ -22,7 +22,7 @@ export function* getTransactions() {
                 transactions: call(Api.getAllTransactions, vehicle_id),
                 timeout: delay(15000),
             });
-            console.log('1111');
+          
             if (timeout) {
                 yield put(TransActions.getTransactionFail('Unable to get transactions.\nPlease try again later!'));
                 continue;

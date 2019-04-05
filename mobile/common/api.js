@@ -182,10 +182,10 @@ const changePassword = async (formData, userId, optionalConfig = {}) => {
       url: `${CHANGE_PASSWORD_PATH}?userId=${userId}`,
       data: formData,
     });
-    console.log('response: ', response.data);
+    // console.log('response: ', response.data);
     return { response };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return { error };
   }
 };
