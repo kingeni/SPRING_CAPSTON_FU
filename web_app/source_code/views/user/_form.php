@@ -14,18 +14,18 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'username')->textInput(['maxlength' => true])->label('Tên đăng nhập') ?>
 
-    <?= $form->field($model, 'password')->passwordInput() ?>
+    <?= $form->field($model, 'password')->passwordInput()->label('Mật khẩu') ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->dropDownList(User::statuses()) ?>
+    <?= $form->field($model, 'status')->dropDownList(User::statuses())->label('Trạng thái') ?>
 
-    <?= $form->field($model, 'roleId')->dropDownList(Role::roles()) ?>
+    <?= $form->field($model, 'roleId')->dropDownList(Role::roles())->label('Vai trò') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Lưu', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

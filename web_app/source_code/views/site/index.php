@@ -27,7 +27,7 @@ $pVTran = number_format($pVTran, 1, '.', '');
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>HỆ THỐNG CÂN ĐO TẢI TRỌNG XE</h1>
+        <h1>HỆ THỐNG CÂN ĐO, KIỂM TRA TẢI TRỌNG XE</h1>
     </div>
 
     <div class="body-content">
@@ -48,7 +48,7 @@ $pVTran = number_format($pVTran, 1, '.', '');
                         'datasets' => [
                             [
                                 'data' => [$pVTran, $pNorTran], // Your dataset
-                                'label' => '',
+                                'label' => ['Số lần vi phạm: ' . $pVTran . '%', 'Số lần không vi phạm: ' . $pNorTran . '%'],
                                 'backgroundColor' => [
                                     '#FF0000',
                                     '#50C878'
@@ -61,6 +61,12 @@ $pVTran = number_format($pVTran, 1, '.', '');
                                 'hoverBorderColor' => ["#999", "#999"],
                             ]
                         ]
+                    ],
+                    'clientOptions' => [
+                        'tooltips' => [
+                            'enabled' => false,
+                            'intersect' => true
+                        ],
                     ],
                 ]) ?>
             </div>
@@ -92,6 +98,12 @@ $pVTran = number_format($pVTran, 1, '.', '');
                                 'hoverBorderColor' => ["#999", "#999"],
                             ]
                         ]
+                    ],
+                    'clientOptions' => [
+                        'tooltips' => [
+                            'enabled' => false,
+                            'intersect' => true
+                        ],
                     ],
                 ]) ?>
             </div>

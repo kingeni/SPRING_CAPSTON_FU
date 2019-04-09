@@ -2,9 +2,9 @@
 
 namespace app\models\search;
 
+use app\models\Vehicle;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Vehicle;
 
 /**
  * VehicleSearch represents the model behind the search form of `app\models\Vehicle`.
@@ -18,7 +18,7 @@ class VehicleSearch extends Vehicle
     {
         return [
             [['id', 'license_plates', 'name', 'expiration_date', 'vehicle_weight_id'], 'safe'],
-            [['user_id'], 'integer'],
+            [['user_id', 'status'], 'integer'],
         ];
     }
 
@@ -60,6 +60,7 @@ class VehicleSearch extends Vehicle
         $query->andFilterWhere([
             'expiration_date' => $this->expiration_date,
             'user_id' => $this->user_id,
+            'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'id', $this->id])

@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Station */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Stations', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Tất cả Trạm Cân', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Cập nhật', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Xóa', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -30,24 +30,56 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'name',
-            'phone_number',
-            'address',
+            [
+                'attribute' => 'id',
+                'label' => 'Mã Trạm cân',
+            ],
+            [
+                'attribute' => 'name',
+                'label' => 'Tên Trạm cân',
+            ],
+            [
+                'attribute' => 'phone_number',
+                'label' => 'Số điện thoại',
+            ],
+            [
+                'attribute' => 'address',
+                'label' => 'Địa chỉ',
+            ],
             [
                 'attribute' => 'status',
+                'format' => 'raw',
+                'label' => 'Trạng thái',
                 'value' => function ($model) {
                     if ($model->status == Station::STATUS_NOT_ACTIVE) {
-                        return 'Not Active';
+                        return '<span class="badge badge-secondary">Không hoạt động</span>';
                     } else if ($model->status == Station::STATUS_ACTIVE) {
-                        return 'Active';
+                        return '<span class="badge badge-success">Hoạt động</span>';
                     } else if ($model->status == Station::STATUS_DELETED) {
-                        return 'Deleted';
+                        return '<span class="badge badge-dark">Đã xóa</span>';
                     } else {
                         return '(not set)';
                     }
-                }
+                },
             ],
+//            'id',
+//            'name',
+//            'phone_number',
+//            'address',
+//            [
+//                'attribute' => 'status',
+//                'value' => function ($model) {
+//                    if ($model->status == Station::STATUS_NOT_ACTIVE) {
+//                        return 'Not Active';
+//                    } else if ($model->status == Station::STATUS_ACTIVE) {
+//                        return 'Active';
+//                    } else if ($model->status == Station::STATUS_DELETED) {
+//                        return 'Deleted';
+//                    } else {
+//                        return '(not set)';
+//                    }
+//                }
+//            ],
         ],
     ]) ?>
 

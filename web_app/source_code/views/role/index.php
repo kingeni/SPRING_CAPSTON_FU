@@ -1,14 +1,14 @@
 <?php
 
 use app\models\Role;
-use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\RoleSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Roles';
+$this->title = 'Tất cả Vai Trò';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="role-index">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Role', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php //echo Html::a('Tạo mới Vai Trò', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -25,27 +25,33 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-//            'id',
-            'name',
+            [
+                'attribute' => 'id',
+                'label' => 'Mã Vai trò',
+            ],
+            [
+                'attribute' => 'name',
+                'label' => 'Tên Vai trò',
+            ],
             [
                 'attribute' => 'status',
                 'format' => 'raw',
+                'label' => 'Trạng thái',
                 'value' => function ($model) {
                     if ($model->status == Role::STATUS_NOT_ACTIVE) {
-                        return '<span class="badge badge-secondary">Not Active</span>';
+                        return '<span class="badge badge-secondary">Không hoạt động</span>';
                     } else if ($model->status == Role::STATUS_ACTIVE) {
-                        return '<span class="badge badge-success">Active</span>';
+                        return '<span class="badge badge-success">Hoạt động</span>';
                     } else if ($model->status == Role::STATUS_DELETED) {
-                        return '<span class="badge badge-dark">Deleted</span>';
+                        return '<span class="badge badge-dark">Đã xóa</span>';
                     } else {
                         return '(not set)';
                     }
                 },
-                'filter' => array('1' => 'Not Active', '2' => 'Active', '3' => 'Deleted')
+                'filter' => array('1' => 'Không hoạt động', '2' => 'Hoạt động', '3' => 'Đã xóa')
             ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+//            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 </div>

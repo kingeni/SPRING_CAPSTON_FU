@@ -18,15 +18,15 @@ use yii\widgets\MaskedInput;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'id')->textInput(['maxlength' => true])->label('Mã Thẻ') ?>
 
     <?= $form->field($model, 'license_plates')->widget(MaskedInput::className(),
         [
             'mask' => ['99A-9999', '99A-99999']
         ]
-    ) ?>
+    )->label('Biển số Xe') ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true])->label('Tên Xe') ?>
 
     <?= $form->field($model, 'expiration_date')->widget(DatePicker::classname(), [
         'options' => ['placeholder' => 'Enter Expiration Date ...'],
@@ -34,7 +34,7 @@ use yii\widgets\MaskedInput;
             'autoclose' => true,
             'format' => 'dd-mm-yyyy'
         ]
-    ]) ?>
+    ])->label('Ngày hết hạn đăng kiểm') ?>
 
     <?= $form->field($model, 'vehicle_weight_id')->widget(Select2::className(),
         [
@@ -43,7 +43,7 @@ use yii\widgets\MaskedInput;
             'pluginOptions' => [
                 'allowClear' => true
             ],
-        ])->label('Vehicle\'s Weight') ?>
+        ])->label('Loại tải trọng Xe') ?>
 
     <?= $form->field($model, 'user_id')->widget(Select2::className(),
         [
@@ -52,7 +52,7 @@ use yii\widgets\MaskedInput;
             'pluginOptions' => [
                 'allowClear' => true
             ],
-        ])->label('Vehicle\'s Owner') ?>
+        ])->label('Chủ xe') ?>
 
     <?= $form->field($model, 'img_url[]')->widget(FileInput::classname(), [
         'options' => [
@@ -62,10 +62,10 @@ use yii\widgets\MaskedInput;
         'pluginOptions' => [
             'showUpload' => false
         ]
-    ])->label('Vehicle\'s Images') ?>
+    ])->label('Hình ảnh') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Lưu', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

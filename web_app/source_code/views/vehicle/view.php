@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Vehicle;
 use app\models\VehicleImg;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -8,7 +9,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Vehicle */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Vehicles', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Tất cả Phương Tiện', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -17,8 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Cập nhật', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Xóa', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -30,34 +31,64 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'license_plates',
-            'name',
+            [
+                'attribute' => 'id',
+                'label' => 'Mã Xe'
+            ],
+            [
+                'attribute' => 'license_plates',
+                'label' => 'Biển số Xe'
+            ],
+            [
+                'attribute' => 'name',
+                'label' => 'Tên Xe'
+            ],
+//            'id',
+//            'license_plates',
+//            'name',
             [
                 'attribute' => 'expiration_date',
-                'label' => 'Expiration Date',
+                'label' => 'Ngày hết hạn đăng kiểm',
                 'value' => function ($model) {
                     return date("d-m-Y", strtotime($model->expiration_date));
                 }
             ],
             [
                 'attribute' => 'vehicle_weight_id',
-                'label' => 'Vehicle Weight',
+                'label' => 'Loại tải trọng Xe',
             ],
             [
                 'attribute' => 'user_id',
-                'label' => 'Username',
+                'label' => 'Chủ xe',
                 'value' => function ($model) {
                     return \app\models\User::findOne(['id' => $model->user_id])->username;
                 }
             ],
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'label' => 'Trạng thái',
+                'value' => function ($model) {
+                    if ($model->status == Vehicle::STATUS_NOT_ACTIVE) {
+                        return '<span class="badge badge-secondary">Không hoạt động</span>';
+                    } else if ($model->status == Vehicle::STATUS_ACTIVE) {
+                        return '<span class="badge badge-success">Hoạt động</span>';
+                    } else if ($model->status == Vehicle::STATUS_DELETED) {
+                        return '<span class="badge badge-dark">Đã xóa</span>';
+                    } else {
+                        return '(not set)';
+                    }
+                },
+            ],
         ],
     ]) ?>
-    <h4>Vehicle's Image</h4>
+
     <?php
     $listVehicleImg = VehicleImg::getVehicleImgByVehicleId($model->id);
-    foreach ($listVehicleImg as $item) {
-        echo Html::img(Yii::getAlias('@web') . '/' . $item->img_url, ['height' => '240px', 'width' => '300px']) . ' ';
+    if (count($listVehicleImg) > 0) { ?>    <h4>Hình ảnh Xe</h4><?php
+        foreach ($listVehicleImg as $item) {
+            echo Html::img(Yii::getAlias('@web') . '/' . $item->img_url, ['height' => '240px', 'width' => '300px']) . ' ';
+        }
     }
     ?>
 

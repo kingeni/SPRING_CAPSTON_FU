@@ -5,52 +5,55 @@
 
 /* @var $model app\models\LoginForm */
 
-use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
-$this->title = '';
+$this->title = 'Đăng Nhập';
 ?>
-<link href='https://fonts.googleapis.com/css?family=Aldrich' rel='stylesheet'>
 <style>
-    .center {
-        font-family: 'Aldrich';
-        font-size: 22px;
-        text-align: center;
+    .center1 {
+        position: absolute;
+        top: 45%;
+        bottom: 0;
+        left: 35%;
+        right: 0;
+
+        margin: auto;
     }
-
-
 </style>
 <div class="site-login">
     <div class="center">
-        <h1>Welcome</h1>
-        <h3>to</h3>
-        <h1>Vehicle Measuring Weight System</h1>
-        <p>Please fill out the following fields to login:</p>
+        <div class="jumbotron">
+            <h1>HỆ THỐNG CÂN ĐO, KIỂM TRA TẢI TRỌNG XE</h1>
+        </div>
     </div>
-    <div style="width:80%;margin-left: 35%">
-        <?php $form = ActiveForm::begin([
-            'id' => 'login-form',
-            'layout' => 'horizontal',
-            'fieldConfig' => [
-                'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-                'labelOptions' => ['class' => 'col-lg-1 control-label'],
-            ],
-        ]); ?>
-        <p style="color: red"><?= Yii::$app->session->get('alert') ?></p>
-        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
-
-        <?= $form->field($model, 'password')->passwordInput() ?>
-
-        <?= $form->field($model, 'rememberMe')->checkbox([
-            'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
-        ]) ?>
-
-        <div class="form-group">
-            <div class="col-lg-offset-1 col-lg-11">
-                <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+    <?php $form = ActiveForm::begin([
+        'id' => 'login-form',
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
+            'labelOptions' => ['class' => 'col-lg-1 control-label'],
+        ],
+    ]); ?>
+    <div class="center1">
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Tên đăng nhập</label>
+            <div class="col-sm-10">
+                <?= $form->field($model, 'username')->textInput(['autofocus' => true])->label(false) ?>
             </div>
         </div>
-        <?php ActiveForm::end(); ?>
+        <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Mật khẩu</label>
+            <div class="col-sm-10">
+                <?= $form->field($model, 'password')->passwordInput()->label(false) ?>
+            </div>
+        </div>
+        <p style="color: red"><?= Yii::$app->session->get('alert') ?></p>
+        <div class="form-group">
+            <div class="col-lg-offset-1 col-lg-11">
+                <?= Html::submitButton('Đăng nhập', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+            </div>
+        </div>
     </div>
-
+    <?php ActiveForm::end(); ?>
 </div>

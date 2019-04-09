@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "user_profile".
  *
@@ -11,7 +9,7 @@ use Yii;
  * @property string $last_name
  * @property string $date_of_birth
  * @property string $phone_number
- * @property double $identity_number
+ * @property string $address
  * @property string $gender
  * @property string $img_url
  * @property string $username
@@ -39,13 +37,18 @@ class UserProfile extends \yii\db\ActiveRecord
         return [
             [['date_of_birth', 'username', 'gender'], 'safe'],
             ['date_of_birth', 'compareDates'],
-            [['phone_number', 'user_id', 'first_name', 'last_name'], 'required'],
+            [['phone_number'], 'required', 'message' => 'Vui lòng nhập Số điện thoại.'],
+            [['address'], 'required', 'message' => 'Vui lòng nhập Địa chỉ.'],
+            [['first_name'], 'required', 'message' => 'Vui lòng nhập Tên.'],
+            [['last_name'], 'required', 'message' => 'Vui lòng nhập Họ.'],
+            [['date_of_birth'], 'required', 'message' => 'Vui lòng nhập Ngày sinh.'],
+            [['user_id'], 'required'],
             [['user_id'], 'integer'],
-            [['identity_number'], 'double'],
             [['gender'], 'string', 'max' => 100],
             [['first_name', 'last_name'], 'string', 'max' => 300],
             [['phone_number'], 'string', 'max' => 50],
             [['img_url'], 'string', 'max' => 1000],
+            [['address'], 'string', 'max' => 1000],
         ];
     }
 
@@ -59,7 +62,7 @@ class UserProfile extends \yii\db\ActiveRecord
             'last_name' => 'Last Name',
             'date_of_birth' => 'Date Of Birth',
             'phone_number' => 'Phone Number',
-            'identity_number' => 'Identity Number',
+            'address' => 'Address',
             'gender' => 'Gender',
             'img_url' => 'Img Url',
             'user_id' => 'User ID',
@@ -87,16 +90,16 @@ class UserProfile extends \yii\db\ActiveRecord
         $birthday = date("Y-m-d", strtotime($this->date_of_birth));
         $current_date = date("Y-m-d");
         if (!$this->hasErrors() && $birthday > $current_date) {
-            $this->addError('date_of_birth', 'Date of birth must be smaller than ' . date("d-m-Y") . '.');
+            $this->addError('date_of_birth', 'Vui lòng nhập chính xác Ngày sinh.');
         }
     }
 
     public static function genders()
     {
         return [
-            self::FEMALE => 'Female',
-            self::MALE => 'Male',
-            self::UNDIFINED => 'Undifined'
+            self::FEMALE => 'Nữ',
+            self::MALE => 'Nam',
+            self::UNDIFINED => 'Không xác định'
         ];
     }
 

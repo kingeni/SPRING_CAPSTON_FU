@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Station */
 
-$this->title = 'Create Station';
-$this->params['breadcrumbs'][] = ['label' => 'Stations', 'url' => ['index']];
+$this->title = 'Tạo mới Trạm Cân';
+$this->params['breadcrumbs'][] = ['label' => 'Tất cả Trạm Cân', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="station-create">

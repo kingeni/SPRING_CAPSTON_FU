@@ -2,15 +2,14 @@
 
 namespace app\controllers;
 
-use app\models\Unit;
-use Yii;
-use app\models\VehicleWeight;
 use app\models\search\VehicleWeightSearch;
+use app\models\Unit;
+use app\models\VehicleWeight;
+use Yii;
 use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * VehicleWeightController implements the CRUD actions for VehicleWeight model.
@@ -115,8 +114,11 @@ class VehicleWeightController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $vehicleWeight = $this->findModel($id);
+        if ($vehicleWeight != null) {
+            $vehicleWeight->status = VehicleWeight::STATUS_DELETED;
+            $vehicleWeight->save();
+        }
         return $this->redirect(['index']);
     }
 

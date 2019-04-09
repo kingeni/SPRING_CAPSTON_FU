@@ -4,6 +4,7 @@ use app\models\Station;
 use app\models\Transaction;
 use app\models\User;
 use app\models\Vehicle;
+use app\models\VehicleWeight;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -21,7 +22,12 @@ $station = Station::findOne($model->station_id);
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Cập nhật', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?php if ($model->status == Transaction::STATUS_UNDONE) {
+            echo Html::a('Cập nhật', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
+        } ?>
+        <?php if ($model->status == Transaction::STATUS_DONE || $model->status == Transaction::STATUS_OVERLOAD) {
+            echo Html::a('Xuất Biên bản', ['generate-pdf', 'id' => $model->id], ['class' => 'btn btn-info', 'target' => "_blank"]);
+        } ?>
         <?= Html::a('Xóa', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -29,43 +35,40 @@ $station = Station::findOne($model->station_id);
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('Xuất Biên bản', ['generate-pdf', 'id' => $model->id], ['class' => 'btn btn-info btn-sm', 'target' => "_blank"]); ?>
     </p>
-
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-sm-8">
             <div class="row">
-                <label class="col-sm-4 col-form-label" style="text-align: right">Mã Trạm cân:</label>
-                <div class="col-sm-8"><?= $model->station_id ?></div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 col-form-label" style="text-align: right">Mã Trạm cân:</label>
+                        <div class="col-sm-8"><?= $model->station_id ?></div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4 col-form-label" style="text-align: right">Tên Trạm cân:</label>
+                        <div class="col-sm-8"><?= $station->name ?></div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4 col-form-label" style="text-align: right">Địa chỉ:</label>
+                        <div class="col-sm-8"><?= $station->address ?></div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4 col-form-label" style="text-align: right">Số điện thoại:</label>
+                        <div class="col-sm-8"><?= $station->phone_number ?></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 col-form-label" style="text-align: right">Mã Lượt cân:</label>
+                        <div class="col-sm-8"><?= $model->id ?></div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4 col-form-label" style="text-align: right">Tạo lúc:</label>
+                        <div class="col-sm-8"><?= date('d-m-Y h:i', strtotime($model->created_at)) ?></div>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <label class="col-sm-4 col-form-label" style="text-align: right">Tên Trạm cân:</label>
-                <div class="col-sm-8"><?= $station->name ?></div>
-            </div>
-            <div class="row">
-                <label class="col-sm-4 col-form-label" style="text-align: right">Địa chỉ:</label>
-                <div class="col-sm-8"><?= $station->address ?></div>
-            </div>
-            <div class="row">
-                <label class="col-sm-4 col-form-label" style="text-align: right">Số điện thoại:</label>
-                <div class="col-sm-8"><?= $station->phone_number ?></div>
-            </div>
-        </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-5">
-            <div class="row">
-                <label class="col-sm-4 col-form-label" style="text-align: right">Mã Lượt cân:</label>
-                <div class="col-sm-8"><?= $model->id ?></div>
-            </div>
-            <div class="row">
-                <label class="col-sm-4 col-form-label" style="text-align: right">Tạo lúc:</label>
-                <div class="col-sm-8"><?= date('d-m-Y h:i', strtotime($model->created_at)) ?></div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10"> <?= DetailView::widget([
+            <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [
                     [
@@ -99,8 +102,12 @@ $station = Station::findOne($model->station_id);
                         'label' => 'Tải trọng cho phép',
                         'value' => function ($model) {
                             $vehicle = Vehicle::findOne($model->vehicle_id);
-                            $vehicleWeight = \app\models\VehicleWeight::findOne($vehicle->vehicle_weight_id);
-                            return $vehicleWeight->vehicle_weight . ' ' . $vehicleWeight->unit;
+                            if ($vehicle != null) {
+                                $vehicleWeight = VehicleWeight::findOne($vehicle->vehicle_weight_id);
+                                return $vehicleWeight->vehicle_weight . ' ' . $vehicleWeight->unit;
+                            } else {
+                                return '(not set)';
+                            }
                         }
                     ],
                     [
@@ -116,28 +123,22 @@ $station = Station::findOne($model->station_id);
                         'format' => 'raw',
                         'value' => function ($model) {
                             if ($model->status == Transaction::STATUS_DONE) {
-                                return '<span class="badge badge-success">Hoàn Thành</span>';
+                                return '<span class="badge badge-success">Đủ Tải</span>';
                             } else if ($model->status == Transaction::STATUS_OVERLOAD) {
                                 return '<span class="badge badge-danger">Quá Tải</span>';
                             } else if ($model->status == Transaction::STATUS_UNDONE) {
-                                return '<span class="badge badge-secondary">Chưa Hoàn Thành</span>';
+                                return '<span class="badge badge-secondary">Đang Xử Lý</span>';
                             } else {
                                 return '(not set)';
                             }
                         },
                     ],
                 ],
-            ]) ?></div>
-        <div class="col-md-1"></div>
-    </div>
-    <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10"><h3>Hình ảnh</h3></div>
-        <div class="col-md-1"></div>
-    </div>
-    <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10"><?php echo Html::img(Yii::getAlias('@web') . '/' . $model->img_url, ['height' => '240px', 'width' => '360px']); ?></div>
-        <div class="col-md-1"></div>
+            ]) ?>
+        </div>
+        <div class="col-sm-4">
+            <h3>Hình ảnh</h3>
+            <?php echo Html::img(Yii::getAlias('@web') . '/' . $model->img_url, ['height' => '240px', 'width' => '360px']); ?>
+        </div>
     </div>
 </div>

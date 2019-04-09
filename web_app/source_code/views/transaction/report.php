@@ -1,8 +1,8 @@
 <?php
 
 use app\models\Station;
-use app\models\Vehicle;
 use app\models\UserProfile;
+use app\models\Vehicle;
 use app\models\VehicleWeight;
 use yii\helpers\Html;
 
@@ -45,7 +45,7 @@ $lastName = $userProfile->last_name;
             </tr>
             <tr>
                 <td>Tạo lúc:</td>
-                <td><?= date('d-m-Y h:i', strtotime($model->created_at)) ?></td>
+                <td><?= date('h:i d-m-Y', strtotime($model->created_at)) ?></td>
             </tr>
         </table>
     </div>
@@ -63,7 +63,7 @@ $lastName = $userProfile->last_name;
             <td style="font-weight: bold">Kính gửi:</td>
             <td>Ông/bà <?= ucfirst($userProfile->first_name) . ' ' . ucfirst($userProfile->last_name) ?></td>
             <td>Địa chỉ:</td>
-            <td>123123</td>
+            <td><?= $userProfile->address ?></td>
         </tr>
         <tr>
             <td></td>
@@ -98,7 +98,7 @@ $lastName = $userProfile->last_name;
         </tr>
         <tr>
             <td>Thời gian cân:</td>
-            <td><?= date('d-m-Y h:i', strtotime($model->created_at)) ?></td>
+            <td><?= date('h:i d-m-Y', strtotime($model->created_at)) ?></td>
         </tr>
     </table>
 </div>

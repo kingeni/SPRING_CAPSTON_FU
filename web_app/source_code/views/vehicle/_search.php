@@ -25,6 +25,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'vehicle_weight_id') ?>
 
+    <?= $form->field($model, 'status') ?>
+
     <?php // echo $form->field($model, 'user_id') ?>
 
     <div class="form-group">
