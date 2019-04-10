@@ -57,7 +57,7 @@ export function* handleUserLogin() { // eslint-disablae-line no-underscore-dangl
 
       if (userData === null) {
 
-        yield put(AuthActions.loginFailed('Wrong Username or password'));
+        yield put(AuthActions.loginFailed('Invalid Username or password'));
         yield put(AuthActions.loginFailed(null));
         continue;
       }
@@ -75,7 +75,6 @@ export function* handleUserLogin() { // eslint-disablae-line no-underscore-dangl
 export function* verifyUser() { // eslint-disable-line no-underscore-dangle
 
   const token = yield select(getToken);
-  console.log('VerifyUser');
   if (token) {
     yield put(TransActions.stopTransaction());
     yield put(AuthActions.loginSuccess(token));
@@ -97,6 +96,9 @@ export function* updateUsersInfor() {
     formData.append('date_of_birth', user.date_of_birth);
     formData.append('email', user.email);
     formData.append('img', user.img_url);
+    formData.append('phone_number', user.phone_number);
+    formData.append('address', user.address);
+
 
     try {
       const { updateStatus, timeout } = yield race({
@@ -153,7 +155,10 @@ export function* changePass() {
       if (data.status) {
         yield call(NavigationService.gotoLogin);
       } else {
+    
         yield put(UserActions.updatePasswordFail('Please check current password'));
+        yield put(UserActions.updatePasswordFail(null));
+
       }
 
     } catch (error) {
@@ -166,7 +171,7 @@ export function* changePass() {
 export default function* authFlow() {
   yield all([
     handleUserLogin(),
-    verifyUser(),
+     verifyUser(),
     updateUsersInfor(),
     changePass(),
   ]);

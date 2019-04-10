@@ -66,7 +66,6 @@ class Login extends Component {
 
   render() {
     const { isLoading, errorMsg } = this.props;
-    console.log(isLoading ? 'true' : 'flase');
     return (
       <View style={styles.container}>
         <View style={{ height: '50%', width: '100%', alignItems: 'center', justifyContent: 'flex-start' }}>

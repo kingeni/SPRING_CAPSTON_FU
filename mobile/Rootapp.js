@@ -10,7 +10,7 @@ const RootApp = ({dispatch}) => (
             dispatch({
                 type: NAVIGATION_FINISH,
             });
-            console.log('NAVIGATION IS READY!');
+            // console.log('NAVIGATION IS READY!');
         }}
     />
     

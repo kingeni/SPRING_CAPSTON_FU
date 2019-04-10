@@ -64,7 +64,7 @@ class ChangePassword extends Component {
         }
         if (props === 'renewPassword') {
             if (params !== this.state.newPassword) {
-                this.setState({ renewPasswordValid: 'Not same new password' });
+                this.setState({ renewPasswordValid: 'Not match new password' });
             } else {
                 this.setState({ renewPasswordValid: '' });
             }

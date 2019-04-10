@@ -7,12 +7,12 @@ import transactionsSaga from './transactions';
 import ImageSage from './image';
 
 export default function* rootSaga() {
-  console.log('WAITING FOR REHYDRATION_COMPLETE AND NAVIGATION_FINISH');
+  // console.log('WAITING FOR REHYDRATION_COMPLETE AND NAVIGATION_FINISH');
   yield all([
     take(REHYDRATION_COMPLETE),
     take(NAVIGATION_FINISH)
   ]);
-  console.log('MAH, I\'M READY');
+  // console.log('MAH, I\'M READY');
 
   yield all([
     authSagas(),

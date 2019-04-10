@@ -29,6 +29,7 @@ class EditInforUser extends Component {
             lastNameValid: ' ',
             phoneValid: ' ',
             emailValid: ' ',
+            addressValid: ' ',
             visibleSave: true,
             isDateTimePickerVisible: false,
             isLoading: false,
@@ -124,7 +125,7 @@ class EditInforUser extends Component {
                 }));
             } else {
                 this.setState({
-                    firstNameValid: 'Input only alpha and number',
+                    firstNameValid: 'Input only letters and numbers',
                 });
             }
         }
@@ -170,7 +171,7 @@ class EditInforUser extends Component {
                 }));
             } else {
                 this.setState({
-                    emailValid: 'xxxxxx@xxx.xxx.xx',
+                    emailValid: 'must xxxx@xxx.xxx.xx',
                 });
             }
         }
@@ -181,6 +182,21 @@ class EditInforUser extends Component {
                     [props]: value,
                 }
             }));
+        }
+        if (props === 'address') {
+            if (value !== '') {
+                this.setState(prevState => ({
+                    addressValid: ' ',
+                    dataUser: {
+                        ...prevState.dataUser,
+                        [props]: value
+                    },
+                }));
+            } else {
+                this.setState({
+                    addressValid: 'Can not empty',
+                });
+            }
         }
     }
 
@@ -213,7 +229,8 @@ class EditInforUser extends Component {
     }
 
     render() {
-        const { dataUser, firstNameValid, lastNameValid, phoneValid, emailValid, isLoading } = this.state;
+        console.log('RENDER');
+        const { dataUser, firstNameValid, lastNameValid, phoneValid, emailValid, isLoading, addressValid } = this.state;
         const { isLoadingStatus, errorMsg } = this.props;
         return (
 
@@ -329,29 +346,30 @@ class EditInforUser extends Component {
                         <View><Text style={{ color: 'red' }}>{emailValid}</Text></View>
 
                         <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
-                            <View style={{ flex: 30, justifyContent: 'flex-end' }}>
-                                <Text style={{ fontWeight: 'bold' }}>CMND</Text>
+                            <View style={{ flex: 30, justifyContent: 'flex-end', fontWeight: 'bold' }}>
+                                <Text style={{ fontWeight: 'bold' }}>Address</Text>
                             </View>
                             <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
-                                <Text style={{ textAlign: 'left' }}>{dataUser.identity_number}</Text>
+                                <TextInput style={{ textAlign: 'left' }} placeholder='Email'
+                                    onChangeText={value => this.handleChange('address', value)}>{dataUser.address}</TextInput>
                             </View>
                             <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                <Entypo name='block' size={12} color='black' />
+                                <Octicons name='pencil' size={12} color='black' />
                             </View>
                         </View>
-                        <View><Text style={{ color: 'red' }}></Text></View>
+                        <View><Text style={{ color: 'red' }}>{addressValid}</Text></View>
                         <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
                             <View style={{ flex: 30, justifyContent: 'flex-end', fontWeight: 'bold' }}>
                                 <Text style={{ fontWeight: 'bold' }}>Phone Number</Text>
                             </View>
                             <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
-                                <Text style={{ textAlign: 'left' }} placeholder='Phone number'
+                                <TextInput style={{ textAlign: 'left' }} placeholder='Phone number'
                                     onChangeText={value => this.handleChange('phone_number', value)} >{dataUser.phone_number}
-                                </Text>
+                                </TextInput>
                             </View>
 
                             <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                <Entypo name='block' size={12} color='black' />
+                                <Octicons name='pencil' size={12} color='black' />
                             </View>
                         </View>
                         <View><Text style={{ color: 'red' }}>{phoneValid}</Text></View>
@@ -383,7 +401,7 @@ class EditInforUser extends Component {
                                 marginTop: 10,
 
                             }}>
-                                {firstNameValid === ' ' && lastNameValid === ' ' && phoneValid === ' ' && emailValid === ' '
+                                {firstNameValid === ' ' && lastNameValid === ' ' && phoneValid === ' ' && emailValid === ' ' && addressValid === ' '
                                     ?
                                     <TouchableOpacity onPress={this.onSave}>
                                         {isLoadingStatus

@@ -92,10 +92,10 @@ class InforUser extends Component {
 
                         <View style={{ flex: 14, borderBottomWidth: 0.5, borderColor: '#d6d7da', flexDirection: 'row', padding: 15 }}>
                             <View style={{ flex: 30 }}>
-                                <Text style={{ fontWeight: 'bold' }}>CMND</Text>
+                                <Text style={{ fontWeight: 'bold' }}>Address</Text>
                             </View>
                             <View style={{ flex: 70 }}>
-                                <Text style={{ textAlign: 'right' }}>{dataUser.identity_number}</Text>
+                                <Text style={{ textAlign: 'right' }}>{dataUser.address}</Text>
                             </View>
                         </View>
 

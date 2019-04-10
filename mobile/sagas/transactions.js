@@ -22,7 +22,7 @@ export function* getTransactions() {
                 transactions: call(Api.getAllTransactions, vehicle_id),
                 timeout: delay(15000),
             });
-          
+
             if (timeout) {
                 yield put(TransActions.getTransactionFail('Unable to get transactions.\nPlease try again later!'));
                 continue;
@@ -34,8 +34,9 @@ export function* getTransactions() {
                 continue;
             }
             const { data } = response;
-            const dataConvert = convertData(data);
-      
+            // console.log('DATA:',data);
+            const  dataConvert  = yield call(convertData, data);
+            console.log('DATA CONVERT :', dataConvert.length);
             yield put(TransActions.getTransactionSuccess(dataConvert));
 
         } catch (error) {
@@ -44,8 +45,9 @@ export function* getTransactions() {
         yield delay(5000);
     }
 }
+const convertData = async (data) => await convert(data);
 
-let convertData = (data) => {
+const convert =  (data) => {
     var handle = [];
     for (var i = 0; i < data.length; i++) {
         var item = data[i];
@@ -73,11 +75,13 @@ let convertData = (data) => {
     return handle;
 }
 
-let findData = (title, handle) => {
+const findData = (title, handle) => {
+
     for (var i = 0; i < handle.length; i++) {
         item = handle[i];
         if (item.title.toLowerCase().localeCompare(title.toLowerCase()) == 0) {
             return item;
+
         }
     }
     return null;
@@ -88,14 +92,14 @@ export function* getErrTransactions() {
 
         if (!status) return;
         const vehicle_id = yield select(getVehicleID);
-      
+
         try {
 
             const { transactions, timeout } = yield race({
                 transactions: call(Api.getErrTransactions, vehicle_id),
                 timeout: delay(15000),
             });
-         
+
 
             if (timeout) {
                 yield put(TransActions.getTransactionFail('Unable to get transactions.\nPlease try again later!'));
@@ -108,8 +112,8 @@ export function* getErrTransactions() {
                 continue;
             }
             const { data } = response;
-            const dataConvert = convertData(data);
-      
+            const dataConvert = yield call(convertData, data);
+
             yield put(TransActions.getTransactionSuccessErr(dataConvert));
 
         } catch (error) {

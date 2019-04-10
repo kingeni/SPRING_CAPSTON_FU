@@ -3,13 +3,13 @@ import {
     getUser,
     actions,
     getError,
-    getStatus
+    getUserStatus
 } from '../reducers/user';
 import EditInforUser from '../Components/EditInforUser';
 
 const mapStateToProps = state => ({
     dataUser : getUser(state),
-    isLoadingStatus : getStatus(state),
+    isLoadingStatus : getUserStatus(state),
     errorMsg : getError(state),
 });
 const mapDispatchToProps = {
