@@ -2,14 +2,14 @@
 
 namespace app\controllers;
 
+use app\models\ContactForm;
+use app\models\LoginForm;
 use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends Controller
 {
@@ -81,11 +81,12 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post())) {
-            if (User::findOne($model->getUser()->id)->role_id == 1) {
-                if ($model->login())
+            if ($model->login()) {
+                if (User::findOne($model->getUser()->id)->role_id == 1) {
                     return $this->goBack();
-            } else {
-                Yii::$app->session->set('alert', 'User Role can not login to system.');
+                } else {
+                    Yii::$app->session->set('alert', 'Tài khoản này không được phép đăng nhập vào hệ thống.');
+                }
             }
         }
 

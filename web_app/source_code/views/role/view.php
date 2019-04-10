@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Role;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -7,7 +8,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Role */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Roles', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Tất cả Vai Trò', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Cập nhật', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Xóa', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -29,17 +30,25 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-//            'id',
-            'name',
             [
-                'label' => 'Status',
+                'attribute' => 'id',
+                'label' => 'Mã Vai trò',
+            ],
+            [
+                'attribute' => 'name',
+                'label' => 'Tên Vai trò',
+            ],
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'label' => 'Trạng thái',
                 'value' => function ($model) {
-                    if ($model->status == 1) {
-                        return 'Not Active';
-                    } else if ($model->status == 2) {
-                        return 'Active';
-                    } else if ($model->status == 3) {
-                        return 'Deleted';
+                    if ($model->status == Role::STATUS_NOT_ACTIVE) {
+                        return '<span class="badge badge-secondary">Không hoạt động</span>';
+                    } else if ($model->status == Role::STATUS_ACTIVE) {
+                        return '<span class="badge badge-success">Hoạt động</span>';
+                    } else if ($model->status == Role::STATUS_DELETED) {
+                        return '<span class="badge badge-dark">Đã xóa</span>';
                     } else {
                         return '(not set)';
                     }

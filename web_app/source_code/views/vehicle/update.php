@@ -1,6 +1,7 @@
 <?php
 
 use app\models\User;
+use app\models\Vehicle;
 use app\models\VehicleWeight;
 use kartik\date\DatePicker;
 use kartik\file\FileInput;
@@ -13,10 +14,10 @@ use yii\widgets\MaskedInput;
 /* @var $this yii\web\View */
 /* @var $model app\models\Vehicle */
 
-$this->title = 'Update Vehicle: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Vehicles', 'url' => ['index']];
+$this->title = 'Cập nhật Phương Tiện: ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Tất cả Phương Tiện', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Cập nhật';
 
 $listImgUrl = [];
 $listNameSize = [];
@@ -37,7 +38,7 @@ if ($model->img_url != null) {
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($model, 'id')->textInput(['maxlength' => true, 'readonly' => true]) ?>
+        <?= $form->field($model, 'id')->textInput(['maxlength' => true, 'readonly' => true])->label('Mã Thẻ') ?>
 
         <?= $form->field($model, 'license_plates')->widget(MaskedInput::className(),
             [
@@ -47,9 +48,9 @@ if ($model->img_url != null) {
                     'class' => 'form-control',
                 ]
             ]
-        ) ?>
+        )->label('Biển số Xe') ?>
 
-        <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'name')->textInput(['maxlength' => true])->label('Tên Xe') ?>
 
         <?= $form->field($model, 'expiration_date')->widget(DatePicker::classname(), [
             'options' => ['placeholder' => 'Enter Expiration Date ...'],
@@ -57,7 +58,7 @@ if ($model->img_url != null) {
                 'autoclose' => true,
                 'format' => 'dd-mm-yyyy'
             ]
-        ]) ?>
+        ])->label('Ngày hết hạn đăng kiểm') ?>
 
         <?= $form->field($model, 'vehicle_weight_id')->widget(Select2::className(),
             [
@@ -66,7 +67,7 @@ if ($model->img_url != null) {
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
-            ])->label('Vehicle\'s Weight') ?>
+            ])->label('Loại tải trọng Xe') ?>
 
         <?= $form->field($model, 'user_id')->widget(Select2::className(),
             [
@@ -75,7 +76,9 @@ if ($model->img_url != null) {
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
-            ])->label('Vehicle\'s Owner') ?>
+            ])->label('Chủ xe') ?>
+
+        <?= $form->field($model, 'status')->dropDownList(Vehicle::statuses())->label('Trạng thái') ?>
 
         <?= $form->field($model, 'img_url[]')->widget(FileInput::classname(), [
             'options' => [
@@ -93,10 +96,10 @@ if ($model->img_url != null) {
                     'showRemove' => false,
                 ],
             ],
-        ])->label('Vehicle\'s Images') ?>
+        ])->label('Hình ảnh') ?>
 
         <div class="form-group">
-            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton('Lưu', ['class' => 'btn btn-success']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

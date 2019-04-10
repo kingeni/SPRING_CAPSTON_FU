@@ -2,13 +2,13 @@
 
 namespace app\controllers;
 
-use Yii;
-use app\models\Station;
 use app\models\search\StationSearch;
+use app\models\Station;
+use Yii;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * StationController implements the CRUD actions for Station model.
@@ -113,8 +113,11 @@ class StationController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $station = $this->findModel($id);
+        if ($station != null) {
+            $station->status = Station::STATUS_DELETED;
+            $station->save();
+        }
         return $this->redirect(['index']);
     }
 

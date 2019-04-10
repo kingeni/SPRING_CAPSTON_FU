@@ -2,11 +2,9 @@
 
 namespace app\models;
 
-use app\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\base\Model;
-use yii\helpers\ArrayHelper;
 
 /**
  * Create user form
@@ -28,25 +26,25 @@ class UserForm extends Model
     {
         return [
             ['username', 'filter', 'filter' => 'trim'],
-            ['username', 'required'],
+            ['username', 'required', 'message' => 'Vui lòng nhập Tên đăng nhập.'],
             ['username', 'unique', 'targetClass' => User::class, 'filter' => function ($query) {
                 if (!$this->getModel()->isNewRecord) {
                     $query->andWhere(['not', ['id' => $this->getModel()->id]]);
                 }
-            }],
-            ['username', 'string', 'min' => 2, 'max' => 255],
+            }, 'message' => 'Tên đăng nhập này đã tồn tại.'],
+            [['username'], 'string', 'min' => 2, 'max' => 255, 'tooShort' => 'Tên đăng nhập bao gồm 2 ký tự trở lên.', 'tooLong' => 'Tên đăng nhập bao gồm 2 ký tự trở lên.'],
 
             ['email', 'filter', 'filter' => 'trim'],
-            ['email', 'required'],
-            ['email', 'email'],
+            ['email', 'required', 'message' => 'Vui lòng nhập Email.'],
+            ['email', 'email', 'message' => 'Vui lòng nhập Email hợp lệ.'],
             ['email', 'unique', 'targetClass' => User::class, 'filter' => function ($query) {
                 if (!$this->getModel()->isNewRecord) {
                     $query->andWhere(['not', ['id' => $this->getModel()->id]]);
                 }
-            }],
+            }, 'message' => 'Email này đã tồn tại.'],
 
-            ['password', 'required', 'on' => 'create'],
-            ['password', 'string', 'min' => 6],
+            ['password', 'required', 'on' => 'create', 'message' => 'Vui lòng nhập Mật khẩu.'],
+            ['password', 'string', 'min' => 6, 'tooShort' => 'Mật khẩu bao gồm 6 ký tự trở lên.', 'tooLong' => 'Mật khẩu bao gồm 6 ký tự trở lên.'],
 
             [['status'], 'integer'],
             ['roleId', 'required'],

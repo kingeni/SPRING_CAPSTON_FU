@@ -38,7 +38,8 @@ class TransactionController extends Controller
 
     public function actionGetVTransactions($vehicleId)
     {
-        $listTransactions = Transaction::find()->where(['vehicle_id' => $vehicleId])->andWhere(['status' => Transaction::STATUS_OVERLOAD])->orderBy(['created_at' => SORT_DESC])->all();
+        $listTransactions = Transaction::find()->where(['vehicle_id' => $vehicleId])
+            ->andWhere(['status' => Transaction::STATUS_OVERLOAD])->orderBy(['created_at' => SORT_DESC])->all();
         if (count($listTransactions) > 0) {
             foreach ($listTransactions as $item) {
                 if (file_exists($item->img_url))

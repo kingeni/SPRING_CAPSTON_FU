@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\UserProfile */
 
 $this->title = User::getUserById($model->user_id)->username;
-$this->params['breadcrumbs'][] = ['label' => 'User Profiles', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Tất cả Thông Tin Người Dùng', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'userId' => $model->user_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'userId' => $model->user_id], [
+        <?= Html::a('Cập nhật', ['update', 'userId' => $model->user_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Xóa', ['delete', 'userId' => $model->user_id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -37,15 +37,29 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => ['image', ['width' => '100', 'height' => '100']],
             ],
 //            'user.username',
-            'first_name',
-            'last_name',
+            [
+                'attribute' => 'first_name',
+                'label' => 'Tên',
+            ],
+            [
+                'attribute' => 'last_name',
+                'label' => 'Họ',
+            ],
             [
                 'attribute' => 'date_of_birth',
+                'label' => 'Ngày sinh',
                 'value' => function ($model) {
                     return date('d-m-Y', strtotime($model->date_of_birth));
                 }
             ],
-            'phone_number',
+            [
+                'attribute' => 'phone_number',
+                'label' => 'Số điện thoại',
+            ],
+            [
+                'attribute' => 'address',
+                'label' => 'Địa chỉ',
+            ],
         ],
     ]) ?>
 

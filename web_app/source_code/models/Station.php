@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "station".
  *
@@ -33,13 +31,16 @@ class Station extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name', 'phone_number', 'address', 'status'], 'required'],
+            [['id'], 'required', 'message' => 'Vui lòng nhập Mã Trạm cân.'],
+            [['name'], 'required', 'message' => 'Vui lòng nhập Tên Trạm cân.'],
+            [['phone_number'], 'required', 'message' => 'Vui lòng nhập Số điện thoại.'],
+            [['address',], 'required', 'message' => 'Vui lòng nhập Địa chỉ.'],
             [['status'], 'integer'],
             [['id'], 'string', 'max' => 300],
             [['name'], 'string', 'max' => 500],
             [['phone_number'], 'string', 'max' => 100],
             [['address'], 'string', 'max' => 1000],
-            [['id'], 'unique'],
+            [['id'], 'unique', 'message' => 'Mã Trạm cân này đã tồn tại.'],
         ];
     }
 
@@ -60,9 +61,9 @@ class Station extends \yii\db\ActiveRecord
     public static function statuses()
     {
         return [
-            self::STATUS_NOT_ACTIVE => 'Not Active',
-            self::STATUS_ACTIVE => 'Active',
-            self::STATUS_DELETED => 'Deleted'
+            self::STATUS_NOT_ACTIVE => 'Không hoạt động',
+            self::STATUS_ACTIVE => 'Hoạt động',
+            self::STATUS_DELETED => 'Đã xóa'
         ];
     }
 }

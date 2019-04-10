@@ -119,9 +119,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public static function statuses()
     {
         return [
-            self::STATUS_NOT_ACTIVE => 'Not Active',
-            self::STATUS_ACTIVE => 'Active',
-            self::STATUS_DELETED => 'Deleted'
+            self::STATUS_NOT_ACTIVE => 'Không hoạt động',
+            self::STATUS_ACTIVE => 'Hoạt động',
+            self::STATUS_DELETED => 'Đã xóa'
         ];
     }
 

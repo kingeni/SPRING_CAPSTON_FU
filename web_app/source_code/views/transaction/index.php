@@ -1,9 +1,8 @@
 <?php
 
-use app\models\Station;
 use app\models\Transaction;
-use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\TransactionSearch */
@@ -18,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Tạo mới Lượt Cân', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php // echo Html::a('Tạo mới Lượt Cân', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -38,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'vehicle_weight',
                 'label' => 'Tải trọng Xe',
+                'headerOptions' => ['style' => 'width:5%'],
                 'value' => function ($model) {
                     return $model->vehicle_weight . ' ' . $model->unit;
                 },
@@ -45,6 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'created_at',
                 'label' => 'Tạo lúc',
+                'headerOptions' => ['style' => 'width:13%'],
                 'value' => function ($model) {
                     return date('h:i d-m-Y', strtotime($model->created_at));
                 },
@@ -54,6 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'station_id',
                 'label' => 'Mã Trạm cân',
+                'headerOptions' => ['style' => 'width:10%'],
             ],
             [
                 'attribute' => 'status',
@@ -61,19 +63,45 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function ($model) {
                     if ($model->status == Transaction::STATUS_DONE) {
-                        return '<span class="badge badge-success">Hoàn Thành</span>';
+                        return '<span class="badge badge-success">Đủ Tải</span>';
                     } else if ($model->status == Transaction::STATUS_OVERLOAD) {
                         return '<span class="badge badge-danger">Quá Tải</span>';
                     } else if ($model->status == Transaction::STATUS_UNDONE) {
-                        return '<span class="badge badge-secondary">Chưa Hoàn Thành</span>';
+                        return '<span class="badge badge-secondary">Đang Xử Lý</span>';
+                    } else if ($model->status == Transaction::STATUS_CANCEL) {
+                        return '<span class="badge badge-secondary">Hủy</span>';
                     } else {
                         return '(not set)';
                     }
                 },
-                'filter' => array('1' => 'Hoàn Thành', '2' => 'Quá Tải', '3' => 'Chưa Hoàn Thành')
+                'filter' => array('1' => 'Đủ Tải', '2' => 'Quá Tải', '3' => 'Đang Xử Lý', '4' => 'Hủy')
             ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                        return Html::a('Xem', ['view', 'id' => $model->id], ['class' => 'btn btn-warning btn-xs']);
+                    },
+                    'update' => function ($url, $model) {
+                        if ($model->status == Transaction::STATUS_UNDONE) {
+                            return Html::a('Cập nhật', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-xs']);
+                        } else {
+                            return '';
+                        }
+
+                    },
+                    'delete' => function ($url, $model) {
+                        return Html::a('Xóa', ['delete', 'id' => $model->id], [
+                            'class' => 'btn btn-danger btn-xs',
+                            'data' => [
+                                'confirm' => 'Are you sure you want to delete this item?',
+                                'method' => 'post',
+                            ],
+                        ]);
+                    },
+                ],
+            ],
         ],
     ]); ?>
 </div>

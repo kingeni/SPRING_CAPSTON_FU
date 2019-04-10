@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\VehicleWeight */
 
-$this->title = 'Create Vehicle Weight';
-$this->params['breadcrumbs'][] = ['label' => 'Vehicle Weights', 'url' => ['index']];
+$this->title = 'Tạo mới Loại tải trọng Xe';
+$this->params['breadcrumbs'][] = ['label' => 'Tất cả Loại tải trọng Xe', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vehicle-weight-create">

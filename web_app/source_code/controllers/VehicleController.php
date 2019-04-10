@@ -2,16 +2,14 @@
 
 namespace app\controllers;
 
-use app\models\User;
+use app\models\search\VehicleSearch;
+use app\models\Vehicle;
 use app\models\VehicleImg;
 use Yii;
-use app\models\Vehicle;
-use app\models\search\VehicleSearch;
 use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 
 /**
@@ -80,6 +78,7 @@ class VehicleController extends Controller
         $model = new Vehicle();
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->status = Vehicle::STATUS_ACTIVE;
             $model->expiration_date = date("Y-m-d", strtotime($model->expiration_date));
             if ($model->save()) {
                 $listImg = UploadedFile::getInstances($model, 'img_url');
@@ -154,8 +153,12 @@ class VehicleController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        VehicleImg::removeOldImg($id);
+        $vehicle = $this->findModel($id);
+        if ($vehicle != null) {
+            $vehicle->status = Vehicle::STATUS_DELETED;
+            $vehicle->save();
+        }
+//        VehicleImg::removeOldImg($id);
         return $this->redirect(['index']);
     }
 

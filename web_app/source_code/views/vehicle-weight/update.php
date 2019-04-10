@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\VehicleWeight */
 
-$this->title = 'Update Vehicle Weight: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Vehicle Weights', 'url' => ['index']];
+$this->title = 'Cập nhật Loại tải trọng Xe: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Tất cả Loại tải trọng Xe', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

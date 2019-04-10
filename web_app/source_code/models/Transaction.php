@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "transaction".
  *
@@ -22,6 +20,7 @@ class Transaction extends \yii\db\ActiveRecord
     const STATUS_DONE = 1;
     const STATUS_OVERLOAD = 2;
     const STATUS_UNDONE = 3;
+    const STATUS_CANCEL = 4;
 
     /**
      * {@inheritdoc}
@@ -68,9 +67,10 @@ class Transaction extends \yii\db\ActiveRecord
     public static function statuses()
     {
         return [
-            self::STATUS_DONE => 'Hoàn Thành',
+            self::STATUS_DONE => 'Đủ Tải',
             self::STATUS_OVERLOAD => 'Quá Tải',
-            self::STATUS_UNDONE => 'Chưa Hoàn Thành'
+            self::STATUS_UNDONE => 'Đang Xử Lý',
+            self::STATUS_CANCEL => 'Hủy'
         ];
     }
 

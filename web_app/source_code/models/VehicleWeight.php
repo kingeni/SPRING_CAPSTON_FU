@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -36,12 +35,15 @@ class VehicleWeight extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'vehicle_weight', 'unit', 'status'], 'required'],
-            [['vehicle_weight'], 'number', 'integerOnly' => true, 'min' => 0],
+            [['unit', 'status'], 'required'],
+            [['id'], 'required', 'message' => 'Vui lòng nhập Mã Loại tải trọng Xe.'],
+            [['vehicle_weight'], 'required', 'message' => 'Vui lòng nhập Tải trọng cho phép.'],
+            ['vehicle_weight', 'double', 'message' => 'Vui lòng nhập một số lớn hơn 0.'],
+            ['vehicle_weight', 'compare', 'compareValue' => 0, 'operator' => '>', 'message' => 'Vui lòng nhập một số lớn hơn 0.'],
             [['status'], 'integer'],
             [['id'], 'string', 'max' => 300],
             [['unit'], 'string', 'max' => 50],
-            [['id'], 'unique'],
+            [['id'], 'unique', 'message' => 'Mã Loại tải trọng Xe này đã tồn tại.'],
         ];
     }
 
@@ -61,9 +63,9 @@ class VehicleWeight extends \yii\db\ActiveRecord
     public static function statuses()
     {
         return [
-            self::STATUS_NOT_ACTIVE => 'Not Active',
-            self::STATUS_ACTIVE => 'Active',
-            self::STATUS_DELETED => 'Deleted'
+            self::STATUS_NOT_ACTIVE => 'Không hoạt động',
+            self::STATUS_ACTIVE => 'Hoạt động',
+            self::STATUS_DELETED => 'Đã xóa'
         ];
     }
 
@@ -79,4 +81,5 @@ class VehicleWeight extends \yii\db\ActiveRecord
     {
         return ArrayHelper::map(VehicleWeight::find()->where(['status' => VehicleWeight::STATUS_ACTIVE])->all(), 'id', 'id');
     }
+
 }

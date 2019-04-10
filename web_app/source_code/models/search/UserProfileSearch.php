@@ -2,9 +2,9 @@
 
 namespace app\models\search;
 
+use app\models\UserProfile;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\UserProfile;
 
 /**
  * UserProfileSearch represents the model behind the search form of `app\models\UserProfile`.
@@ -18,7 +18,7 @@ class UserProfileSearch extends UserProfile
     {
         return [
 //            [['user_id'], 'integer'],
-            [['user_id', 'first_name', 'last_name', 'date_of_birth', 'phone_number', 'img_url'], 'safe'],
+            [['user_id', 'first_name', 'last_name', 'date_of_birth', 'phone_number', 'img_url', 'address'], 'safe'],
         ];
     }
 
@@ -66,6 +66,7 @@ class UserProfileSearch extends UserProfile
             ->andFilterWhere(['like', 'first_name', $this->first_name])
             ->andFilterWhere(['like', 'last_name', $this->last_name])
             ->andFilterWhere(['like', 'phone_number', $this->phone_number])
+            ->andFilterWhere(['like', 'address', $this->address])
             ->andFilterWhere(['like', 'img_url', $this->img_url]);
 
         return $dataProvider;

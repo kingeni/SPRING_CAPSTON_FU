@@ -22,7 +22,6 @@ class UserProfileController extends Controller
     public function actionUpdateUserProfile($userId)
     {
         $userProfile = UserProfile::findOne(['user_id' => $userId]);
-        unlink($userProfile->img_url);
 
         $user = User::findOne(['id' => $userId]);
         if ($userProfile == null && $user == null) {
@@ -34,15 +33,21 @@ class UserProfileController extends Controller
         $userProfile->last_name = Yii::$app->request->post('last_name');
         $userProfile->gender = Yii::$app->request->post('gender');
         $userProfile->date_of_birth = Yii::$app->request->post('date_of_birth');
+        $userProfile->phone_number = Yii::$app->request->post('phone_number');
+        $userProfile->address = Yii::$app->request->post('address');
 
         //convert image
-        $imgBase64 = Yii::$app->request->post('img');
-        $imgUrl = 'data/user_profile/' . $userId . '.jpg';
-        $file = fopen($imgUrl, 'wb');
-        fwrite($file, base64_decode($imgBase64));
-        fclose($file);
+        if (Yii::$app->request->post('img') != null) {
+            unlink($userProfile->img_url);
+            $imgBase64 = Yii::$app->request->post('img');
+            $imgUrl = 'data/user_profile/' . $userId . '.jpg';
+            $file = fopen($imgUrl, 'wb');
+            fwrite($file, base64_decode($imgBase64));
+            fclose($file);
 
-        $userProfile->img_url = $imgUrl;
+            $userProfile->img_url = $imgUrl;
+        }
+
         if ($user->validate() && $user->save() && $userProfile->validate() && $userProfile->save()) {
             return Json::encode(['status' => true]);
         }

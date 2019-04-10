@@ -50,7 +50,7 @@ AppAsset::register($this);
                 'items' => [
                     ['label' => 'Quản lý Phương Tiện', 'url' => '/vehicle/index'],
                     '<li class="divider"></li>',
-                    ['label' => 'Quản lý Loại Xe', 'url' => '/vehicle-weight/index'],
+                    ['label' => 'Quản lý Loại tải trọng Xe', 'url' => '/vehicle-weight/index'],
                 ],
             ],
             [
@@ -64,17 +64,17 @@ AppAsset::register($this);
                     '<li class="divider"></li>',
                     ['label' => 'Quản lý Thông Tin Người Dùng', 'url' => '/user-profile/index'],
                     '<li class="divider"></li>',
-                    ['label' => 'Quản lý Vai Trò Người Dùng', 'url' => ['/role/index']],
+                    ['label' => 'Vai Trò Người Dùng', 'url' => ['/role/index']],
                 ],
             ],
 //            ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
-            ['label' => 'Login', 'url' => ['/site/login']]
+            ['label' => 'Đăng xuất', 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    'Đăng xuất (' . Yii::$app->user->identity->username . ')',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()

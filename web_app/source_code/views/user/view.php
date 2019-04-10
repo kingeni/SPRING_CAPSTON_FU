@@ -9,7 +9,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\User */
 /* @var $modelProfile app\models\UserProfile */
 $this->title = $model->username;
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Tất cả Người Dùng', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -18,8 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Cập nhật', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Xóa', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -31,42 +31,50 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'username',
-            'email:email',
+            [
+                'attribute' => 'username',
+                'label' => 'Tên đăng nhập',
+            ],
+            [
+                'attribute' => 'email',
+                'label' => 'Email'
+            ],
             [
                 'attribute' => 'status',
+                'format' => 'raw',
+                'label' => 'Trạng thái',
                 'value' => function ($model) {
                     if ($model->status == User::STATUS_NOT_ACTIVE) {
-                        return 'Not Active';
+                        return '<span class="badge badge-secondary">Không hoạt động</span>';
                     } else if ($model->status == User::STATUS_ACTIVE) {
-                        return 'Active';
+                        return '<span class="badge badge-success">Hoạt động</span>';
                     } else if ($model->status == User::STATUS_DELETED) {
-                        return 'Deleted';
+                        return '<span class="badge badge-dark">Đã xóa</span>';
                     } else {
                         return '(not set)';
                     }
-                }
+                },
             ],
             [
                 'attribute' => 'role_id',
-                'label' => 'Role',
+                'label' => 'Vai trò',
                 'value' => function ($model) {
-                    return Role::getRolenameById($model->role_id);
-                }
-            ]
+                    return \app\models\Role::getRolenameById($model->role_id);
+                },
+            ],
         ],
     ]) ?>
     <?php if ($model->role_id == 2) {
         if ($modelProfile == null) { ?>
             <p>
-                <?= Html::a('Create User Profile', ['user-profile/create', 'id' => $model->id, 'username' => $model->username], ['class' => 'btn btn-success']) ?>
+                <?= Html::a('Cập nhật Thông Tin Người Dùng', ['user-profile/create', 'id' => $model->id, 'username' => $model->username], ['class' => 'btn btn-success']) ?>
             </p>
         <?php } else {
             ?>
-            <h3><?= $model->username . '\'s Profile' ?></h3>
+            <h3><?= 'Thông tin của ' . $model->username ?></h3>
             <p>
-                <?= Html::a('Update User Profile', ['user-profile/update', 'userId' => $modelProfile->user_id], ['class' => 'btn btn-primary']) ?>
-                <?= Html::a('Delete User Profile', ['user-profile/delete', 'userId' => $modelProfile->user_id], [
+                <?= Html::a('Cập nhật Thông Tin Người Dùng', ['user-profile/update', 'userId' => $modelProfile->user_id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('Xóa Thông Tin Người Dùng', ['user-profile/delete', 'userId' => $modelProfile->user_id], [
                     'class' => 'btn btn-danger',
                     'data' => [
                         'confirm' => 'Are you sure you want to delete this item?',
@@ -84,15 +92,25 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => ['image', ['width' => '100', 'height' => '100']],
                     ],
 //            'user.username',
-                    'first_name',
-                    'last_name',
                     [
+                        'label' => 'Tên',
+                        'attribute' => 'first_name',
+                    ],
+                    [
+                        'label' => 'Họ',
+                        'attribute' => 'last_name',
+                    ],
+                    [
+                        'label' => 'Ngày Sinh',
                         'attribute' => 'date_of_birth',
                         'value' => function ($modelProfile) {
                             return date('m-d-Y', strtotime($modelProfile->date_of_birth));
                         }
                     ],
-                    'phone_number',
+                    [
+                        'label' => 'Số điện thoại',
+                        'attribute' => 'phone_number',
+                    ],
                 ],
             ]) ?>
         <?php } ?>

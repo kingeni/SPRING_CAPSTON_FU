@@ -2,15 +2,15 @@
 
 namespace app\controllers;
 
+use app\models\search\UserSearch;
+use app\models\User;
 use app\models\UserForm;
 use app\models\UserProfile;
 use Yii;
-use app\models\User;
-use app\models\search\UserSearch;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -120,8 +120,11 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $user = $this->findModel($id);
+        if ($user != null) {
+            $user->status = User::STATUS_DELETED;
+            $user->save();
+        }
         return $this->redirect(['index']);
     }
 
