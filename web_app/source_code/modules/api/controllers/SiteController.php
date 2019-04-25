@@ -44,4 +44,5 @@ class SiteController extends Controller
             return Json::encode(['status' => false]);
         }
     }
+
 }

@@ -36,6 +36,8 @@ class TransactionController extends Controller
         return Json::encode($listTransactions);
     }
 
+
+
     public function actionGetVTransactions($vehicleId)
     {
         $listTransactions = Transaction::find()->where(['vehicle_id' => $vehicleId])
@@ -49,6 +51,19 @@ class TransactionController extends Controller
         return Json::encode($listTransactions);
     }
 
+    public function actionUpdateIsReadTransaction($vehicleId)
+    {
+        $listTransactions = Transaction::findAll(['vehicle_id' => $vehicleId]);
+        if (count($listTransactions) > 0) {
+            /* @var $item Transaction */
+            foreach ($listTransactions as $item) {
+                $item->is_read = 1;
+                $item->save();
+            }
+        }
+        return Json::encode(['status' => true]);
+    }
+    
     public function actionSubmitTransaction()
     {
         $model = new Transaction();
@@ -123,16 +138,5 @@ class TransactionController extends Controller
         return Json::encode(Transaction::findOne(['id' => $transactionId]));
     }
 
-    public function actionUpdateIsReadTransaction($vehicleId)
-    {
-        $listTransactions = Transaction::findAll(['vehicle_id' => $vehicleId]);
-        if (count($listTransactions) > 0) {
-            /* @var $item Transaction */
-            foreach ($listTransactions as $item) {
-                $item->is_read = 1;
-                $item->save();
-            }
-        }
-        return Json::encode(['status' => true]);
-    }
+   
 }

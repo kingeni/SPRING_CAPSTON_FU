@@ -10,11 +10,11 @@ const UPDATE_STATUS_READING_PATH = '/transaction/update-is-read-transaction';
 const LIST_IMAGE_VEHICLE_PATH = '/vehicle/get-vehicle-img';
 const UPDATE_INFO_USER_PATH = '/user-profile/update-user-profile';
 const CHANGE_PASSWORD_PATH = '/user/update-password';
-const setDefaults = (defaults) => {
-  Object.keys(defaults).forEach((key) => {
-    axios.defaults[key] = defaults[key];
-  });
-};
+// const setDefaults = (defaults) => {
+//   Object.keys(defaults).forEach((key) => {
+//     axios.defaults[key] = defaults[key];
+//   });
+// };
 
 const setToken = (token) => {
   const { headers } = axios.defaults;
@@ -190,7 +190,7 @@ const changePassword = async (formData, userId, optionalConfig = {}) => {
   }
 };
 const Api = {
-  setDefaults,
+  // setDefaults,
   setToken,
   getNiceErrorMsg,
   login,

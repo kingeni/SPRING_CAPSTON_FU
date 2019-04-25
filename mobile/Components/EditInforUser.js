@@ -233,205 +233,206 @@ class EditInforUser extends Component {
         const { dataUser, firstNameValid, lastNameValid, phoneValid, emailValid, isLoading, addressValid } = this.state;
         const { isLoadingStatus, errorMsg } = this.props;
         return (
+            <View style={{ flex: 1 }}>
+                <ScrollView contentContainerStyle={{
+                    flex: 1,
+                    // backgroundColor: 'rgb(79,88,86)',
+                    backgroundColor: '#d6d7da',
+                }}>
+                    {isLoading ?
+                        <View style={{
+                            flex: 1, justifyContent: 'flex-start'
+                        }}>
 
-            <ScrollView contentContainerStyle={{
-                flex: 1,
-                // backgroundColor: 'rgb(79,88,86)',
-                backgroundColor: '#d6d7da',
-            }}>
-                {isLoading ?
-                    <View style={{
-                        flex: 1, justifyContent: 'flex-start'
-                    }}>
-
-                        <View style={{ height: 190, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20 }}>
-                            <TouchableOpacity
-                                onPress={() => this.pickImage()}
-                                style={{ flex: 3, alignItems: 'center', justifyContent: 'center' }}>
-                                <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center' }} >
-                                    <Image source={{ uri: `data:image/png;base64,${dataUser.img_url}` }}
-                                        style={{ width: 80, height: 80, borderRadius: 80 / 2, borderWidth: 0.5 }}>
-                                    </Image>
-                                </View>
-                            </TouchableOpacity>
+                            <View style={{ height: 190, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20 }}>
+                                <TouchableOpacity
+                                    onPress={() => this.pickImage()}
+                                    style={{ flex: 3, alignItems: 'center', justifyContent: 'center' }}>
+                                    <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center' }} >
+                                        <Image source={{ uri: `data:image/png;base64,${dataUser.img_url}` }}
+                                            style={{ width: 80, height: 80, borderRadius: 80 / 2, borderWidth: 0.5 }}>
+                                        </Image>
+                                    </View>
+                                </TouchableOpacity>
 
 
-                            <View style={{ flex: 7, flexDirection: 'column', }}>
-                                <View>
-                                    <View style={{ height: 50, borderBottomWidth: 0.5, borderColor: '#d6d7da', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                                <View style={{ flex: 7, flexDirection: 'column', }}>
+                                    <View>
+                                        <View style={{ height: 50, borderBottomWidth: 0.5, borderColor: '#d6d7da', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                                            <View style={{ flex: 90 }}>
+                                                <TextInput placeholder='First Name'
+                                                    onChangeText={value => this.handleChange('first_name', value)}>
+                                                    {dataUser.first_name}
+                                                </TextInput>
+                                            </View>
+                                            <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                                <Octicons name='pencil' size={12} color='black' />
+                                            </View>
+                                        </View>
+                                        <View><Text style={{ color: 'red' }}>{firstNameValid}</Text></View>
+                                    </View>
+
+                                    <View style={{ height: 50, borderBottomWidth: 0.5, borderColor: '#d6d7da', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
                                         <View style={{ flex: 90 }}>
-                                            <TextInput placeholder='First Name'
-                                                onChangeText={value => this.handleChange('first_name', value)}>
-                                                {dataUser.first_name}
+                                            <TextInput placeholder='Last Name'
+                                                onChangeText={value => this.handleChange('last_name', value)}>{dataUser.last_name}
                                             </TextInput>
                                         </View>
                                         <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
                                             <Octicons name='pencil' size={12} color='black' />
                                         </View>
                                     </View>
-                                    <View><Text style={{ color: 'red' }}>{firstNameValid}</Text></View>
-                                </View>
+                                    <View><Text style={{ color: 'red' }}>{lastNameValid}</Text></View>
 
-                                <View style={{ height: 50, borderBottomWidth: 0.5, borderColor: '#d6d7da', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                                    <View style={{ flex: 90 }}>
-                                        <TextInput placeholder='Last Name'
-                                            onChangeText={value => this.handleChange('last_name', value)}>{dataUser.last_name}
-                                        </TextInput>
+                                    <View style={{ flex: 1, height: 50, flexDirection: 'row', borderColor: '#d6d7da', justifyContent: 'flex-start' }}>
+                                        <CheckBox
+                                            title='Male'
+                                            onPress={() => this.handleCheck('Male')}
+                                            checked={this.state.checkedMale}
+                                            containerStyle={{
+                                                width: 100, height: 43,
+                                                backgroundColor: 'white',
+                                                borderWidth: 0,
+                                            }}></CheckBox>
+
+                                        <CheckBox title='FeMale'
+                                            iconLeft
+                                            onPress={() => this.handleCheck('FeMale')}
+                                            checked={this.state.checkFemale}
+                                            containerStyle={{
+                                                width: 100, height: 43,
+                                                backgroundColor: 'white',
+                                                borderWidth: 0,
+                                                alignItems: 'flex-start'
+                                            }}></CheckBox>
+
                                     </View>
-                                    <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                        <Octicons name='pencil' size={12} color='black' />
-                                    </View>
-                                </View>
-                                <View><Text style={{ color: 'red' }}>{lastNameValid}</Text></View>
-
-                                <View style={{ flex: 1, height: 50, flexDirection: 'row', borderColor: '#d6d7da', justifyContent: 'flex-start' }}>
-                                    <CheckBox
-                                        title='Male'
-                                        onPress={() => this.handleCheck('Male')}
-                                        checked={this.state.checkedMale}
-                                        containerStyle={{
-                                            width: 100, height: 43,
-                                            backgroundColor: 'white',
-                                            borderWidth: 0,
-                                        }}></CheckBox>
-
-                                    <CheckBox title='FeMale'
-                                        iconLeft
-                                        onPress={() => this.handleCheck('FeMale')}
-                                        checked={this.state.checkFemale}
-                                        containerStyle={{
-                                            width: 100, height: 43,
-                                            backgroundColor: 'white',
-                                            borderWidth: 0,
-                                            alignItems: 'flex-start'
-                                        }}></CheckBox>
 
                                 </View>
-
                             </View>
-                        </View>
-                        <View><Text style={{ color: 'red' }}></Text></View>
-                        <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
-                            <View style={{ flex: 30, }}>
-                                <Text style={{ fontWeight: 'bold' }}>Date of birth</Text>
-                            </View>
-                            <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
-                                <TouchableOpacity onPress={this.showDateTimePicker}>
-                                    <Text>{dataUser.date_of_birth}</Text>
-                                </TouchableOpacity>
-                                <DateTimePicker
-                                    isVisible={this.state.isDateTimePickerVisible}
-                                    onConfirm={this.handleDatePicked}
-                                    onCancel={this.hideDateTimePicker}
-                                />
-                            </View>
-
-                            <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                <Octicons name='pencil' size={12} color='black' />
-                            </View>
-                        </View>
-                        <View><Text style={{ color: 'red' }}></Text></View>
-                        <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
-                            <View style={{ flex: 30, justifyContent: 'flex-end', fontWeight: 'bold' }}>
-                                <Text style={{ fontWeight: 'bold' }}>Email</Text>
-                            </View>
-                            <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
-                                <TextInput style={{ textAlign: 'left' }} placeholder='Email'
-                                    onChangeText={value => this.handleChange('email', value)}>{dataUser.email}</TextInput>
-                            </View>
-                            <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                <Octicons name='pencil' size={12} color='black' />
-                            </View>
-                        </View>
-                        <View><Text style={{ color: 'red' }}>{emailValid}</Text></View>
-
-                        <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
-                            <View style={{ flex: 30, justifyContent: 'flex-end', fontWeight: 'bold' }}>
-                                <Text style={{ fontWeight: 'bold' }}>Address</Text>
-                            </View>
-                            <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
-                                <TextInput style={{ textAlign: 'left' }} placeholder='Email'
-                                    onChangeText={value => this.handleChange('address', value)}>{dataUser.address}</TextInput>
-                            </View>
-                            <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                <Octicons name='pencil' size={12} color='black' />
-                            </View>
-                        </View>
-                        <View><Text style={{ color: 'red' }}>{addressValid}</Text></View>
-                        <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
-                            <View style={{ flex: 30, justifyContent: 'flex-end', fontWeight: 'bold' }}>
-                                <Text style={{ fontWeight: 'bold' }}>Phone Number</Text>
-                            </View>
-                            <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
-                                <TextInput style={{ textAlign: 'left' }} placeholder='Phone number'
-                                    onChangeText={value => this.handleChange('phone_number', value)} >{dataUser.phone_number}
-                                </TextInput>
-                            </View>
-
-                            <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                <Octicons name='pencil' size={12} color='black' />
-                            </View>
-                        </View>
-                        <View><Text style={{ color: 'red' }}>{phoneValid}</Text></View>
-
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangePassword', { password: dataUser.password_hash, user_id: dataUser.user_id })}>
+                            <View><Text style={{ color: 'red' }}></Text></View>
                             <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
-                                <View style={{ flex: 30, justifyContent: 'flex-start', fontWeight: 'bold' }}>
-                                    <Text style={{ fontWeight: 'bold' }}>Password</Text>
+                                <View style={{ flex: 30, }}>
+                                    <Text style={{ fontWeight: 'bold' }}>Date of birth</Text>
+                                </View>
+                                <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
+                                    <TouchableOpacity onPress={this.showDateTimePicker}>
+                                        <Text>{dataUser.date_of_birth}</Text>
+                                    </TouchableOpacity>
+                                    <DateTimePicker
+                                        isVisible={this.state.isDateTimePickerVisible}
+                                        onConfirm={this.handleDatePicked}
+                                        onCancel={this.hideDateTimePicker}
+                                    />
                                 </View>
 
-                                <View style={{ flex: 60, justifyContent: 'flex-end', marginTop: 5, }}>
-                                    <Text style={{ textAlign: 'left' }}>*********</Text>
+                                <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                    <Octicons name='pencil' size={12} color='black' />
+                                </View>
+                            </View>
+                            <View><Text style={{ color: 'red' }}></Text></View>
+                            <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
+                                <View style={{ flex: 30, justifyContent: 'flex-end', fontWeight: 'bold' }}>
+                                    <Text style={{ fontWeight: 'bold' }}>Email</Text>
+                                </View>
+                                <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
+                                    <TextInput style={{ textAlign: 'left' }} placeholder='Email'
+                                        onChangeText={value => this.handleChange('email', value)}>{dataUser.email}</TextInput>
                                 </View>
                                 <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
-
-                                    <AntDesign name='caretright' size={15} color='black' />
-
+                                    <Octicons name='pencil' size={12} color='black' />
                                 </View>
                             </View>
-                        </TouchableOpacity>
-                        <View style={{
-                            alignItems: 'center', width: '100%'
-                        }}>
+                            <View><Text style={{ color: 'red' }}>{emailValid}</Text></View>
 
-                            <View style={{
-                                borderRadius: 15,
-                                padding: 10,
-                                borderRadius: 40, backgroundColor: 'rgb(243,177,127)', width: '80%',
-                                marginTop: 10,
-
-                            }}>
-                                {firstNameValid === ' ' && lastNameValid === ' ' && phoneValid === ' ' && emailValid === ' ' && addressValid === ' '
-                                    ?
-                                    <TouchableOpacity onPress={this.onSave}>
-                                        {isLoadingStatus
-                                            ?
-                                            <ActivityIndicator style={{ paddingVertical: 8, }} size="small" color="white" />
-                                            : <Text style={{
-                                                textAlign: 'center',
-                                                paddingVertical: 8,
-                                                color: 'white',
-                                                fontSize: 15,
-                                                fontWeight: 'bold',
-                                            }}>SAVE</Text>}
-                                    </TouchableOpacity>
-                                    :
-                                    <Text style={{
-                                        textAlign: 'center',
-                                        paddingVertical: 8,
-                                        color: 'white',
-                                        fontSize: 15,
-                                        fontWeight: 'bold',
-                                    }}>SAVE</Text>
-                                }
-                                {/* <PopupDialog visible={isLoadingStatus}/> */}
+                            <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
+                                <View style={{ flex: 30, justifyContent: 'flex-end', fontWeight: 'bold' }}>
+                                    <Text style={{ fontWeight: 'bold' }}>Address</Text>
+                                </View>
+                                <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
+                                    <TextInput style={{ textAlign: 'left' }} placeholder='Email'
+                                        onChangeText={value => this.handleChange('address', value)}>{dataUser.address}</TextInput>
+                                </View>
+                                <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                    <Octicons name='pencil' size={12} color='black' />
+                                </View>
                             </View>
-                        </View>
+                            <View><Text style={{ color: 'red' }}>{addressValid}</Text></View>
+                            <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
+                                <View style={{ flex: 30, justifyContent: 'flex-end', fontWeight: 'bold' }}>
+                                    <Text style={{ fontWeight: 'bold' }}>Phone Number</Text>
+                                </View>
+                                <View style={{ flex: 60, justifyContent: 'flex-end', textAlign: 'right' }}>
+                                    <TextInput style={{ textAlign: 'left' }} placeholder='Phone number'
+                                        onChangeText={value => this.handleChange('phone_number', value)} >{dataUser.phone_number}
+                                    </TextInput>
+                                </View>
 
-                    </View> : <View></View>
-                }
-                {errorMsg === null ? <View></View> : alert(errorMsg)}
-            </ScrollView >
+                                <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                    <Octicons name='pencil' size={12} color='black' />
+                                </View>
+                            </View>
+                            <View><Text style={{ color: 'red' }}>{phoneValid}</Text></View>
+
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangePassword', { password: dataUser.password_hash, user_id: dataUser.user_id })}>
+                                <View style={{ height: 50, flexDirection: 'row', backgroundColor: 'white', paddingRight: 20, paddingLeft: 20, marginTop: 5, paddingVertical: 15 }}>
+                                    <View style={{ flex: 30, justifyContent: 'flex-start', fontWeight: 'bold' }}>
+                                        <Text style={{ fontWeight: 'bold' }}>Password</Text>
+                                    </View>
+
+                                    <View style={{ flex: 60, justifyContent: 'flex-end', marginTop: 5, }}>
+                                        <Text style={{ textAlign: 'left' }}>*********</Text>
+                                    </View>
+                                    <View style={{ flex: 10, flexDirection: 'row', justifyContent: 'flex-end' }}>
+
+                                        <AntDesign name='caretright' size={15} color='black' />
+
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                            <View style={{
+                                alignItems: 'center', width: '100%'
+                            }}>
+
+                                <View style={{
+                                    borderRadius: 15,
+                                    padding: 10,
+                                    borderRadius: 40, backgroundColor: 'rgb(243,177,127)', width: '80%',
+                                    marginTop: 10,
+
+                                }}>
+                                    {firstNameValid === ' ' && lastNameValid === ' ' && phoneValid === ' ' && emailValid === ' ' && addressValid === ' '
+                                        ?
+                                        <TouchableOpacity onPress={this.onSave}>
+                                            {isLoadingStatus
+                                                ?
+                                                <ActivityIndicator style={{ paddingVertical: 8, }} size="small" color="white" />
+                                                : <Text style={{
+                                                    textAlign: 'center',
+                                                    paddingVertical: 8,
+                                                    color: 'white',
+                                                    fontSize: 15,
+                                                    fontWeight: 'bold',
+                                                }}>SAVE</Text>}
+                                        </TouchableOpacity>
+                                        :
+                                        <Text style={{
+                                            textAlign: 'center',
+                                            paddingVertical: 8,
+                                            color: 'white',
+                                            fontSize: 15,
+                                            fontWeight: 'bold',
+                                        }}>SAVE</Text>
+                                    }
+                                    {/* <PopupDialog visible={isLoadingStatus}/> */}
+                                </View>
+                            </View>
+
+                        </View> : <View></View>
+                    }
+                    {errorMsg === null ? <View></View> : alert(errorMsg)}
+                </ScrollView >
+            </View>
         );
     }
 

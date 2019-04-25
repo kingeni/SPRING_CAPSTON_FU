@@ -13,6 +13,5 @@ const RootApp = ({dispatch}) => (
             // console.log('NAVIGATION IS READY!');
         }}
     />
-    
 );
 export default connect() (RootApp);

@@ -44,7 +44,7 @@ class UserProfileController extends Controller
             $file = fopen($imgUrl, 'wb');
             fwrite($file, base64_decode($imgBase64));
             fclose($file);
-
+            
             $userProfile->img_url = $imgUrl;
         }
 

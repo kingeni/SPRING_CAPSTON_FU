@@ -5,9 +5,9 @@ const setTopLevelNavigator = (navigatorRef) => {
   navigator = navigatorRef;
 };
 
-const getNavigator = () => navigator;
+// const getNavigator = () => navigator;
 
-const isNavigating = () => !!navigator.state.nav.isTransitioning;
+// const isNavigating = () => !!navigator.state.nav.isTransitioning;
 
 // ========== Stack Action ============
 
@@ -15,19 +15,19 @@ const pop = (n = 1) => {
   navigator.dispatch(StackActions.pop({ n }));
 };
 
-const replace = (routeName, params) => {
-  navigator.dispatch(StackActions.replace({
-    routeName,
-    params,
-  }));
-};
+// const replace = (routeName, params) => {
+//   navigator.dispatch(StackActions.replace({
+//     routeName,
+//     params,
+//   }));
+// };
 
-const reset = (index, actions) => {
-  navigator.dispatch(StackActions.reset({
-    index,
-    actions,
-  }));
-};
+// const reset = (index, actions) => {
+//   navigator.dispatch(StackActions.reset({
+//     index,
+//     actions,
+//   }));
+// };
 
 // ======================
 
@@ -62,16 +62,16 @@ const gotoInfo = () => {
 
 const navigationServices = {
   setTopLevelNavigator,
-  isNavigating,
+  // isNavigating,
   navigate,
-  replace,
-  reset,
+  // replace,
+  // reset,
   pop,
   push,
   goToHome,
   gotoLogin,
   goBack,
-  getNavigator,
+  // getNavigator,
   gotoInfo,
 };
 export default navigationServices;
